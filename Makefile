@@ -1,4 +1,4 @@
--include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk
+-include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/print.mk
 
 #------------------------------------------------#
 #					STRUCTURE					 #

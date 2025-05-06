@@ -16,10 +16,7 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
-# include "data.h"
-# include "libft.h"
-# include "print.h"
-# include <stdbool.h>
+#include <stdbool.h>
 
 /****************************************************************************/
 /*                                DEFINE									*/
@@ -33,23 +30,32 @@
 /****************************************************************************/
 typedef enum e_type
 {
-	TYPE_PARENTHESE,
-	TYPE_OPERATOR,
+	TYPE_WORD,
+	TYPE_REDIR_IN,
+	TYPE_REDIR_OUT,
+	TYPE_REDIR_APPEND,
+	TYPE_HERE_DOC,
+	
 	TYPE_PIPE,
-	TYPE_REDIRECTION,
-	TYPE_COMMAND,
-	TYPE_EXPAND,
-	TYPE_QUOTE,
+	TYPE_AND,
+	TYPE_OR,
+
+	TYPE_PAREN_L,
+	TYPE_PAREN_R,
+	TYPE_NEW_LINE,
+	TYPE_QUOTE_S,
+	TYPE_QUOTE_D,
 	TYPE_SPACE,
 }	t_type;
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
+typedef	struct s_data	t_data;
 typedef struct s_token
 {
 	int				err;
-	int				value;
+	int				type;
 	char			*content;
 	struct s_token	*prev;
 	struct s_token	*next;
@@ -58,13 +64,13 @@ typedef struct s_token
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void	free_token(t_token *token);
-t_token	*get_last_token(t_token *lst);
-int		get_token_len(char *token);
+void	init_token(t_token **token_lst, char *input);
+t_token	*add_token_node(t_token **token_lst);
+t_token	*get_last_token(t_token *token_lst);
+void	set_token_value(t_token *token_lst);
+void	set_token_content(t_token **token, char *new_content);
+void	free_token(t_token *token_lst);
 bool	is_a_delimiter(char c);
-void	set_token_value(t_token *head);
-void	set_token_content(t_token *token, char *new_content);
-t_token	*add_token_node(t_token *token_lst);
-void	init_token(t_token *token_lst, char *input);
+int		get_token_len(char *token);
 
 #endif

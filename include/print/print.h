@@ -17,22 +17,18 @@
 /*                                INCLUDE	                                  */
 /* ************************************************************************** */
 # include "minishell.h"
-# include "data.h"
-# include "token.h"
 
 /* ************************************************************************** */
 /*                                STRUCT	                                  */
 /* ************************************************************************** */
 typedef struct s_data	t_data;
 typedef struct s_token	t_token;
-// typedef struct s_cmds	t_cmds;
-// typedef struct s_fd		t_fd;
 
 /* ************************************************************************** */
 /*                                FUNCTIONS                                   */
 /* ************************************************************************** */
 void	print_all(t_data *data);
 void	print_data(t_data *data);
-void	print_token(t_token *token);
+void	print_token_lst(t_token *token_lst);
 
 #endif
