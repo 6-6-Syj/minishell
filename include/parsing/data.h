@@ -16,6 +16,7 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
+# include "builtins.h"
 # include "token.h"
 # include <stdlib.h>
 
@@ -23,8 +24,11 @@
 /*                                STRUCT									*/
 /****************************************************************************/
 typedef struct s_token	t_token;
+typedef struct s_env	t_env;
+
 typedef struct s_data
 {
+	t_env	*env;
 	t_token	*token;
 	char	*err_msg;
 	int		err;

@@ -21,19 +21,20 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	(void)env;
+	init_env(&data.env, env);
 	while (1)
 	{
-		input = readline(R BOLD "> " RST);
+		input = readline("> ");
 		if (input[0] != '\0')
 			add_history(input);
 		if (!input)
 			break ;
 		init_data(&data);
+		ft_buitins(&data.env, input);
 		init_token(data.token, input);
 		free(input);
 	}
 	rl_clear_history();
-	exit_error(&data);
+	// exit_error(&data);
 	return (0);
 }

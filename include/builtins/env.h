@@ -1,60 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/03 20:43:41 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/05 20:04:29 by dabuchhe         ###   ########lyon.fr   */
+/*   Created: 2025-05-05 21:07:21 by jmagand           #+#    #+#             */
+/*   Updated: 2025-05-05 21:07:21 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef ENV_H
+# define ENV_H
 
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
-# include "env.h"
-# include <linux/limits.h>
+# include "builtins.h"
+# include "libft.h"
 # include <unistd.h>
-// # include <stdbool.h>
 
 /****************************************************************************/
 /*                                DEFINE									*/
 /****************************************************************************/
-// # define C_SPACE	' '
-// # define C_SIMPLE_QUOTE '\''
-// # define C_DOUBLE_QUOTE '\"'
 
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
-// typedef enum e_type
-// {
-// 	TYPE_PARENTHESE,
-// 	TYPE_OPERATOR,
-// 	TYPE_PIPE,
-// 	TYPE_REDIRECTION,
-// 	TYPE_COMMAND,
-// 	TYPE_EXPAND,
-// 	TYPE_QUOTE,
-// 	TYPE_SPACE,
-// } t_type;
+typedef enum e_status
+{
+	NO_ERROR = 0,
+}					t_status;
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_env	t_env;
+typedef struct s_env
+{
+	t_status		err;
+	char			*key;
+	char			*value;
+	struct s_env	*prev;
+	struct s_env	*next;
+}					t_env;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-int					ft_buitins(t_env **env_lst, char *input);
-
-int					ft_env(t_env *env);
-int					ft_pwd(void);
-int					ft_unset(t_env **head, char *key_to_remove);
+void				free_env(t_env *env);
+void				set_env(t_env *new_env, char *env_line);
+t_env				*get_last_env(t_env *lst);
+t_env				*add_env_node(t_env *env_lst);
+void				init_env(t_env **env_lst, char **env);
 
 #endif
