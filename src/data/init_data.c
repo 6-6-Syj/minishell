@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "data.h"
+#include "minishell.h"
 #include <unistd.h>
 
 void	init_data(t_data *data)
