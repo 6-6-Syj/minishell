@@ -40,6 +40,8 @@ typedef struct s_env
 	t_status		err;
 	char			*key;
 	char			*value;
+	bool			print_env;
+	bool			print_exp;
 	struct s_env	*prev;
 	struct s_env	*next;
 }					t_env;

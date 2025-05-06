@@ -12,7 +12,7 @@
 
 #include "builtins.h"
 
-// TODO: Error if
+// TODO: Error if directory is inaccessible, or deleted...
 int	ft_pwd(void)
 {
 	char	res[PATH_MAX];
