@@ -12,18 +12,6 @@
 
 #include "builtins.h"
 
-// static bool	check_equal(char *str)
-// {
-// 	char *equal_pos;
-
-// 	if (!str || !*str)
-// 		return (false);
-// 	equal_pos = ft_strchr(str, '=');
-// 	if (!equal_pos || equal_pos == str)
-// 		return (false);
-// 	return (true);
-// }
-
 int	ft_env(t_env *env_lst)
 {
 	t_env	*current;

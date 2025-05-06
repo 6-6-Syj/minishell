@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **env)
 		init_data(&data);
 		init_token(&data.token, input);
 		ft_buitins(&data.env, input);
-		print_all(&data);
+		// print_all(&data);
 		free(input);
 	}
 	rl_clear_history();
