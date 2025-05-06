@@ -30,8 +30,9 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			break ;
 		init_data(&data);
+		init_token(&data.token, input);
 		ft_buitins(&data.env, input);
-		init_token(data.token, input);
+		print_all(&data);
 		free(input);
 	}
 	rl_clear_history();

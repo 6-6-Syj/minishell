@@ -18,9 +18,3 @@ void	init_data(t_data *data)
 	data->err = 0;
 	data->err_msg = NULL;
 }
-
-void	init_all(t_data *data, char *input)
-{
-	init_data(data);
-	init_token(data->token, input);
-}

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdio.h>
 #include "token.h"
 
 bool	is_a_delimiter(char c)
@@ -25,12 +24,12 @@ bool	is_a_delimiter(char c)
 	return (false);
 }
 
-t_token	*get_last_token(t_token *lst)
+t_token	*get_last_token(t_token *token_lst)
 {
 	t_token	*last;
 
-	last = lst;
-	if (!lst)
+	last = token_lst;
+	if (!token_lst)
 		return (NULL);
 	while (last->next != NULL)
 		last = last->next;
