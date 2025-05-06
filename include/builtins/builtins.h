@@ -51,10 +51,12 @@ typedef struct s_env	t_env;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-int					ft_buitins(t_env **env_lst, char *input);
+void					free_split(char **split);
+int						ft_buitins(t_env **env_lst, char *input);
 
-int					ft_env(t_env *env);
-int					ft_pwd(void);
-int					ft_unset(t_env **head, char *key_to_remove);
+int						handle_export(t_env **env_lst, char *input);
+int						handle_unset(t_env **env_lst, char *input);
+int						ft_env(t_env *env_lst);
+int						ft_pwd(void);
 
 #endif

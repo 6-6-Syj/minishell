@@ -12,15 +12,7 @@
 
 #include "builtins.h"
 
-static void free_split(char **split)
-{
-	int i = 0;
-	while (split && split[i])
-		free(split[i++]);
-	free(split);
-}
-
-static bool search_key_update_value(t_env **head, char *key, char *value)
+static bool	search_key_update_value(t_env **head, char *key, char *value)
 {
 	t_env	*curr;
 
@@ -43,7 +35,7 @@ static bool search_key_update_value(t_env **head, char *key, char *value)
 
 static bool	add_key(t_env **head, char *key, char *value)
 {
-	t_env *new;
+	t_env	*new;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
@@ -70,18 +62,18 @@ static bool	add_key(t_env **head, char *key, char *value)
 	return (true);
 }
 
-int	ft_export(t_env **env_lst, char **args, int i)
+static int	ft_export(t_env **env_lst, char *args)
 {
-	char *key;
-	char *value;
-	char *equal;
+	char	*key;
+	char	*value;
+	char	*equal;
 
-	key = args[i];
+	key = args;
 	value = NULL;
 	equal = ft_strchr(key, '=');
 	if (equal)
 	{
-		*equal = '\0'; // cut "key" at '='
+		*equal = '\0';     // cut "key" at '='
 		value = equal + 1; // start "value" after '='
 	}
 	if (search_key_update_value(env_lst, key, value))
@@ -98,10 +90,10 @@ int	handle_export(t_env **env_lst, char *input)
 	char	**args;
 	int		i;
 	int		res;
+	int		j;
 
-	ft_printf("HOLA\n");
 	res = 0;
-	i = 1;
+	i = 0;
 	args = ft_split(input, ' ');
 	if (!args)
 		return (1); // TODO: ERROR MALLOC
@@ -111,10 +103,12 @@ int	handle_export(t_env **env_lst, char *input)
 		free_split(args);
 		return (NO_ERROR);
 	}
-	while (args[i])
+	while (args[++i])
 	{
-		res |= ft_export(env_lst, args, i);
-		i++;
+		j = 0;
+		while (args[i] && args[i][j] == ' ')
+			j++;
+		res = ft_export(env_lst, args[i]);
 	}
 	free_split(args);
 	return (res);

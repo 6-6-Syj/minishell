@@ -38,21 +38,17 @@
 // 	ft_printf("\n");
 // }
 
-static int	handle_unset(t_env **env_lst, char *input)
+void	free_split(char **split)
 {
-	char	**args;
-	int		i;
-	int		res;
+	int	i;
 
-	res = 0;
-	args = ft_split(input, ' ');
-	if (args && args[1])
-		res = ft_unset(env_lst, args[1]);
 	i = 0;
-	while (args && args[i])
-		free(args[i++]);
-	free(args);
-	return (res);
+	while (split && split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }
 
 int	ft_buitins(t_env **env_lst, char *input)
@@ -65,8 +61,8 @@ int	ft_buitins(t_env **env_lst, char *input)
 	// 	ft_echo(env);
 	// else if (!ft_strcmp(input, "cd"))
 	// 	ft_cd(env);
-	// else if (!ft_strcmp(input, "export"))
-	// 	ft_export(env_lst);
+	else if (!ft_strncmp(input, "export", 6))
+		return (handle_export(env_lst, input));
 	else if (!ft_strncmp(input, "unset", 5))
 		return (handle_unset(env_lst, input));
 	// else if (!ft_strcmp(input, "exit"))

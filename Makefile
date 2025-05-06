@@ -35,10 +35,10 @@
 # 		include/error		\
 # 		include/builtins	\
 
+-include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/print.mk
+
 vpath %.c src src/builtins src/token src/data src/print src/env
 vpath %.i include include/builtins include/parsing include/print
-
--include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/print.mk
 
 #------------------------------------------------#
 #					NOTES						 #
