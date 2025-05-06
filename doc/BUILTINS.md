@@ -89,6 +89,9 @@ Le programme gère-t-il bien les sauts de ligne et tabs dans les valeurs ?
 
 # <font color="yellow"> Tests `UNSET` basiques</font>
 
+    Pour vérifier le statut de sortie, utilisez echo $? après l’exécution de unset.
+
+    En cas d’erreur (exit 1), un message explicite est affiché (ex: cannot unset: readonly variable).
 
 ```sh
 1. **Variable normale**
@@ -115,6 +118,17 @@ Le programme gère-t-il bien les sauts de ligne et tabs dans les valeurs ?
 8. **Tableau**
    `ARR=(1 2); unset ARR` → supprimé
 ```
+
+### **Résumé des retours de `unset` sous Bash**
+
+| Scénario                          | Exit Status | Comportement                          |
+|-----------------------------------|-------------|---------------------------------------|
+| Suppression réussie               | `0`         | Variable/fonction supprimée.          |
+| Variable inexistante              | `0`         | Aucune action, pas d’erreur.          |
+| Variable `readonly`               | `1`         | Erreur, la variable persiste.         |
+| Syntaxe invalide (ex: `unset -z`) | `1`         | Erreur de syntaxe.                    |
+
+
 # <font color="yellow">`CD` (sans options ni assignations)</font>
 
 # Implémentation de `cd` - Cas à gérer

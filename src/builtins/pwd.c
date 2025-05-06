@@ -12,7 +12,7 @@
 
 #include "builtins.h"
 
-// TODO: Handle error code enum
+// TODO: Error if
 int	ft_pwd(void)
 {
 	char	res[PATH_MAX];

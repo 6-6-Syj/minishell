@@ -12,7 +12,6 @@
 
 #include "builtins.h"
 
-// TODO: Check error code if it exists (r. 33) ?
 int	ft_unset(t_env **head, char *key_to_remove)
 {
 	t_env	*curr;
@@ -22,7 +21,7 @@ int	ft_unset(t_env **head, char *key_to_remove)
 	prev = NULL;
 	while (curr)
 	{
-		if (!ft_strcmp(curr->key, key_to_remove))
+		if (curr-> key && !ft_strcmp(curr->key, key_to_remove))
 		{
 			if (prev)
 				prev->next = curr->next;
@@ -36,5 +35,8 @@ int	ft_unset(t_env **head, char *key_to_remove)
 		prev = curr;
 		curr = curr->next;
 	}
+	/* TODO: ERROR if unset a readonly var
+	f.e.: CHECK ACCESS
+	bash: unset: VAR: cannot unset: readonly variable */
 	return (0);
 }
