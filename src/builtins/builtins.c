@@ -59,8 +59,8 @@ int	ft_buitins(t_env **env_lst, char *input)
 		return (ft_pwd());
 	// else if (!ft_strncmp(input, "echo", 4)) // care -n
 	// 	ft_echo(env);
-	// else if (!ft_strncmp(input, "cd", 2))
-	// 	ft_cd(env);
+	else if (!ft_strncmp(input, "cd", 2))
+		return (handle_cd(*env_lst, input));
 	else if (!ft_strncmp(input, "export", 6))
 		return (handle_export(env_lst, input));
 	else if (!ft_strncmp(input, "unset", 5))

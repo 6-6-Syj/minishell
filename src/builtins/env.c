@@ -30,7 +30,7 @@ int	ft_env(t_env *env_lst)
 		}
 		current = current->next;
 	}
-	return (0);
+	return (NO_ERROR);
 }
 
 // NO ERROR CODE
