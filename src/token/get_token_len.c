@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:20:13 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/07 06:10:51 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/07 06:26:49 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ int	get_token_len(char *token)
 	int	i;
 
 	i = 1;
+	if (token[0] == '(' || token[0] == ')')
+		return (1);
 	while  (token[i])
 	{
-		if (token[0] == '(' && token[i] == ')')
-			return (i + 1);
-		else if (token[0] == '<' && token[i] != '<')
+		if (token[0] == '<' && token[i] != '<')
 			return (i);
 		else if (token[0] == '>' && token[i] != '>')
 			return (i);

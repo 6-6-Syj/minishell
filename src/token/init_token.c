@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/07 06:14:18 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/07 06:28:00 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_type	get_token_type(char *token)
 {
 	if (token[0] == '(')
 		return (TYPE_PAREN_L);
+	if (token[0] == ')')
+		return (TYPE_PAREN_R);
 	else if (ft_strcmp(token, "<") == 0)
 		return (TYPE_REDIR_IN);
 	else if (ft_strcmp(token, "<<") == 0)

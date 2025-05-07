@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 21:46:36 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/07 05:44:12 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/07 07:02:58 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	print_token_type(t_type type)
 {
 	if (type == TYPE_PAREN_L)
 		ft_printf(MGT"\t--->   PAREN_L\t\n"RST);
+	else if (type == TYPE_PAREN_R)
+		ft_printf(MGT"\t--->   PAREN_R\t\n"RST);
 	else if (type == TYPE_REDIR_IN)
 		ft_printf(MGT"\t--->   REDIR_IN\t\n"RST);
 	else if (type == TYPE_HERE_DOC)
@@ -58,6 +60,9 @@ void	print_token_lst(t_token *token_list)
 	t_token	*token;
 	int		i;
 
+	ft_printf("+-----------------------+\n");
+	ft_printf("|  TOKEN LST            |\n");
+	ft_printf("+-----------------------+\n");
 	token = token_list;
 	i = 0;
 	while (token)
@@ -66,4 +71,5 @@ void	print_token_lst(t_token *token_list)
 		token = token->next;
 		i++;
 	}
+	ft_printf("\n");
 }
