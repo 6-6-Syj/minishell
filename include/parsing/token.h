@@ -46,6 +46,7 @@ typedef enum e_type
 	TYPE_QUOTE_S,
 	TYPE_QUOTE_D,
 	TYPE_SPACE,
+	TYPE_UNKNOW,
 }	t_type;
 
 /****************************************************************************/
@@ -71,7 +72,7 @@ t_token	*get_last_token(t_token *token_lst);
 void	set_token_value(t_token *token_lst);
 void	set_token_content(t_token **token, char *new_content);
 void	free_token(t_token *token_lst);
-bool	is_a_delimiter(char c);
+bool	is_delimiter(char c);
 int		get_token_len(char *token);
 
 #endif
