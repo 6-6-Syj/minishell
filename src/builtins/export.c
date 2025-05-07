@@ -24,7 +24,7 @@ static bool	search_key_update_value(t_env **head, char *key, char *value)
 			if (value)
 			{
 				free(curr->value);
-				curr->value = ft_strdup(value);
+				curr->value = ft_strdup(value); // NEED PROTECT ?
 			}
 			return (true);
 		}
@@ -85,6 +85,9 @@ static int	ft_export(t_env **env_lst, char *args)
 // 1 failure: Some rare cases.	ex:
 // not enough memory or fd is full
 
+// TODO: if variable got a value "with spaces", there are problems. (PARSING EXPORT)
+// It exports at each ' ';
+// See raw 110
 int	handle_export(t_env **env_lst, char *input)
 {
 	char	**args;
@@ -98,17 +101,16 @@ int	handle_export(t_env **env_lst, char *input)
 	if (!args)
 		return (1); // TODO: ERROR MALLOC
 	if (!args[1])
+		res = print_export(*env_lst);
+	else
 	{
-		// TODO: print_env sorted...
-		free_split(args);
-		return (NO_ERROR);
-	}
-	while (args[++i])
-	{
-		j = 0;
-		while (args[i] && args[i][j] == ' ')
-			j++;
-		res = ft_export(env_lst, args[i]);
+		while (args[++i])
+		{
+			j = 0;
+			while (args[i] && args[i][j] == ' ') // Probably there with ' '
+				j++;
+			res = ft_export(env_lst, args[i]);
+		}
 	}
 	free_split(args);
 	return (res);

@@ -12,6 +12,8 @@
 
 #include "builtins.h"
 
+// (POSIX) Undeterminated order to show variables
+
 int	ft_env(t_env *env_lst)
 {
 	t_env	*current;
