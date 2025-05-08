@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/08 20:02:11 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 21:40:20 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include "unistd.h"
 #include "libft.h"
 
+// TODO: remove space at the begining and the end of list;
+// TODO: remove \n ?
+// TODO: check if token are valid 
+//			-quote are corectly close
+//			-parenthesis are corectly close
+
+// TODO: check for '\' char
+// TODO: check for illegal char
+// TODO: error
 static int		set_token_type(t_token *token_node)
 {
 	token_node->type = get_token_type(token_node->content);
@@ -26,8 +35,6 @@ static int		set_token_content(t_token *token_node, char *new_content)
 {
 	int	len;
 	
-	if (!token_node || !new_content)
-		return (-1);
 	len = get_token_len(new_content);
 	token_node->content = ft_strndup(new_content, len);
 	if (!token_node->content)
@@ -55,9 +62,9 @@ int	init_token(t_token **token_lst, char *input)
 	{
 		new_token = add_token_node(token_lst);
 		if (!new_token)
-			return (-1); // TODO: MALLOC_ERROR
+			return (-1);
 		if (set_token_node(new_token, &input[i]) == -1)
-			return(-1); // TODO: MALLOC_ERROR
+			return(-1);
 		i += get_token_len(&input[i]);
 	}
 	return (0);
