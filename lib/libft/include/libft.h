@@ -69,6 +69,7 @@ int					ft_strcmp(char *s1, char *s2);
 char				*ft_strncat(char *dst, const char *src, unsigned int nb);
 char				*ft_strchr(const char *s, int c);
 int					ft_strcmp(char *s1, char *s2);
+char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strdup(const char *s);
 char				*ft_strndup(const char *src, size_t n);
 void				ft_striteri(char *str, void (*f)(unsigned int, char *));

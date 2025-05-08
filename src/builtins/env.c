@@ -6,11 +6,13 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:54:26 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/05 20:13:10 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 17:25:16 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+// (POSIX) Undeterminated order to show variables
 
 int	ft_env(t_env *env_lst)
 {

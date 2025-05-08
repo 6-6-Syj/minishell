@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-05 21:05:29 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-05 21:05:29 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/05 21:05:29 by jmagand           #+#    #+#             */
+/*   Updated: 2025/05/08 17:26:05 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,15 @@ void	set_env(t_env *new_env, char *env_line)
 	if (equal)
 	{
 		new_env->key = ft_strndup(env_line, equal - env_line);
+		if (!new_env->key)
+			return ; // TODO: ERROR ????
 		new_env->value = ft_strdup(equal + 1);
-		new_env->print_env = true;
-		new_env->print_exp = true;
+		if (!new_env->value)
+		{
+			free(new_env->key);
+			free(new_env);
+			return ; // TODO: ERROR ????
+		}
 	}
 }
 
