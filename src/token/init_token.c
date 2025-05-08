@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/06 21:41:29 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/07 06:28:00 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,33 @@
 
 t_type	get_token_type(char *token)
 {
-	// if (token->content[0] == '(')
-	// 	token->type = TYPE_PARENTHESE;
-	// if (token->content[0] == '&' && token->content[1] == '&')
-		// token->value = TYPE_OPERATOR;
- 	// if (token[0] == '|')
-	// 	return (TYPE_PIPE);
-	// if (is_a_redirection(token))
-		// set_redirection;
-		// if (is_a_expand(token))
-		// set expand;
-	// if (!is_a_delimiter(token[0]))
-	if (token[0] == '\'')
-		return (TYPE_QUOTE_S);
-	if (token[0] == '\"')
+	if (token[0] == '(')
+		return (TYPE_PAREN_L);
+	if (token[0] == ')')
+		return (TYPE_PAREN_R);
+	else if (ft_strcmp(token, "<") == 0)
+		return (TYPE_REDIR_IN);
+	else if (ft_strcmp(token, "<<") == 0)
+		return (TYPE_HERE_DOC);
+	else if (ft_strcmp(token, ">") == 0)
+		return (TYPE_REDIR_OUT);
+	else if (ft_strcmp(token, ">>") == 0)
+		return (TYPE_REDIR_APPEND);
+	else if (ft_strcmp(token, "|") == 0)
+		return (TYPE_PIPE);
+	else if (ft_strcmp(token, "||") == 0)
+		return (TYPE_OR);
+	else if (ft_strcmp(token, "&&") == 0)
+		return (TYPE_AND);
+	else if (token[0] == '\"')
 		return (TYPE_QUOTE_D);
-	if (token[0] == ' ')
+	else if (token[0] == '\'')
+		return (TYPE_QUOTE_S);
+	else if (token[0] == ' ')
 		return (TYPE_SPACE);
-	return (TYPE_WORD);
+	else if (!is_delimiter(token[0]))
+		return (TYPE_WORD);
+	return (TYPE_UNKNOW);
 }
 
 void	set_token(t_token **token, char *content)
@@ -42,7 +51,7 @@ void	set_token(t_token **token, char *content)
 
 	len = get_token_len(content);
 	(*token)->content = ft_strndup(content, len);
-	(*token)->type = get_token_type(content);
+	(*token)->type = get_token_type((*token)->content);
 }
 
 t_token	*add_token_node(t_token **token_lst)
