@@ -17,7 +17,7 @@
 /*                                INCLUDE									*/
 /****************************************************************************/
 #include <stdbool.h>
-
+#include "error.h"
 /****************************************************************************/
 /*                                DEFINE									*/
 /****************************************************************************/
@@ -66,13 +66,12 @@ typedef struct s_token
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void	init_token(t_token **token_lst, char *input);
+t_type	get_token_type(char *token);
+int	init_token(t_token **token_lst, char *input);
 t_token	*add_token_node(t_token **token_lst);
-t_token	*get_last_token(t_token *token_lst);
-void	set_token_value(t_token *token_lst);
-void	set_token_content(t_token **token, char *new_content);
-void	free_token(t_token *token_lst);
-bool	is_delimiter(char c);
+void	free_token_node(t_token *token_node);
+void	free_token_lst(t_token **token_lst);
 int		get_token_len(char *token);
+bool	is_delimiter(char c);
 
 #endif

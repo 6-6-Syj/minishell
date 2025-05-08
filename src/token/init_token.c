@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/08 17:47:57 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 20:02:11 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,70 +14,37 @@
 #include "unistd.h"
 #include "libft.h"
 
-t_type	get_token_type(char *token)
+static int		set_token_type(t_token *token_node)
 {
-	if (token[0] == '(')
-		return (TYPE_PAREN_L);
-	if (token[0] == ')')
-		return (TYPE_PAREN_R);
-	else if (ft_strcmp(token, "<") == 0)
-		return (TYPE_REDIR_IN);
-	else if (ft_strcmp(token, "<<") == 0)
-		return (TYPE_HERE_DOC);
-	else if (ft_strcmp(token, ">") == 0)
-		return (TYPE_REDIR_OUT);
-	else if (ft_strcmp(token, ">>") == 0)
-		return (TYPE_REDIR_APPEND);
-	else if (ft_strcmp(token, "|") == 0)
-		return (TYPE_PIPE);
-	else if (ft_strcmp(token, "||") == 0)
-		return (TYPE_OR);
-	else if (ft_strcmp(token, "&&") == 0)
-		return (TYPE_AND);
-	else if (token[0] == '\"')
-		return (TYPE_QUOTE_D);
-	else if (token[0] == '\'')
-		return (TYPE_QUOTE_S);
-	else if (token[0] == ' ')
-		return (TYPE_SPACE);
-	else if (!is_delimiter(token[0]))
-		return (TYPE_WORD);
-	return (TYPE_UNKNOWN);
+	token_node->type = get_token_type(token_node->content);
+	if (token_node->type == TYPE_UNKNOWN)
+		return (-1);
+	return (0);
 }
 
-void	set_token(t_token **token, char *content)
+static int		set_token_content(t_token *token_node, char *new_content)
 {
-	int		len;
-
-	len = get_token_len(content);
-	(*token)->content = ft_strndup(content, len);
-	(*token)->type = get_token_type((*token)->content);
+	int	len;
+	
+	if (!token_node || !new_content)
+		return (-1);
+	len = get_token_len(new_content);
+	token_node->content = ft_strndup(new_content, len);
+	if (!token_node->content)
+		return (-1);
+	return (0);
 }
 
-t_token	*add_token_node(t_token **token_lst)
+static int	set_token_node(t_token *token_node, char *content)
 {
-	t_token	*new_node;
-	t_token	*last_node;
-
-	new_node = ft_calloc(1, sizeof(t_token));
-	if (!new_node)
-		return (NULL); // NEED PROTEC
-	if (!*token_lst)
-	{
-		*token_lst = new_node;
-		new_node->prev = NULL; // NEEDED ?
-	}
-	else
-	{
-		last_node = get_last_token(*token_lst);
-		last_node->next = new_node;
-		new_node->prev = last_node; // NEEDED ? 
-	}
-	new_node->next = NULL;
-	return (new_node);
+	if (set_token_content(token_node, content))
+		return (-1); 
+	if (set_token_type(token_node))
+		return (-1);
+	return (0);
 }
 
-void	init_token(t_token **token_lst, char *input)
+int	init_token(t_token **token_lst, char *input)
 {
 	t_token	*new_token;
 	int		i;
@@ -87,7 +54,11 @@ void	init_token(t_token **token_lst, char *input)
 	while (input[i] && input[i] != '\n')
 	{
 		new_token = add_token_node(token_lst);
-		set_token(&new_token, &input[i]);
+		if (!new_token)
+			return (-1); // TODO: MALLOC_ERROR
+		if (set_token_node(new_token, &input[i]) == -1)
+			return(-1); // TODO: MALLOC_ERROR
 		i += get_token_len(&input[i]);
 	}
+	return (0);
 }
