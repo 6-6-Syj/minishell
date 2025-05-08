@@ -38,6 +38,8 @@ void	set_env(t_env *new_env, char *env_line)
 	{
 		new_env->key = ft_strndup(env_line, equal - env_line);
 		new_env->value = ft_strdup(equal + 1);
+		new_env->print_env = true;
+		new_env->print_exp = true;
 	}
 }
 
