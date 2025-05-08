@@ -51,7 +51,7 @@ vpath %.i include include/builtins include/parsing include/print
 #------------------------------------------------#
 NAME		= minishell
 LIBFT		= lib/libft/libft.a
-INCLUDES	= minishell.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC)
+INCLUDES	= minishell.h error.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC)
 SRC_FILES	= main $(DATA_SRC) $(TOKEN_SRC) $(BUILTINS_SRC) $(PRINT_SRC) $(ENV_SRC)
 
 #------------------------------------------------#
