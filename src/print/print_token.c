@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 21:46:36 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/07 07:02:58 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 17:48:04 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	print_token_type(t_type type)
 		ft_printf(MGT"\t--->   SPACE\t\n"RST);
 	else if (type == TYPE_WORD)
 		ft_printf(MGT"\t--->   WORD\t\n"RST);
-	else if (type == TYPE_UNKNOW)
-		ft_printf(MGT"\t--->   UNKNOW\t\n"RST);
+	else if (type == TYPE_UNKNOWN)
+		ft_printf(MGT"\t--->   UNKNOWN\t\n"RST);
 }
 
 void	print_token(t_token *token, int i)

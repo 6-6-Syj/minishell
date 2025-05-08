@@ -6,12 +6,12 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 19:21:04 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/05 20:10:20 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 17:50:38 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-
+#include "libft.h"
 /*
 	ERRORS FROM CHDIR:
 

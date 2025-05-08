@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-07 17:52:29 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-07 17:52:29 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/07 17:52:29 by jmagand           #+#    #+#             */
+/*   Updated: 2025/05/08 17:57:56 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	free_env_lst(t_env *copy_env_lst)
 	while (copy_env_lst)
 	{
 		tmp = copy_env_lst->next;
-		free(copy_env_lst->key);
+		free(copy_env_lst->key); // TODO: if()
 		free(copy_env_lst->value);
 		free(copy_env_lst);
 		copy_env_lst = tmp;
@@ -91,7 +91,6 @@ static t_env	*copy_env_list(t_env *env_lst)
 	return (new);
 }
 
-// declare -x
 int	print_export(t_env *env_lst)
 {
 	t_env	*copy;

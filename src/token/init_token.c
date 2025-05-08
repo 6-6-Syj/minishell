@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/07 06:28:00 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 17:47:57 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_type	get_token_type(char *token)
 		return (TYPE_SPACE);
 	else if (!is_delimiter(token[0]))
 		return (TYPE_WORD);
-	return (TYPE_UNKNOW);
+	return (TYPE_UNKNOWN);
 }
 
 void	set_token(t_token **token, char *content)

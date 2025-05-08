@@ -46,7 +46,7 @@ typedef enum e_type
 	TYPE_QUOTE_S,
 	TYPE_QUOTE_D,
 	TYPE_SPACE,
-	TYPE_UNKNOW,
+	TYPE_UNKNOWN,
 }	t_type;
 
 /****************************************************************************/
