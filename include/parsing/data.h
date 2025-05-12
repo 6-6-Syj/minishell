@@ -24,9 +24,11 @@
 typedef struct s_token	t_token;
 typedef struct s_env	t_env;
 typedef struct s_cmds	t_cmds;
+typedef struct s_ast	t_ast;
 
 typedef struct s_data
 {
+	t_ast	*type;
 	t_cmds	*cmds;
 	t_env	*env;
 	t_token	*token;
