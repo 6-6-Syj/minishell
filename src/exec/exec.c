@@ -40,7 +40,6 @@ static t_cmds *create_cmd(char *path, char **cmds, char **env)
     new_cmd->path = path;
     new_cmd->cmds = cmds;
 	new_cmd->env = env;
-
     new_cmd->next = NULL;
     return (new_cmd);
 }
@@ -61,7 +60,7 @@ static void	ft_access(t_cmds *last)
 	}
 }
 
-static void execute_command(t_data *data)
+static void execute_command(t_cmds *current_cmd)
 {
     char **args;
     char **env;
@@ -70,7 +69,7 @@ static void execute_command(t_data *data)
 
 	i = 0;
 	j = 0;
-    while (data->cmds->cmds[i])
+    while (current_cmd->cmds[i])
         i++;
     args = malloc(sizeof(char *) * (i + 1));
     if (!args)
@@ -80,13 +79,13 @@ static void execute_command(t_data *data)
     }
     while (j < i)
 	{
-        args[j] = data->cmds->cmds[j];
+        args[j] = current_cmd->cmds[j];
 		j++;
 	}
     args[j] = NULL;
-    env = data->cmds->env;
-	ft_access(data->cmds);
-    if (execve(data->cmds->path, args, env) == -1)
+    env = current_cmd->env;
+	ft_access(current_cmd);
+    if (execve(current_cmd->path, args, env) == -1)
     {
         perror("execve");
         free(args);
@@ -102,13 +101,13 @@ void	prepare_execution(t_data *data, char **env)
 	int		status;
 
 	// Création de commandes de test
+    char *wc_cmd[] = {"wc", NULL};
     char *ls_cmd[] = {"ls", "-l", NULL};
-    char *head_cmd[] = {"head", "-n", "5", "main.c", NULL};
-	char *cat_cmd[] = {"cat", "main.c", NULL};
+	char *cat_cmd[] = {"cat", "-e", "main.c", NULL};
 
     // Ajout des commandes à la liste
-    t_cmds *cmd1 = create_cmd("/usr/bin/ls", ls_cmd, env);
-    t_cmds *cmd2 = create_cmd("/usr/bin/head", head_cmd, env);
+    t_cmds *cmd1 = create_cmd("/usr/bin/wc", wc_cmd, env);
+    t_cmds *cmd2 = create_cmd("/usr/bin/ls", ls_cmd, env);
 	t_cmds *cmd3 = create_cmd("/usr/bin/cat", cat_cmd, env);
 
     if (!cmd1 || !cmd2 || !cmd3)
@@ -134,7 +133,7 @@ void	prepare_execution(t_data *data, char **env)
 		}
 		else if (pid == 0) // CHILD
 		{
-			execute_command(data);
+			execute_command(current_cmd);
 			exit(EXIT_SUCCESS);
 		}
 		else // PARENT
@@ -144,6 +143,7 @@ void	prepare_execution(t_data *data, char **env)
 				ft_printf("Command exited with status %d\n",
 					WEXITSTATUS(status));
 		}
+		ft_printf("current_cmd->cmds = %s\n", current_cmd->cmds[0]);
 		current_cmd = current_cmd->next;
 	}
 }
