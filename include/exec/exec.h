@@ -1,56 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-05 21:07:21 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-05 21:07:21 by jmagand          ###   ########.fr       */
+/*   Created: 2025-05-09 18:36:03 by jmagand           #+#    #+#             */
+/*   Updated: 2025-05-09 18:36:03 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef EXEC_H
+# define EXEC_H
 
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
+# include "data.h"
 # include "libft.h"
-# include <unistd.h>
+# include <stdio.h>
+# include <sys/wait.h>
 
 /****************************************************************************/
 /*                                DEFINE									*/
 /****************************************************************************/
 
-
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
-typedef enum e_status
-{
-	NO_ERROR = 0,
-}					t_status;
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_env
+typedef struct s_data	t_data;
+
+typedef struct s_cmds
 {
-	t_status		err;
-	char			*key;
-	char			*value;
-	struct s_env	*prev;
-	struct s_env	*next;
-}					t_env;
+	char				*path;
+	char				**cmds;
+	char				**env;
+	struct s_cmds		*next;
+}						t_cmds;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void				free_env(t_env *env);
-void				set_env(t_env *new_env, char *env_line);
-t_env				*get_last_env(t_env *lst);
-t_env				*add_env_node(t_env *env_lst);
-void				init_env(t_env **env_lst, char **env);
+void					prepare_execution(t_data *data, char **env);
 
 #endif

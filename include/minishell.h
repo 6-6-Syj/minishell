@@ -16,11 +16,12 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
-# include <errno.h>
-# include "data.h"
-# include "token.h"
 # include "builtins.h"
-# include "print.h"	// test
+# include "data.h"
+# include "print.h" // test
+# include "token.h"
+# include "exec.h" // temporary ?
+# include <errno.h>
 
 /****************************************************************************/
 /*                                STRUCT									*/

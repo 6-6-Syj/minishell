@@ -35,10 +35,10 @@
 # 		include/error		\
 # 		include/builtins	\
 
-vpath %.c src src/builtins src/token src/data src/print src/env
-vpath %.i include include/builtins include/parsing include/print
+vpath %.c src src/builtins src/token src/data src/print src/env src/exec
+vpath %.i include include/builtins include/parsing include/print include/exec
 
--include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/print.mk
+-include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/print.mk mk_files/exec.mk
 
 #------------------------------------------------#
 #					NOTES						 #
@@ -51,8 +51,8 @@ vpath %.i include include/builtins include/parsing include/print
 #------------------------------------------------#
 NAME		= minishell
 LIBFT		= lib/libft/libft.a
-INCLUDES	= minishell.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC)
-SRC_FILES	= main $(DATA_SRC) $(TOKEN_SRC) $(BUILTINS_SRC) $(PRINT_SRC) $(ENV_SRC)
+INCLUDES	= minishell.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC) $(EXEC_INC)
+SRC_FILES	= main $(DATA_SRC) $(TOKEN_SRC) $(BUILTINS_SRC) $(PRINT_SRC) $(ENV_SRC) $(EXEC_SRC)
 
 #------------------------------------------------#
 #					DIRECTORY					 #
@@ -80,7 +80,7 @@ RM			= rm -rf
 CFLAGS		= -Wall -Wextra -Werror -g3
 CPPFLAGS	= -MMD -MP $(IFLAGS)
 LDFLAGS		= -Llib/libft
-IFLAGS		= -Iinclude -Ilib/libft/include -Iinclude/builtins -Iinclude/parsing -Iinclude/print
+IFLAGS		= -Iinclude -Ilib/libft/include -Iinclude/builtins -Iinclude/parsing -Iinclude/print -Iinclude/exec
 LDLIBS		= -lft
 MAKEFLAGS	+= --no-print-directory
 # DEBUG		= -g3
