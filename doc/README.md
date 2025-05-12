@@ -1,5 +1,7 @@
 # MINISHELL
 
+valgrind --show-leak-kinds=all --track-fds=yes --trace-children=yes --leak-check=full --suppressions=readline.supp ./minishell
+
 ## PROTOTYPAGE
 
 ### Mémoire & Initialisation

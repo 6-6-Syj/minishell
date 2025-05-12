@@ -29,13 +29,13 @@ Liste des opérateurs pris en charge : &&, ||, |, <, >, >>.
 
 Pour chaque opérateur ET, la commande de droite n'est executée que si la commande de gauche retourne 0 (true).
 
-![repr_and_commands](https://github.com/pmouhali/minishell/blob/tuto/exec_part/and_op_schema.png)
+![repr_and_commands](./and_op_schema.png)
 
 **Opérateur OU**
 
 Pour chaque opérateur OU, la commande de droite n'est executée que si la commande de gauche retourne 1 (false).
 
-![repr_or_commands](https://github.com/pmouhali/minishell/blob/tuto/exec_part/or_op_schema.png)
+![repr_or_commands](./or_op_schema.png)
 
 **Opérateur ET et OU dans la même commande**
 
@@ -50,7 +50,7 @@ Etape 2 : séparer la partie gauche en 3 en fonction des deux derniers opérateu
 Etape 3 : séparer la partie la plus à gauche en 3 en fonction des deux derniers opérateur de haute priorité similaires.
 
 
-![repr_multi_command](https://github.com/pmouhali/minishell/blob/tuto/exec_part/multi_and_or_schema.png)
+![repr_multi_command](./multi_and_or_schema.png)
 
 **Pipes et Redirections**
 
@@ -58,7 +58,7 @@ L'opérateur ayant la plus haute priorité après ET et OU est le PIPE.
 
 Les REDIRECTIONS viennent après le PIPE. Les trois différentes redirections peuvent ne pas respecter d'ordre de priorité entres elles, on peut décider qu'elles soient égales ou différentes, peu importe. Elles peuvent être executées dans n'importe quel ordre.
 
-![repr_pipe_redirection_1](https://github.com/pmouhali/minishell/blob/tuto/exec_part/two_pipes_one_redirection.png)
+![repr_pipe_redirection_1](./two_pipes_one_redirection.png)
 
 Le premier node évalué est le plus haut. Il est de type PIPE.
 
@@ -79,7 +79,7 @@ Les nodes gauche et droit sont évalués successivement.
 
 **ls** est bien lancé en premier, son output est redirigé dans **file1**, rev est ensuite executé, il n'as rien à lire puisque **ls** n'as pas écrit dans le pipe, puis **cut** est lancé, il n'as rien à lire non plus, donc n'écrira rien. Le résultat est bon. Cette commande est super débile mais c'est un bon exemple.
 
-![repr_pipe_redirection_2](https://github.com/pmouhali/minishell/blob/tuto/exec_part/pipe_three_redirections.png)
+![repr_pipe_redirection_2](./pipe_three_redirections.png)
 
 Une fois que le node de gauche à été évaluer, les trois nodes de redirections vont être evalué successivement puis le processus sera lancé. Il va se passer précisemment ça :
 - **file1** est ouvert, son file descriptor est stocké au bon endroit dans s_struct options : le processus lira depuis **file1**

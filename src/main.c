@@ -31,7 +31,7 @@ int	main(int ac, char **av, char **env)
 			break ;
 		init_data(&data);
 		init_token(&data.token, input);
-		prepare_execution(&data, env);
+		// prepare_execution(&data, env);
 		ft_buitins(&data.env, input);
 		print_all(&data);
 		free(input);
