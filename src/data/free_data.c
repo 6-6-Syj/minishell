@@ -14,5 +14,6 @@
 
 void	free_data(t_data *data)
 {
-	free_token(data->token);
+	free_token_lst(&data->token);
+	// free_env_lst(&data->env);
 }

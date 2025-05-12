@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/06 21:41:29 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 21:40:20 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,61 +14,44 @@
 #include "unistd.h"
 #include "libft.h"
 
-t_type	get_token_type(char *token)
+// TODO: remove space at the begining and the end of list;
+// TODO: remove \n ?
+// TODO: check if token are valid 
+//			-quote are corectly close
+//			-parenthesis are corectly close
+
+// TODO: check for '\' char
+// TODO: check for illegal char
+// TODO: error
+static int		set_token_type(t_token *token_node)
 {
-	// if (token->content[0] == '(')
-	// 	token->type = TYPE_PARENTHESE;
-	// if (token->content[0] == '&' && token->content[1] == '&')
-		// token->value = TYPE_OPERATOR;
- 	// if (token[0] == '|')
-	// 	return (TYPE_PIPE);
-	// if (is_a_redirection(token))
-		// set_redirection;
-		// if (is_a_expand(token))
-		// set expand;
-	// if (!is_a_delimiter(token[0]))
-	if (token[0] == '\'')
-		return (TYPE_QUOTE_S);
-	if (token[0] == '\"')
-		return (TYPE_QUOTE_D);
-	if (token[0] == ' ')
-		return (TYPE_SPACE);
-	return (TYPE_WORD);
+	token_node->type = get_token_type(token_node->content);
+	if (token_node->type == TYPE_UNKNOWN)
+		return (-1);
+	return (0);
 }
 
-void	set_token(t_token **token, char *content)
+static int		set_token_content(t_token *token_node, char *new_content)
 {
-	int		len;
-
-	len = get_token_len(content);
-	(*token)->content = ft_strndup(content, len);
-	(*token)->type = get_token_type(content);
+	int	len;
+	
+	len = get_token_len(new_content);
+	token_node->content = ft_strndup(new_content, len);
+	if (!token_node->content)
+		return (-1);
+	return (0);
 }
 
-t_token	*add_token_node(t_token **token_lst)
+static int	set_token_node(t_token *token_node, char *content)
 {
-	t_token	*new_node;
-	t_token	*last_node;
-
-	new_node = ft_calloc(1, sizeof(t_token));
-	if (!new_node)
-		return (NULL); // NEED PROTEC
-	if (!*token_lst)
-	{
-		*token_lst = new_node;
-		new_node->prev = NULL; // NEEDED ?
-	}
-	else
-	{
-		last_node = get_last_token(*token_lst);
-		last_node->next = new_node;
-		new_node->prev = last_node; // NEEDED ? 
-	}
-	new_node->next = NULL;
-	return (new_node);
+	if (set_token_content(token_node, content))
+		return (-1); 
+	if (set_token_type(token_node))
+		return (-1);
+	return (0);
 }
 
-void	init_token(t_token **token_lst, char *input)
+int	init_token(t_token **token_lst, char *input)
 {
 	t_token	*new_token;
 	int		i;
@@ -78,7 +61,11 @@ void	init_token(t_token **token_lst, char *input)
 	while (input[i] && input[i] != '\n')
 	{
 		new_token = add_token_node(token_lst);
-		set_token(&new_token, &input[i]);
+		if (!new_token)
+			return (-1);
+		if (set_token_node(new_token, &input[i]) == -1)
+			return(-1);
 		i += get_token_len(&input[i]);
 	}
+	return (0);
 }

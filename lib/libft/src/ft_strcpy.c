@@ -1,20 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_all.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 20:17:33 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/07 07:04:01 by dabuchhe         ###   ########lyon.fr   */
+/*   Created: 2025-05-07 21:54:15 by jmagand           #+#    #+#             */
+/*   Updated: 2025-05-07 21:54:15 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	print_all(t_data *data)
+char	*ft_strcpy(char *dest, const char *src)
 {
-	ft_printf("\n");
-	print_token_lst(data->token);
-	print_data(data);
+	size_t	i;
+
+	i = 0;
+	if (dest == NULL || src == NULL)
+		return (NULL);
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

@@ -18,7 +18,7 @@ NAME		= libft.a
 FILES 		= ft_atoi ft_atoll ft_bzero ft_calloc ft_isalpha ft_isascii ft_isdigit \
 			  ft_isprint ft_itoa ft_memchr ft_memcmp ft_memcpy ft_memmove ft_memset \
 			  ft_putchar ft_putchar_fd ft_putendl_fd ft_putnbr_fd ft_putstr_fd ft_split ft_strcat \
-			  ft_strchr ft_strcmp ft_strdup ft_strndup ft_striteri ft_strjoin ft_strlcat ft_strlcpy \
+			  ft_strchr ft_strcmp ft_strcpy ft_strdup ft_strndup ft_striteri ft_strjoin ft_strlcat ft_strlcpy \
 			  ft_strlen ft_strmapi ft_strncmp ft_strnstr ft_strrchr ft_strtrim ft_substr \
 			  ft_tolower ft_toupper ft_print_char ft_print_hex ft_print_int ft_printf get_next_line \
 			  get_next_line_utils ft_lstnew ft_lstadd_back ft_lstadd_front ft_lstlast ft_lstsize \

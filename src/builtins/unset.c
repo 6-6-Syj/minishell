@@ -12,7 +12,7 @@
 
 #include "builtins.h"
 
-int	ft_unset(t_env **head, char *key_to_remove)
+static int	ft_unset(t_env **head, char *key_to_remove)
 {
 	t_env	*curr;
 	t_env	*prev;
@@ -39,4 +39,21 @@ int	ft_unset(t_env **head, char *key_to_remove)
 	f.e.: CHECK ACCESS
 	bash: unset: VAR: cannot unset: readonly variable */
 	return (0);
+}
+
+int	handle_unset(t_env **env_lst, char *input)
+{
+	char	**args;
+	int		i;
+	int		res;
+
+	res = 0;
+	args = ft_split(input, ' ');
+	if (args && args[1])
+		res = ft_unset(env_lst, args[1]);
+	i = 0;
+	while (args && args[i])
+		free(args[i++]);
+	free(args);
+	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:43:41 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/06 03:01:51 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 17:24:43 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,14 @@ typedef struct s_env	t_env;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-int					ft_buitins(t_env **env_lst, char *input);
+void					free_split(char **split);
+int						ft_buitins(t_env **env_lst, char *input);
 
-int					ft_env(t_env *env);
-int					ft_pwd(void);
-int					ft_unset(t_env **head, char *key_to_remove);
+int						handle_cd(t_env *env, char *input);
+int						handle_export(t_env **env_lst, char *input);
+int						print_export(t_env *env_lst);
+int						handle_unset(t_env **env_lst, char *input);
+int						ft_env(t_env *env_lst);
+int						ft_pwd(void);
 
 #endif

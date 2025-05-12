@@ -6,23 +6,13 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:54:26 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/05 20:13:10 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 17:25:16 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-// static bool	check_equal(char *str)
-// {
-// 	char *equal_pos;
-
-// 	if (!str || !*str)
-// 		return (false);
-// 	equal_pos = ft_strchr(str, '=');
-// 	if (!equal_pos || equal_pos == str)
-// 		return (false);
-// 	return (true);
-// }
+// (POSIX) Undeterminated order to show variables
 
 int	ft_env(t_env *env_lst)
 {
@@ -31,18 +21,21 @@ int	ft_env(t_env *env_lst)
 	current = env_lst;
 	while (current)
 	{
-		if (current->key && current->value)
+		if (current->print_env)
 		{
-			ft_putstr_fd(current->key, 1);
-			write(1, "=", 1);
-			ft_putstr_fd(current->value, 1);
-			write(1, "\n", 1);
+			if (current->key && current->value)
+			{
+				ft_putstr_fd(current->key, 1);
+				write(1, "=", 1);
+				ft_putstr_fd(current->value, 1);
+				write(1, "\n", 1);
+			}
+			current = current->next;
 		}
-		current = current->next;
 	}
-	return (0);
+	return (NO_ERROR);
 }
 
 // NO ERROR CODE
 	// If no env, no path, so command cant be executed
-	// else env -> PATH= -> no error.
+	// else env got PATH="smtg/ok/", so NO error.

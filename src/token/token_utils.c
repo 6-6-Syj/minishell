@@ -11,27 +11,56 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 #include "token.h"
+#include "libft.h"
 
-bool	is_a_delimiter(char c)
+bool	is_delimiter(char c)
 {
 	if (c == '(' || c == ')')
 		return (true);
-	if (c == C_SIMPLE_QUOTE || c == C_DOUBLE_QUOTE)
+	if (c == '&' || c == '|')
 		return (true);
-	if (c == C_SPACE)
+	else if (c == '\"')
+		return (true);
+	else if (c == '\'')
+		return (true);
+	else if (c == '<')
+		return (true);
+	else if (c == '>')
+		return (true);
+	else if (c == ' ')
 		return (true);
 	return (false);
 }
 
-t_token	*get_last_token(t_token *token_lst)
+t_type	get_token_type(char *token)
 {
-	t_token	*last;
-
-	last = token_lst;
-	if (!token_lst)
-		return (NULL);
-	while (last->next != NULL)
-		last = last->next;
-	return (last);
+	if (token[0] == '(')
+		return (TYPE_PAREN_L);
+	if (token[0] == ')')
+		return (TYPE_PAREN_R);
+	else if (ft_strcmp(token, "<") == 0)
+		return (TYPE_REDIR_IN);
+	else if (ft_strcmp(token, "<<") == 0)
+		return (TYPE_HERE_DOC);
+	else if (ft_strcmp(token, ">") == 0)
+		return (TYPE_REDIR_OUT);
+	else if (ft_strcmp(token, ">>") == 0)
+		return (TYPE_REDIR_APPEND);
+	else if (ft_strcmp(token, "|") == 0)
+		return (TYPE_PIPE);
+	else if (ft_strcmp(token, "||") == 0)
+		return (TYPE_OR);
+	else if (ft_strcmp(token, "&&") == 0)
+		return (TYPE_AND);
+	else if (token[0] == '\"')
+		return (TYPE_QUOTE_D);
+	else if (token[0] == '\'')
+		return (TYPE_QUOTE_S);
+	else if (token[0] == ' ')
+		return (TYPE_SPACE);
+	else if (!is_delimiter(token[0]))
+		return (TYPE_WORD);
+	return (TYPE_UNKNOWN);
 }
