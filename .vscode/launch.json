@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/jmagand/Documents/wip/3./minishell/src/builtins",
-      "program": "/home/jmagand/Documents/wip/3./minishell/src/builtins/build/Debug/outDebug",
+      "cwd": "/home/jmagand/Documents/wip/3./minishell/src",
+      "program": "/home/jmagand/Documents/wip/3./minishell/src/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
