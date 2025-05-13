@@ -35,10 +35,10 @@
 # 		include/error		\
 # 		include/builtins	\
 
-vpath %.c src src/builtins src/token src/data src/print src/env src/exec
+vpath %.c src src/builtins src/token src/data src/print src/env src/exec src/ast
 vpath %.i include include/builtins include/parsing include/print include/exec
 
--include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/print.mk mk_files/exec.mk
+-include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/print.mk mk_files/exec.mk mk_files/ast_test.mk
 
 #------------------------------------------------#
 #					NOTES						 #
@@ -51,8 +51,8 @@ vpath %.i include include/builtins include/parsing include/print include/exec
 #------------------------------------------------#
 NAME		= minishell
 LIBFT		= lib/libft/libft.a
-INCLUDES	= minishell.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC) $(EXEC_INC)
-SRC_FILES	= main $(DATA_SRC) $(TOKEN_SRC) $(BUILTINS_SRC) $(PRINT_SRC) $(ENV_SRC) $(EXEC_SRC)
+INCLUDES	= minishell.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC) $(EXEC_INC) $(AST_INC)
+SRC_FILES	= main $(DATA_SRC) $(TOKEN_SRC) $(BUILTINS_SRC) $(PRINT_SRC) $(ENV_SRC) $(EXEC_SRC) $(AST_SRC)
 
 #------------------------------------------------#
 #					DIRECTORY					 #

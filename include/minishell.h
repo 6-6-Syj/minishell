@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:18:17 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/06 21:52:12 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/13 15:30:52 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "data.h"
 # include "print.h" // test
 # include "token.h"
+# include "ast.h"
 # include "exec.h" // temporary ?
 # include <errno.h>
 

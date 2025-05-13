@@ -27,8 +27,9 @@ typedef struct s_token	t_token;
 /* ************************************************************************** */
 /*                                FUNCTIONS                                   */
 /* ************************************************************************** */
-void	print_all(t_data *data);
 void	print_data(t_data *data);
 void	print_token_lst(t_token *token_lst);
+void	print_ast_lst(t_ast *ast_lst);
+void	print_all(t_data *data);
 
 #endif
