@@ -17,5 +17,5 @@ void	print_all(t_data *data)
 	ft_printf("\n");
 	print_token_lst(data->token);
 	print_ast_lst(data->ast);
-	print_data(data);
+	// print_data(data);
 }

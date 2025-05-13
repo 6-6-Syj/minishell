@@ -2,7 +2,6 @@
 #include "libft.h"
 #include <unistd.h>
 
-
 t_ast	*add_ast_node(t_ast **ast_lst)
 {
 	t_ast	*new_node;
@@ -25,7 +24,7 @@ t_ast	*add_ast_node(t_ast **ast_lst)
 void	init_ast_lst(t_ast **ast_lst)
 {
 	t_ast	*ast_node;
-	
+
 	ast_node = add_ast_node(ast_lst);
 	ast_node->args = ft_split("|", ' ');
 	ast_node->type = PIPE;

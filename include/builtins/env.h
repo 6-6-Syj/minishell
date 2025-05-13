@@ -33,6 +33,7 @@
 /*                                STRUCT									*/
 /****************************************************************************/
 typedef enum e_status	t_status;
+
 typedef struct s_env
 {
 	t_status		err;

@@ -53,19 +53,19 @@ void	free_split(char **split)
 
 int	ft_buitins(t_env **env_lst, char *input)
 {
-	if (!ft_strncmp(input, "env", 3)) // ft_strtrim(input, "\"")
+	if (!ft_strncmp(input, "env", 4)) // ft_strtrim(input, "\"")
 		return (ft_env(*env_lst));
-	else if (!ft_strncmp(input, "pwd", 3))
+	else if (!ft_strncmp(input, "pwd", 4))
 		return (ft_pwd());
-	// else if (!ft_strncmp(input, "echo", 4)) // care -n
+	// else if (!ft_strncmp(input, "echo", 5)) // care -n
 	// 	ft_echo(env);
-	else if (!ft_strncmp(input, "cd", 2))
+	else if (!ft_strncmp(input, "cd", 3))
 		return (handle_cd(*env_lst, input));
-	else if (!ft_strncmp(input, "export", 6))
+	else if (!ft_strncmp(input, "export", 7))
 		return (handle_export(env_lst, input));
-	else if (!ft_strncmp(input, "unset", 5))
+	else if (!ft_strncmp(input, "unset", 6))
 		return (handle_unset(env_lst, input));
-	// else if (!ft_strncmp(input, "exit", 4))
+	// else if (!ft_strncmp(input, "exit", 5))
 	// 	ft_exit(env);
 	return (0);
 }

@@ -16,7 +16,7 @@
 
 // TODO: remove space at the begining and the end of list;
 // TODO: remove \n ?
-// TODO: check if token are valid 
+// TODO: check if token are valid
 //			-quote are corectly close
 //			-parenthesis are corectly close
 
@@ -34,7 +34,7 @@ static int		set_token_type(t_token *token_node)
 static int		set_token_content(t_token *token_node, char *new_content)
 {
 	int	len;
-	
+
 	len = get_token_len(new_content);
 	token_node->content = ft_strndup(new_content, len);
 	if (!token_node->content)
@@ -45,7 +45,7 @@ static int		set_token_content(t_token *token_node, char *new_content)
 static int	set_token_node(t_token *token_node, char *content)
 {
 	if (set_token_content(token_node, content))
-		return (-1); 
+		return (-1);
 	if (set_token_type(token_node))
 		return (-1);
 	return (0);
@@ -56,7 +56,7 @@ int	init_token(t_token **token_lst, char *input)
 	t_token	*new_token;
 	int		i;
 
-	*token_lst = NULL;
+	// *token_lst = NULL;
 	i = 0;
 	while (input[i] && input[i] != '\n')
 	{

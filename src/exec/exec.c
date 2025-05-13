@@ -30,6 +30,29 @@ Redirection des flux standard (stdin, stdout,
 
 */
 
+// static void free_commands(t_cmds *cmds)
+// {
+//     t_cmds *current;
+//     t_cmds *next;
+//     int i;
+
+//     current = cmds;
+//     while (current)
+//     {
+//         next = current->next;
+//         free(current->path);
+//         i = 0;
+//         while (current->cmds[i])
+//         {
+//             free(current->cmds[i]);
+//             i++;
+//         }
+//         free(current->cmds);
+//         free(current);
+//         current = next;
+//     }
+// }
+
 static t_cmds *create_cmd(char *path, char **cmds, char **env)
 {
     t_cmds *new_cmd;
@@ -94,21 +117,35 @@ static void execute_command(t_cmds *current_cmd)
     // free(args);
 }
 
-void	prepare_execution(t_data *data, char **env)
+static void init_test_commands(t_data *data, char **env)
 {
-	t_cmds	*current_cmd;
-	pid_t	pid;
-	int		status;
+    // Création de commandes de test avec allocation dynamique
+    char **ls_cmd = malloc(3 * sizeof(char *));
+    char **cat_cmd = malloc(4 * sizeof(char *));
+    char **wc_cmd = malloc(2 * sizeof(char *));
 
-	// Création de commandes de test
-    char *wc_cmd[] = {"wc", NULL};
-    char *ls_cmd[] = {"ls", "-l", NULL};
-	char *cat_cmd[] = {"cat", "-e", "main.c", NULL};
+    if (!ls_cmd || !cat_cmd || !wc_cmd)
+    {
+        ft_printf("Error allocating memory for commands\n");
+        exit(EXIT_FAILURE);
+    }
+
+    ls_cmd[0] = ft_strdup("ls");
+    ls_cmd[1] = ft_strdup("-l");
+    ls_cmd[2] = NULL;
+
+    cat_cmd[0] = ft_strdup("cat");
+    cat_cmd[1] = ft_strdup("-e");
+    cat_cmd[2] = ft_strdup("main.c");
+    cat_cmd[3] = NULL;
+
+    wc_cmd[0] = ft_strdup("wc");
+    wc_cmd[1] = NULL;
 
     // Ajout des commandes à la liste
-    t_cmds *cmd1 = create_cmd("/usr/bin/wc", wc_cmd, env);
-    t_cmds *cmd2 = create_cmd("/usr/bin/ls", ls_cmd, env);
-	t_cmds *cmd3 = create_cmd("/usr/bin/cat", cat_cmd, env);
+    t_cmds *cmd1 = create_cmd(ft_strdup("/usr/bin/ls"), ls_cmd, env);
+    t_cmds *cmd2 = create_cmd(ft_strdup("/usr/bin/cat"), cat_cmd, env);
+    t_cmds *cmd3 = create_cmd(ft_strdup("/usr/bin/wc"), wc_cmd, env);
 
     if (!cmd1 || !cmd2 || !cmd3)
     {
@@ -119,12 +156,22 @@ void	prepare_execution(t_data *data, char **env)
     // Construction de la liste chaînée
     data->cmds = cmd1;
     cmd1->next = cmd2;
-	cmd2->next = cmd3;
-	cmd3->next = NULL;
+    cmd2->next = cmd3;
+    cmd3->next = NULL;
+}
+
+void	prepare_execution(t_data *data, char **env)
+{
+	t_cmds	*current_cmd;
+	pid_t	pid;
+	int		status;
+
+	init_test_commands(data, env);
 
 	current_cmd = data->cmds;
 	while (current_cmd != NULL)
 	{
+		ft_printf("current_cmd->cmds = %s\n", current_cmd->cmds[0]);
 		pid = fork();
 		if (pid == -1)
 		{
@@ -143,7 +190,6 @@ void	prepare_execution(t_data *data, char **env)
 				ft_printf("Command exited with status %d\n",
 					WEXITSTATUS(status));
 		}
-		ft_printf("current_cmd->cmds = %s\n", current_cmd->cmds[0]);
 		current_cmd = current_cmd->next;
 	}
 }
