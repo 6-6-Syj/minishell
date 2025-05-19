@@ -21,6 +21,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	init_data(&data);
 	init_env(&data.env, env);
 	while (1)
 	{
@@ -29,7 +30,6 @@ int	main(int ac, char **av, char **env)
 			add_history(input);
 		if (!input)
 			break ;
-		init_data(&data);
 		init_token(&data.token, input);
 		// prepare_execution(&data, env);
 		ft_buitins(&data.env, input);
