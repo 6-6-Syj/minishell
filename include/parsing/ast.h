@@ -16,6 +16,7 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
+
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
@@ -29,22 +30,27 @@ typedef enum e_type_ast
 	REDIR_OUT_APPEND,
 	HERE_DOC,
 	COMMAND,
-}					t_type_ast;
+}						t_type_ast;
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
+typedef struct s_cmds	t_cmds;
+typedef struct s_fd		t_fd;
+
 typedef struct s_ast
 {
-	t_type_ast		type;
-	char			**args;
-	struct s_ast	*left;
-	struct s_ast	*right;
-}					t_ast;
+	t_type_ast			type;
+	char				**args;
+	struct s_fd			*fd;
+	struct s_cmds		*cmds;
+	struct s_ast		*left;
+	struct s_ast		*right;
+}						t_ast;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void	init_ast_lst(t_ast **ast_lst);
+void					init_ast_lst(t_ast **ast_lst);
 
 #endif

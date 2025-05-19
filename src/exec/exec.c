@@ -53,19 +53,19 @@ Redirection des flux standard (stdin, stdout,
 //     }
 // }
 
-static t_cmds *create_cmd(char *path, char **cmds, char **env)
-{
-    t_cmds *new_cmd;
+// static t_cmds *create_cmd(char *path, char **cmds, char **env)
+// {
+//     t_cmds *new_cmd;
 
-	new_cmd = malloc(sizeof(t_cmds));
-    if (!new_cmd)
-        return NULL;
-    new_cmd->path = path;
-    new_cmd->cmds = cmds;
-	new_cmd->env = env;
-    new_cmd->next = NULL;
-    return (new_cmd);
-}
+// 	new_cmd = malloc(sizeof(t_cmds));
+//     if (!new_cmd)
+//         return NULL;
+//     new_cmd->path = path;
+//     new_cmd->cmds = cmds;
+// 	new_cmd->env = env;
+//     new_cmd->next = NULL;
+//     return (new_cmd);
+// }
 
 static void	ft_access(t_cmds *last)
 {
@@ -87,25 +87,26 @@ static void execute_command(t_cmds *current_cmd)
 {
     char **args;
     char **env;
-    int i;
-	int j;
+    // int i;
+	// int j;
 
-	i = 0;
-	j = 0;
-    while (current_cmd->cmds[i])
-        i++;
-    args = malloc(sizeof(char *) * (i + 1));
-    if (!args)
-    {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
-    while (j < i)
-	{
-        args[j] = current_cmd->cmds[j];
-		j++;
-	}
-    args[j] = NULL;
+	// i = 0;
+	// j = 0;
+    // while (current_cmd->cmds[i])
+    //     i++;
+    // args = malloc(sizeof(char *) * (i + 1));
+    // if (!args)
+    // {
+    //     perror("malloc");
+    //     exit(EXIT_FAILURE);
+    // }
+    // while (j < i)
+	// {
+    //     args[j] = current_cmd->cmds[j];
+	// 	j++;
+	// }
+    // args[j] = NULL;
+	args = NULL;
     env = current_cmd->env;
 	ft_access(current_cmd);
     if (execve(current_cmd->path, args, env) == -1)
@@ -117,48 +118,58 @@ static void execute_command(t_cmds *current_cmd)
     // free(args);
 }
 
-static void init_test_commands(t_data *data, char **env)
-{
-    // Création de commandes de test avec allocation dynamique
-    char **ls_cmd = malloc(3 * sizeof(char *));
-    char **cat_cmd = malloc(4 * sizeof(char *));
-    char **wc_cmd = malloc(2 * sizeof(char *));
+// static void init_test_commands(t_data *data, char **env)
+// {
+//     // Création de commandes de test avec allocation dynamique
+//     char **ls_cmd = malloc(3 * sizeof(char *));
+//     char **cat_cmd = malloc(4 * sizeof(char *));
+//     char **wc_cmd = malloc(2 * sizeof(char *));
 
-    if (!ls_cmd || !cat_cmd || !wc_cmd)
-    {
-        ft_printf("Error allocating memory for commands\n");
-        exit(EXIT_FAILURE);
-    }
+//     if (!ls_cmd || !cat_cmd || !wc_cmd)
+//     {
+//         ft_printf("Error allocating memory for commands\n");
+//         exit(EXIT_FAILURE);
+//     }
 
-    ls_cmd[0] = ft_strdup("ls");
-    ls_cmd[1] = ft_strdup("-l");
-    ls_cmd[2] = NULL;
+//     ls_cmd[0] = ft_strdup("ls");
+//     ls_cmd[1] = ft_strdup("-l");
+//     ls_cmd[2] = NULL;
 
-    cat_cmd[0] = ft_strdup("cat");
-    cat_cmd[1] = ft_strdup("-e");
-    cat_cmd[2] = ft_strdup("main.c");
-    cat_cmd[3] = NULL;
+//     cat_cmd[0] = ft_strdup("cat");
+//     cat_cmd[1] = ft_strdup("-e");
+//     cat_cmd[2] = ft_strdup("main.c");
+//     cat_cmd[3] = NULL;
 
-    wc_cmd[0] = ft_strdup("wc");
-    wc_cmd[1] = NULL;
+//     wc_cmd[0] = ft_strdup("wc");
+//     wc_cmd[1] = NULL;
 
-    // Ajout des commandes à la liste
-    t_cmds *cmd1 = create_cmd(ft_strdup("/usr/bin/ls"), ls_cmd, env);
-    t_cmds *cmd2 = create_cmd(ft_strdup("/usr/bin/cat"), cat_cmd, env);
-    t_cmds *cmd3 = create_cmd(ft_strdup("/usr/bin/wc"), wc_cmd, env);
+//     // Ajout des commandes à la liste
+//     t_cmds *cmd1 = create_cmd(ft_strdup("/usr/bin/ls"), ls_cmd, env);
+//     t_cmds *cmd2 = create_cmd(ft_strdup("/usr/bin/cat"), cat_cmd, env);
+//     t_cmds *cmd3 = create_cmd(ft_strdup("/usr/bin/wc"), wc_cmd, env);
 
-    if (!cmd1 || !cmd2 || !cmd3)
-    {
-        ft_printf("Error creating commands\n");
-        exit(EXIT_FAILURE);
-    }
+//     if (!cmd1 || !cmd2 || !cmd3)
+//     {
+//         ft_printf("Error creating commands\n");
+//         exit(EXIT_FAILURE);
+//     }
 
-    // Construction de la liste chaînée
-    data->cmds = cmd1;
-    cmd1->next = cmd2;
-    cmd2->next = cmd3;
-    cmd3->next = NULL;
-}
+//     // Construction de la liste chaînée
+//     data->cmds = cmd1;
+//     cmd1->next = cmd2;
+//     cmd2->next = cmd3;
+//     cmd3->next = NULL;
+// }
+
+								// ast_node = add_ast_node(ast_lst);
+								// ast_node->args = ft_split("|", ' ');
+								// ast_node->type = PIPE;
+								// ast_node = add_ast_node(ast_lst);
+								// ast_node->args = ft_split("ls", ' ');
+								// ast_node->type = COMMAND;
+								// ast_node = add_ast_node(ast_lst);
+								// ast_node->args = ft_split("cat -e", ' ');
+								// ast_node->type = COMMAND;
 
 void	prepare_execution(t_data *data, char **env)
 {
@@ -166,7 +177,8 @@ void	prepare_execution(t_data *data, char **env)
 	pid_t	pid;
 	int		status;
 
-	init_test_commands(data, env);
+	(void)env;
+	// init_test_commands(data, env);
 
 	current_cmd = data->cmds;
 	while (current_cmd != NULL)

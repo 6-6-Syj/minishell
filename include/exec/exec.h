@@ -34,8 +34,17 @@
 /****************************************************************************/
 typedef struct s_data	t_data;
 
+typedef struct s_fd
+{
+	int					read_current;
+	int					write_current;
+	int					read_prev;
+	int					write_prev;
+}						t_fd;
+
 typedef struct s_cmds
 {
+	struct s_fd			fd;
 	char				*path;
 	char				**cmds;
 	char				**env;
