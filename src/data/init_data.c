@@ -21,4 +21,7 @@ void	init_data(t_data *data)
 	data->token = NULL;
 	data->err = 0;
 	data->err_msg = NULL;
+	data->cmds = NULL;
+	data->env = NULL;
+	data->token = NULL;
 }

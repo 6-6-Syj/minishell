@@ -34,33 +34,58 @@ bool	is_delimiter(char c)
 	return (false);
 }
 
-t_type	get_token_type(char *token)
+t_type get_token_word_type(t_token *token)
 {
-	if (token[0] == '(')
+	if (!token->prev || !token->prev->prev)
+		return (TYPE_CMD);
+	if (token->prev->type == TYPE_CMD)
+		return (TYPE_ARG);
+	else if (token->prev->prev->type == TYPE_CMD)
+		return (TYPE_ARG);
+	if (token->prev->type == TYPE_CMD)
+		return (TYPE_ARG);
+	if (token->prev->type == TYPE_REDIR_APPEND)
+		return (TYPE_ARG);
+	if (token->prev->type == TYPE_REDIR_IN)
+		return (TYPE_ARG);
+	if (token->prev->type == TYPE_HERE_DOC)
+		return (TYPE_ARG);
+	if (token->prev->type == TYPE_REDIR_OUT)
+		return (TYPE_ARG);
+	if (token->prev->type == TYPE_ARG)
+		return (TYPE_ARG);
+	else if (token->prev->prev->type == TYPE_ARG)
+		return (TYPE_ARG);
+	return (TYPE_CMD);
+}
+
+t_type	get_token_type(t_token *token)
+{
+	if (token->content[0] == '(')
 		return (TYPE_PAREN_L);
-	if (token[0] == ')')
-		return (TYPE_PAREN_R);
-	else if (ft_strcmp(token, "<") == 0)
+	// if (token->content[0] == ')')
+	// 	return (TYPE_PAREN_R);
+	else if (ft_strcmp(token->content, "<") == 0)
 		return (TYPE_REDIR_IN);
-	else if (ft_strcmp(token, "<<") == 0)
+	else if (ft_strcmp(token->content, "<<") == 0)
 		return (TYPE_HERE_DOC);
-	else if (ft_strcmp(token, ">") == 0)
+	else if (ft_strcmp(token->content, ">") == 0)
 		return (TYPE_REDIR_OUT);
-	else if (ft_strcmp(token, ">>") == 0)
+	else if (ft_strcmp(token->content, ">>") == 0)
 		return (TYPE_REDIR_APPEND);
-	else if (ft_strcmp(token, "|") == 0)
+	else if (ft_strcmp(token->content, "|") == 0)
 		return (TYPE_PIPE);
-	else if (ft_strcmp(token, "||") == 0)
+	else if (ft_strcmp(token->content, "||") == 0)
 		return (TYPE_OR);
-	else if (ft_strcmp(token, "&&") == 0)
+	else if (ft_strcmp(token->content, "&&") == 0)
 		return (TYPE_AND);
-	else if (token[0] == '\"')
+	else if (token->content[0] == '\"')
 		return (TYPE_QUOTE_D);
-	else if (token[0] == '\'')
+	else if (token->content[0] == '\'')
 		return (TYPE_QUOTE_S);
-	else if (token[0] == ' ')
+	else if (token->content[0] == ' ')
 		return (TYPE_SPACE);
-	else if (!is_delimiter(token[0]))
+	else if (!is_delimiter(token->content[0]))
 		return (TYPE_WORD);
 	return (TYPE_UNKNOWN);
 }
