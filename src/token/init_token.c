@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/08 21:40:20 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/19 22:19:19 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,14 @@
 // TODO: check for '\' char
 // TODO: check for illegal char
 // TODO: error
+// TODO: handle space when subshell or quote
 static int		set_token_type(t_token *token_node)
 {
-	token_node->type = get_token_type(token_node->content);
+	token_node->type = get_token_type(token_node);
 	if (token_node->type == TYPE_UNKNOWN)
 		return (-1);
+	if (token_node->type == TYPE_WORD)
+		token_node->type = get_token_word_type(token_node);
 	return (0);
 }
 
