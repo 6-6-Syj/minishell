@@ -39,7 +39,7 @@ typedef struct s_data
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void	init_data(t_data **data);
+void	init_data(t_data *data);
 void	free_data(t_data *data);
 void	exit_error(t_data *data);
 

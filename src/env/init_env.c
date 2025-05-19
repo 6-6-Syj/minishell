@@ -89,7 +89,6 @@ void	init_env(t_env **env_lst, char **env)
 	t_env	*new_env;
 	int		i;
 
-	// *env_lst = NULL;
 	i = 0;
 	while (env[i])
 	{

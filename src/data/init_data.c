@@ -13,15 +13,12 @@
 #include "minishell.h"
 #include <unistd.h>
 
-void	init_data(t_data **data)
+void	init_data(t_data *data)
 {
-	*data = malloc(sizeof(t_data));
-	if (!*data)
-		return ; // TODO: MALLOC ERROR
-	(*data)->ast = NULL;
-	(*data)->cmds = NULL;
-	(*data)->env = NULL;
-	(*data)->token = NULL;
-	(*data)->err = 0;
-	(*data)->err_msg = NULL;
+	data->ast = NULL;
+	data->cmds = NULL;
+	data->env = NULL;
+	data->token = NULL;
+	data->err = 0;
+	data->err_msg = NULL;
 }

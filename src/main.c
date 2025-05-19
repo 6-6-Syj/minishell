@@ -19,14 +19,13 @@
 //
 int	main(int ac, char **av, char **env)
 {
-	t_data	*data;
+	t_data	data;
 	char	*input;
 
 	(void)ac;
 	(void)av;
-	data = NULL;
 	init_data(&data);
-	init_env(&data->env, env);
+	init_env(&data.env, env);
 	while (1)
 	{
 		input = readline("> ");
@@ -34,11 +33,11 @@ int	main(int ac, char **av, char **env)
 			add_history(input);
 		if (!input)
 			break ;
-		init_token(&data->token, input);
-		init_ast_lst(&data->ast); // test version
-		prepare_execution(data, env);
-		ft_buitins(&data->env, input);
-		print_all(data);
+		init_token(&data.token, input);
+		init_ast_lst(&data.ast); // test version
+		prepare_execution(&data, env);
+		ft_buitins(&data.env, input);
+		print_all(&data);
 		free(input);
 	}
 	rl_clear_history();
