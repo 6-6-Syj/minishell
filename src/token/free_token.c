@@ -25,11 +25,14 @@ void	free_token_lst(t_token **token_lst)
 	t_token	*current;
 	t_token	*tmp;
 
+	if (!token_lst)
+		return;
 	current = *token_lst;
 	while (current)
 	{
 		tmp = current->next;
-		free_token_node(current);
+		if (current)
+			free_token_node(current);
 		current = tmp;
 	}
 }

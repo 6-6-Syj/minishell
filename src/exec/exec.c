@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ast.h"
+#include "data.h"
+#include "env.h"
 #include "exec.h"
 
 /*
@@ -30,178 +33,156 @@ Redirection des flux standard (stdin, stdout,
 
 */
 
-// static void free_commands(t_cmds *cmds)
-// {
-//     t_cmds *current;
-//     t_cmds *next;
-//     int i;
-
-//     current = cmds;
-//     while (current)
-//     {
-//         next = current->next;
-//         free(current->path);
-//         i = 0;
-//         while (current->cmds[i])
-//         {
-//             free(current->cmds[i]);
-//             i++;
-//         }
-//         free(current->cmds);
-//         free(current);
-//         current = next;
-//     }
-// }
-
-// static t_cmds *create_cmd(char *path, char **cmds, char **env)
-// {
-//     t_cmds *new_cmd;
-
-// 	new_cmd = malloc(sizeof(t_cmds));
-//     if (!new_cmd)
-//         return NULL;
-//     new_cmd->path = path;
-//     new_cmd->cmds = cmds;
-// 	new_cmd->env = env;
-//     new_cmd->next = NULL;
-//     return (new_cmd);
-// }
-
-static void	ft_access(t_cmds *last)
+static void	*free_strs(char **strs)
 {
-	if (!last->path)
+	int	i;
+
+	i = 0;
+	if (!strs)
+		return (NULL);
+	while (strs[i])
+	{
+		free(strs[i]);
+		i++;
+	}
+	free(strs);
+	return (NULL);
+}
+
+static void	ft_access(char *path, t_data *data)
+{
+	if (!path)
+	{
+		exit_error(data);
 		exit(EXIT_FAILURE);
-	if (access(last->path, F_OK) == -1)
+	}
+	if (access(path, F_OK) == -1)
 	{
 		ft_putstr_fd("Error\nCommand not found\n", 2);
+		exit_error(data);
 		exit(127);
 	}
-	if (access(last->path, X_OK) == -1)
+	if (access(path, X_OK) == -1)
 	{
+		exit_error(data);
 		ft_putstr_fd("Error\nPermission denied\n", 2);
 		exit(126);
 	}
 }
 
-static void execute_command(t_cmds *current_cmd)
+static char	**split_path(char *cmd, t_env *env, t_data *data)
 {
-    char **args;
-    char **env;
-    // int i;
-	// int j;
+	char	**paths;
 
-	// i = 0;
-	// j = 0;
-    // while (current_cmd->cmds[i])
-    //     i++;
-    // args = malloc(sizeof(char *) * (i + 1));
-    // if (!args)
-    // {
-    //     perror("malloc");
-    //     exit(EXIT_FAILURE);
-    // }
-    // while (j < i)
-	// {
-    //     args[j] = current_cmd->cmds[j];
-	// 	j++;
-	// }
-    // args[j] = NULL;
-	args = NULL;
-    env = current_cmd->env;
-	ft_access(current_cmd);
-    if (execve(current_cmd->path, args, env) == -1)
-    {
-        perror("execve");
-        free(args);
-        exit(EXIT_FAILURE);
-    }
-    // free(args);
+	paths = NULL;
+	if (!cmd)
+		return (NULL);
+	while (env->next && ft_strcmp("PATH=", env->key) != 0)
+		env = env->next;
+	paths = ft_split(env->value, ':');
+	if (!paths)
+		exit_error(data);
+	return (paths);
 }
 
-// static void init_test_commands(t_data *data, char **env)
-// {
-//     // Création de commandes de test avec allocation dynamique
-//     char **ls_cmd = malloc(3 * sizeof(char *));
-//     char **cat_cmd = malloc(4 * sizeof(char *));
-//     char **wc_cmd = malloc(2 * sizeof(char *));
 
-//     if (!ls_cmd || !cat_cmd || !wc_cmd)
-//     {
-//         ft_printf("Error allocating memory for commands\n");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     ls_cmd[0] = ft_strdup("ls");
-//     ls_cmd[1] = ft_strdup("-l");
-//     ls_cmd[2] = NULL;
-
-//     cat_cmd[0] = ft_strdup("cat");
-//     cat_cmd[1] = ft_strdup("-e");
-//     cat_cmd[2] = ft_strdup("main.c");
-//     cat_cmd[3] = NULL;
-
-//     wc_cmd[0] = ft_strdup("wc");
-//     wc_cmd[1] = NULL;
-
-//     // Ajout des commandes à la liste
-//     t_cmds *cmd1 = create_cmd(ft_strdup("/usr/bin/ls"), ls_cmd, env);
-//     t_cmds *cmd2 = create_cmd(ft_strdup("/usr/bin/cat"), cat_cmd, env);
-//     t_cmds *cmd3 = create_cmd(ft_strdup("/usr/bin/wc"), wc_cmd, env);
-
-//     if (!cmd1 || !cmd2 || !cmd3)
-//     {
-//         ft_printf("Error creating commands\n");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     // Construction de la liste chaînée
-//     data->cmds = cmd1;
-//     cmd1->next = cmd2;
-//     cmd2->next = cmd3;
-//     cmd3->next = NULL;
-// }
-
-								// ast_node = add_ast_node(ast_lst);
-								// ast_node->args = ft_split("|", ' ');
-								// ast_node->type = PIPE;
-								// ast_node = add_ast_node(ast_lst);
-								// ast_node->args = ft_split("ls", ' ');
-								// ast_node->type = COMMAND;
-								// ast_node = add_ast_node(ast_lst);
-								// ast_node->args = ft_split("cat -e", ' ');
-								// ast_node->type = COMMAND;
-
-void	prepare_execution(t_data *data, char **env)
+static char	*get_path(char *cmd, t_env *env, t_data *data)
 {
-	t_cmds	*current_cmd;
-	pid_t	pid;
-	int		status;
+	char	*buff;
+	char	*path;
+	char	**paths;
+	int		i;
 
-	(void)env;
-	// init_test_commands(data, env);
-
-	current_cmd = data->cmds;
-	while (current_cmd != NULL)
+	paths = split_path(cmd, env, data);
+	i = -1;
+	while (paths && paths[++i])
 	{
-		ft_printf("current_cmd->cmds = %s\n", current_cmd->cmds[0]);
-		pid = fork();
-		if (pid == -1)
+		buff = ft_strjoin("/", cmd);
+		if (!buff)
+			return (NULL);
+		path = ft_strjoin(paths[i], buff);
+		free(buff);
+		if (!path)
+			return (NULL);
+		if (access(path, F_OK) == 0)
 		{
-			perror("fork");
-			exit(EXIT_FAILURE);
+			free_strs(paths);
+			return (path);
 		}
-		else if (pid == 0) // CHILD
-		{
-			execute_command(current_cmd);
-			exit(EXIT_SUCCESS);
-		}
-		else // PARENT
-		{
-			waitpid(pid, &status, 0);
-			if (WIFEXITED(status))
-				ft_printf("Command exited with status %d\n",
-					WEXITSTATUS(status));
-		}
-		current_cmd = current_cmd->next;
+		free(path);
+	}
+	free_strs(paths);
+	return (ft_strdup(cmd));
+}
+
+static void	handle_pipe(t_ast *pipe_node, t_data *data)
+{
+	int	fd[2];
+
+	if (pipe(fd) == -1)
+		exit_error(data);
+	pipe_node->fd.read_prev = -1;
+	pipe_node->fd.read_current = fd[0];
+	pipe_node->fd.write_prev = -1;
+	pipe_node->fd.write_current = fd[1];
+}
+
+static void	redirection(t_ast *cmd, t_data *data)
+{
+	if (dup2(cmd->fd.read_current, STDIN_FILENO) == -1)
+		exit_error(data);
+	if (dup2(cmd->fd.write_current, STDOUT_FILENO) == -1)
+		exit_error(data);
+	if (cmd->fd.read_current != -1)
+		close(cmd->fd.read_current);
+	if (cmd->fd.read_prev != -1)
+		close(cmd->fd.read_prev);
+	if (cmd->fd.write_current != -1)
+		close(cmd->fd.write_current);
+	if (cmd->fd.write_prev != -1)
+		close(cmd->fd.write_prev);
+}
+
+static void	exec_command(t_ast *cmd, t_data *data, char **env)
+{
+	pid_t	pid;
+	char	*path;
+
+	// check if builtins
+	path = get_path(cmd->args[0], data->env, data);
+	pid = fork();
+	if (pid < 0)
+		return ; // free(data)
+	if (pid == 0) // CHILD
+	{
+		redirection(cmd, data); // close useless fds;
+		ft_access(path, data);
+		execve(path, cmd->args, env);
+		exit_error(data);
+	}
+	if (pid > 0) // PARENT
+	{
+		// close fd
+		return ;
+	}
+}
+
+void	handle_ast(t_ast *node, t_data *data, char **env)
+{
+	if (node->type == PIPE)
+		handle_pipe(node, data); // pipe(); redir, close fd...
+	if (node && node->left)
+	{
+		if (node->left && node->left->type != COMMAND)
+			handle_ast(node->left, data, env);
+		if (node->left->type == COMMAND)
+			exec_command(node->left, data, env); // fork();
+	}
+	if (node && node->right)
+	{
+		if (node->right && node->right->type != COMMAND)
+			handle_ast(node->right, data, env);
+		if (node->right->type == COMMAND)
+			exec_command(node->right, data, env); // fork();
 	}
 }

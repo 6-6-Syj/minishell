@@ -35,10 +35,12 @@ int	main(int ac, char **av, char **env)
 			break ;
 		init_token(&data.token, input);
 		init_ast_lst(&data.ast); // test version
-		prepare_execution(&data, env);
+		// handle_ast(data.ast, &data, env);
 		ft_buitins(&data.env, input);
 		print_all(&data);
 		free(input);
+		free_token_lst(&data.token);
+		data.token = NULL;
 	}
 	rl_clear_history();
 	// exit_error(&data);
