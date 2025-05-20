@@ -36,6 +36,7 @@ int	main(int ac, char **av, char **env)
 		ft_buitins(&data.env, input);
 		print_all(&data); 
 		free(input);
+		free_token_lst(&data.token);
 	}
 	rl_clear_history();
 	// exit_error(&data);

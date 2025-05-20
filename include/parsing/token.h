@@ -62,6 +62,7 @@ typedef	struct s_data	t_data;
 typedef struct s_token
 {
 	int				err;
+	int				priority;
 	int				type;
 	char			*content;
 	struct s_token	*prev;

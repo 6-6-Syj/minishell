@@ -34,27 +34,27 @@ bool	is_delimiter(char c)
 	return (false);
 }
 
-t_type get_token_word_type(t_token *token)
+t_type get_token_word_type(t_token *current)
 {
-	if (!token->prev || !token->prev->prev)
+	// TODO: secure if current is NULL ?
+	t_token	*prev_token;
+
+	prev_token = current->prev;
+	while (prev_token && prev_token->type == TYPE_SPACE)
+		prev_token = prev_token->prev;
+	if (!prev_token)
 		return (TYPE_CMD);
-	if (token->prev->type == TYPE_CMD)
+	if (prev_token->type == TYPE_CMD)
 		return (TYPE_ARG);
-	else if (token->prev->prev->type == TYPE_CMD)
+	if (prev_token->type == TYPE_REDIR_APPEND)
 		return (TYPE_ARG);
-	if (token->prev->type == TYPE_CMD)
+	if (prev_token->type == TYPE_REDIR_IN)
 		return (TYPE_ARG);
-	if (token->prev->type == TYPE_REDIR_APPEND)
+	if (prev_token->type == TYPE_HERE_DOC)
 		return (TYPE_ARG);
-	if (token->prev->type == TYPE_REDIR_IN)
+	if (prev_token->type == TYPE_REDIR_OUT)
 		return (TYPE_ARG);
-	if (token->prev->type == TYPE_HERE_DOC)
-		return (TYPE_ARG);
-	if (token->prev->type == TYPE_REDIR_OUT)
-		return (TYPE_ARG);
-	if (token->prev->type == TYPE_ARG)
-		return (TYPE_ARG);
-	else if (token->prev->prev->type == TYPE_ARG)
+	if (prev_token->type == TYPE_ARG)
 		return (TYPE_ARG);
 	return (TYPE_CMD);
 }
@@ -63,8 +63,8 @@ t_type	get_token_type(t_token *token)
 {
 	if (token->content[0] == '(')
 		return (TYPE_PAREN_L);
-	// if (token->content[0] == ')')
-	// 	return (TYPE_PAREN_R);
+	else if (token->content[0] == ')')
+		return (TYPE_PAREN_R);
 	else if (ft_strcmp(token->content, "<") == 0)
 		return (TYPE_REDIR_IN);
 	else if (ft_strcmp(token->content, "<<") == 0)
@@ -79,13 +79,30 @@ t_type	get_token_type(t_token *token)
 		return (TYPE_OR);
 	else if (ft_strcmp(token->content, "&&") == 0)
 		return (TYPE_AND);
-	else if (token->content[0] == '\"')
+	else if (token->content[0] == '\"' && ft_strchr(token->content + 1, '"'))
 		return (TYPE_QUOTE_D);
-	else if (token->content[0] == '\'')
+	else if (token->content[0] == '\'' && ft_strchr(token->content + 1, '\''))
 		return (TYPE_QUOTE_S);
 	else if (token->content[0] == ' ')
 		return (TYPE_SPACE);
 	else if (!is_delimiter(token->content[0]))
 		return (TYPE_WORD);
 	return (TYPE_UNKNOWN);
+}
+
+int	get_token_priority(t_token *token)
+{
+	if (token->type == TYPE_OR || token->type == TYPE_AND)
+		return (0);
+	else if (token->type == TYPE_PIPE)
+		return (1);
+	else if (token->type == TYPE_HERE_DOC)
+		return (2);
+	else if (token->type == TYPE_REDIR_IN || token->type == TYPE_REDIR_OUT || token->type == TYPE_REDIR_APPEND)
+		return (3);
+	else if (token->type == TYPE_CMD)
+		return (4);
+	else if (token->type == TYPE_PAREN_L || token->type == TYPE_PAREN_R)
+		return (5);
+	return (-1);
 }
