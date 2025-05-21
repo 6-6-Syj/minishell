@@ -16,10 +16,11 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
+# include "ast.h"
 # include "libft.h"
 # include <stdio.h>
 # include <sys/wait.h>
-# include "ast.h"
+
 /****************************************************************************/
 /*                                DEFINE									*/
 /****************************************************************************/
@@ -31,19 +32,19 @@
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_data 	t_data;
-typedef struct s_ast 	t_ast;
+typedef struct s_data	t_data;
+typedef struct s_ast	t_ast;
 typedef struct s_fd
 {
-	int	read_current;
-	int	write_current;
-	int	read_prev;
-	int	write_prev;
-}		t_fd;
+	int					read_current;
+	int					write_current;
+	int					read_prev;
+	int					write_prev;
+}						t_fd;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void	handle_ast(t_ast *node, t_data *data, char **env);
+int						handle_ast(t_ast *node, t_data *data, char **env);
 
 #endif
