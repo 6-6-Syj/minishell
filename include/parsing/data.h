@@ -30,6 +30,7 @@ typedef struct s_data
 	t_ast	*ast;
 	t_env	*env;
 	t_token	*token;
+	char	**env_tab;
 	char	*err_msg;
 	int		err;
 }	t_data;

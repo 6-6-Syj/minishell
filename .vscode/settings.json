@@ -3,6 +3,8 @@
 "files.associations": {
 	"minishell.h": "c",
 	"exec.h": "c",
-	"data.h": "c"
+	"data.h": "c",
+	"builtins.h": "c",
+	"env.h": "c"
 }
 }

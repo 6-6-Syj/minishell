@@ -25,7 +25,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	init_data(&data);
-	init_env(&data.env, env);
+	init_env(&data, env);
 	while (1)
 	{
 		input = readline("> ");
@@ -35,8 +35,8 @@ int	main(int ac, char **av, char **env)
 			break ;
 		init_token(&data.token, input);
 		init_ast_lst(&data.ast); // test version
-		// handle_ast(data.ast, &data, env);
-		ft_buitins(&data.env, input);
+		handle_ast(data.ast, &data, env);
+		ft_buitins(&data.env, &data, input);
 		print_all(&data);
 		free(input);
 		free_token_lst(&data.token);

@@ -62,7 +62,7 @@ static bool	add_key(t_env **head, char *key, char *value)
 	return (true);
 }
 
-static int	ft_export(t_env **env_lst, char *args)
+static int	ft_export(t_env **env_lst, t_data *data, char *args)
 {
 	char	*key;
 	char	*value;
@@ -77,9 +77,15 @@ static int	ft_export(t_env **env_lst, char *args)
 		value = equal + 1; // start "value" after '='
 	}
 	if (search_key_update_value(env_lst, key, value))
+	{
+		upload_env_tab(data);
 		return (NO_ERROR);
+	}
 	if (add_key(env_lst, key, value))
+	{
+		upload_env_tab(data);
 		return (NO_ERROR);
+	}
 	return (1);
 }
 // 1 failure: Some rare cases.	ex:
@@ -88,7 +94,7 @@ static int	ft_export(t_env **env_lst, char *args)
 // TODO: if variable got a value "with spaces", there are problems. (PARSING EXPORT)
 // It exports at each ' ';
 // See raw 110
-int	handle_export(t_env **env_lst, char *input)
+int	handle_export(t_env **env_lst, t_data *data, char *input)
 {
 	char	**args;
 	int		i;
@@ -109,7 +115,7 @@ int	handle_export(t_env **env_lst, char *input)
 			j = 0;
 			while (args[i] && args[i][j] == ' ') // Probably there with ' '
 				j++;
-			res = ft_export(env_lst, args[i]);
+			res = ft_export(env_lst, data, args[i]);
 		}
 	}
 	free_split(args);

@@ -17,6 +17,7 @@
 /*                                INCLUDE									*/
 /****************************************************************************/
 # include "env.h"
+# include "data.h"
 # include <linux/limits.h>
 # include <unistd.h>
 // # include <stdbool.h>
@@ -47,17 +48,18 @@
 /*                                STRUCT									*/
 /****************************************************************************/
 typedef struct s_env	t_env;
+typedef struct s_data	t_data;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 void					free_split(char **split);
-int						ft_buitins(t_env **env_lst, char *input);
+int						ft_buitins(t_env **env_lst, t_data *data, char *input);
 
 int						handle_cd(t_env *env, char *input);
-int						handle_export(t_env **env_lst, char *input);
+int						handle_export(t_env **env_lst, t_data *data, char *input);
 int						print_export(t_env *env_lst);
-int						handle_unset(t_env **env_lst, char *input);
+int						handle_unset(t_env **env_lst, t_data *data, char *input);
 int						ft_env(t_env *env_lst);
 int						ft_pwd(void);
 
