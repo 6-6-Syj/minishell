@@ -35,4 +35,3 @@ void	init_ast_lst(t_ast **ast_lst)
 	ast_node->args = ft_split("cat -e", ' ');
 	ast_node->type = COMMAND;
 }
-

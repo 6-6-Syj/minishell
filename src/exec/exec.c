@@ -122,96 +122,80 @@ static char	*get_path(char *cmd, t_data *data)
 	return (ft_strdup(cmd));
 }
 
-// close useless fds;
-static void	redirection(t_ast *cmd, t_data *data)
-{
-	if (dup2(cmd->fd.read_current, STDIN_FILENO) == -1)
-		exit_error(data);
-	if (dup2(cmd->fd.write_current, STDOUT_FILENO) == -1)
-		exit_error(data);
-	if (cmd->fd.read_current != -1)
-		close(cmd->fd.read_current);
-	if (cmd->fd.read_prev != -1)
-		close(cmd->fd.read_prev);
-	if (cmd->fd.write_current != -1)
-		close(cmd->fd.write_current);
-	if (cmd->fd.write_prev != -1)
-		close(cmd->fd.write_prev);
-}
-
-static int	exec_command(t_ast *cmd, t_data *data, char **env)
+static int	exec_command(t_ast *cmd, t_data *data)
 {
 	char	*path;
 
 	// check if builtins
 	path = get_path(cmd->args[0], data);
 	if (!path)
-		return (-1); // TODO: CHECK ERROR
-	redirection(cmd, data); // TODO: CHECK ERROR, if ?
+		return (-1);       // TODO: CHECK ERROR
+	// redirection(data, fd); // TODO: CHECK ERROR, if ?
 	ft_access(path, data);
-	return (execve(path, cmd->args, env));
-	// exit_error(data);
+	execve(path, cmd->args, data->env_tab);
+	exit_error(data);
+	return (-42); // check
 }
 
-static int	handle_and_or(t_ast *node, t_data *data, char **env)
+static int	handle_and_or(t_ast *node, t_data *data, int *fd)
 {
 	int	ret;
 
-	ret = handle_ast(node->left, data, env);
+	ret = handle_ast(node->left, data, fd);
 	if (node->type == AND)
 	{
 		if (ret == 0)
-			ret = handle_ast(node->right, data, env);
+			ret = handle_ast(node->right, data, fd);
 	}
 	else // type == OR
 	{
 		if (ret != 0)
-			ret = handle_ast(node->right, data, env);
+			ret = handle_ast(node->right, data, fd);
 	}
 	return (ret);
 }
 
-static int	handle_pipe(t_ast *pipe_node, t_data *data, char **env)
+static int	handle_pipe(t_ast *pipe_node, t_data *data, int *fd)
 {
-	int		fd[2];
 	pid_t	pid;
 
 	// Créer un pipe pour la communication entre les processus
 	if (pipe(fd) == -1)
 		exit_error(data);
-	pipe_node->fd.read_prev = -1;
-	pipe_node->fd.read_current = fd[0];
-	pipe_node->fd.write_prev = -1;
-	pipe_node->fd.write_current = fd[1];
-	// Fork pour exécuter le sous-arbre gauche dans le processus enfant
+	// Fork for exec left
 	pid = fork();
 	if (pid < 0)
+		exit_error(data); // free(data)
+	if (pid == 0)         // CHILD
 	{
-		return (-42); // TODO: CHECK ERROR
-		exit_error(data);   // free(data)
-	}
-	if (pid == 0) // CHILD
-	{
-		return (exec_command(pipe_node->left, data, env));
-		// exit_error(data);
+		close(fd[0]); // Close read (useless fd)
+		if (dup2(fd[1], STDOUT_FILENO) == -1) // redirect stdout -> pipe
+			exit_error(data);
+		close(fd[1]); // Close old writing fd
+		return (exec_command(pipe_node->left, data));
 	}
 	else // PARENT
 	{
-		// close fd
-		return (handle_ast(pipe_node->right, data, env));
+		// TODO: close fd
+		close(fd[1]); // Close write (useless fd)
+		if (dup2(fd[0], STDIN_FILENO) == -1) // redirect stdin -> pipe
+			exit_error(data);
+		close(fd[0]); // Close old reading fd
+		// waitpid(pid, &status, 0); // Wait for the child
+		return (handle_ast(pipe_node->right, data, fd));
 	}
 }
 
-int	handle_ast(t_ast *node, t_data *data, char **env)
+int	handle_ast(t_ast *node, t_data *data, int *fd)
 {
 	if (node->type == AND || node->type == OR)
-		return (handle_and_or(node, data, env));
+		return (handle_and_or(node, data, fd));
 	else if (node->type == PIPE)
-		return (handle_pipe(node, data, env));
+		return (handle_pipe(node, data, fd));
 	// else if (node->type == REDIR_IN_TRUNC || node->type == REDIR_OUT_TRUNC
 	// 	|| node->type == REDIR_OUT_APPEND || node->type == HERE_DOC)
 	// {
-	// 	// Gérer les redirections d'entrée/sortie
+	// 	// Handle redirect stdin/out
 	// 	// Ouvrir le fichier approprié en fonction du type de redirection
 	// 	// Dupliquer les descripteurs de fichiers standards
 	// 	// Fermer les descripteurs de fichiers inutiles
@@ -224,36 +208,11 @@ int	handle_ast(t_ast *node, t_data *data, char **env)
 	// }
 	else // (node->type == COMMAND)
 	{
-		return (exec_command(node, data, env));
+		return (exec_command(node, data));
 		if (node->right)
-			return (handle_ast(node->right, data, env));
+			return (handle_ast(node->right, data, fd));
 		if (node->left)
-			return (handle_ast(node->left, data, env));
+			return (handle_ast(node->left, data, fd));
 	}
 	// Retourner le code de sortie approprié
 }
-
-// int	handle_ast(t_ast *node, t_data *data, char **env)
-// {
-// 	if (node->type == PIPE)
-// 	{
-// 		// je fork pour a gauche : if pid = 0 : exec_ast(left)
-// 		handle_pipe(node, data, env); // pipe(); redir, close fd...
-// 		if (node->right->type == PIPE)
-// 			return (handle_ast(node->right, data, env));
-// 		// pipe need fork, parent goes right
-// 		return (handle_ast(node->left, data, env));
-// 	}
-// 	else if (node->type == REDIR_IN_TRUNC || REDIR_OUT_TRUNC || REDIR_OUT_APPEND
-// 		|| HERE_DOC)
-// 	{
-// 		// jopen je dup je close
-// 		// si un right existe : cést que ya dáutres redirs a faire
-// 		// if (pas de prob a droite)
-// 		// on continue a gauche // on execute la commande
-// 		// si pb a droite :
-// 		// peut etre qu on return juste léxit code de rihgt
-// 		if (node->right)
-// 			return (handle_ast(node->right, data, env));
-// 	}
-// }

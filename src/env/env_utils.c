@@ -53,7 +53,7 @@ char	**upload_env_tab(t_data *data)
 
 	i = 0;
 	size = get_size_env_lst(data->env);
-	data->env_tab = malloc(size * sizeof(char *) + 1);
+	data->env_tab = malloc(sizeof(char *) * (size + 1));
 	env_node = data->env;
 	if (!data->env_tab)
 		return (NULL); // TODO: MALLOC ERROR

@@ -21,11 +21,14 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	data;
 	char	*input;
+	int		fd[2];
 
 	(void)ac;
 	(void)av;
 	init_data(&data);
 	init_env(&data, env);
+	fd[0] = STDIN_FILENO;
+	fd[1] = STDOUT_FILENO;
 	while (1)
 	{
 		input = readline("> ");
@@ -35,7 +38,7 @@ int	main(int ac, char **av, char **env)
 			break ;
 		init_token(&data.token, input);
 		init_ast_lst(&data.ast); // test version
-		handle_ast(data.ast, &data, env);
+		handle_ast(data.ast, &data, fd);
 		ft_buitins(&data.env, &data, input);
 		print_all(&data);
 		free(input);
