@@ -33,108 +33,58 @@ Redirection des flux standard (stdin, stdout,
 
 */
 
-static void	*free_strs(char **strs)
-{
-	int	i;
-
-	i = 0;
-	if (!strs)
-		return (NULL);
-	while (strs[i])
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);
-	return (NULL);
-}
-
-static void	ft_access(char *path, t_data *data)
-{
-	if (!path)
-	{
-		exit_error(data);
-		exit(EXIT_FAILURE);
-	}
-	if (access(path, F_OK) == -1)
-	{
-		ft_putstr_fd("Error\nCommand not found\n", 2);
-		exit_error(data);
-		exit(127);
-	}
-	if (access(path, X_OK) == -1)
-	{
-		exit_error(data);
-		ft_putstr_fd("Error\nPermission denied\n", 2);
-		exit(126);
-	}
-}
-
-static char	**split_path(char *cmd, t_data *data)
-{
-	char	**paths;
-	int		i;
-
-	i = 0;
-	paths = NULL;
-	if (!cmd)
-		return (NULL);
-	while (data->env_tab[i])
-	{
-		if (ft_strncmp("PATH=", data->env_tab[i], 5) == 0)
-		{
-			paths = ft_split(data->env_tab[i] + 5, ':');
-			if (!paths)
-				exit_error(data);
-			return (paths);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-static char	*get_path(char *cmd, t_data *data)
-{
-	char	*buff;
-	char	*path;
-	char	**paths;
-	int		i;
-
-	paths = split_path(cmd, data);
-	i = -1;
-	while (paths && paths[++i])
-	{
-		buff = ft_strjoin("/", cmd);
-		if (!buff)
-			return (NULL);
-		path = ft_strjoin(paths[i], buff);
-		free(buff);
-		if (!path)
-			return (NULL);
-		if (access(path, F_OK) == 0)
-		{
-			free_strs(paths);
-			return (path);
-		}
-		free(path);
-	}
-	free_strs(paths);
-	return (ft_strdup(cmd));
-}
-
 static int	exec_command(t_ast *cmd, t_data *data)
 {
 	char	*path;
 
-	// check if builtins
-	path = get_path(cmd->args[0], data);
+	// int		fd;
+	// fd = 3;
+	path = NULL;
+	if (cmd && cmd->args)
+		path = get_path(cmd->args[0], data);
 	if (!path)
-		return (-1);       // TODO: CHECK ERROR
-	// redirection(data, fd); // TODO: CHECK ERROR, if ?
-	ft_access(path, data);
-	execve(path, cmd->args, data->env_tab);
-	exit_error(data);
-	return (-42); // check
+		return (-42); // TODO: CHECK ERROR
+	w_access(path, data);
+	// while (fd < 1024)
+	// 	w_close(fd++, data);
+	w_execve(path, cmd->args, data->env_tab, data);
+	return (0); // UNREACHABLE
+}
+
+static int	exec_fork_command(t_ast *cmd, t_data *data, int *fd)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = w_fork(data);
+	if (pid == 0) // CHILD
+		return (exec_command(cmd, data));
+	else if (cmd && cmd->right)
+		return (handle_ast(cmd->right, data, fd));
+	else // PARENT
+	{
+		waitpid(pid, &status, 0);
+		return (WEXITSTATUS(status)); // TODO: CHECK IT
+	}
+}
+
+static int	is_builtin(char *cmd)
+{
+	return (ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "echo") == 0
+		|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0
+		|| ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "env") == 0
+		|| ft_strcmp(cmd, "exit") == 0);
+}
+
+static int	handle_exec(t_ast *cmd, t_data *data, int *fd)
+{
+	if (is_builtin(cmd->args[0]))
+		return (exec_builtin(&data->env, data, cmd->args[0]));
+	else if (cmd && !cmd->fork)
+		return (exec_command(cmd, data));
+	else
+		return (exec_fork_command(cmd, data, fd));
+	return (0); // UNREACHABLE
 }
 
 static int	handle_and_or(t_ast *node, t_data *data, int *fd)
@@ -157,43 +107,48 @@ static int	handle_and_or(t_ast *node, t_data *data, int *fd)
 
 static int	handle_pipe(t_ast *pipe_node, t_data *data, int *fd)
 {
-	pid_t	pid;
+	pid_t	pid_left;
+	pid_t	pid_right;
+	int		status_left;
+	int		status_right;
 
-	// Créer un pipe pour la communication entre les processus
-	if (pipe(fd) == -1)
-		exit_error(data);
-	// Fork for exec left
-	pid = fork();
-	if (pid < 0)
-		exit_error(data); // free(data)
-	if (pid == 0)         // CHILD
+	w_pipe(fd, data);
+	pid_left = w_fork(data);
+	if (pid_left == 0) // CHILD
 	{
-		close(fd[0]); // Close read (useless fd)
-		if (dup2(fd[1], STDOUT_FILENO) == -1) // redirect stdout -> pipe
-			exit_error(data);
-		close(fd[1]); // Close old writing fd
-		return (exec_command(pipe_node->left, data));
+		redir_out(data, fd);
+		return (handle_ast(pipe_node->left, data, fd));
 	}
 	else // PARENT
 	{
-		// TODO: close fd
-		close(fd[1]); // Close write (useless fd)
-		if (dup2(fd[0], STDIN_FILENO) == -1) // redirect stdin -> pipe
-			exit_error(data);
-		close(fd[0]); // Close old reading fd
-		// waitpid(pid, &status, 0); // Wait for the child
+		if (pipe_node && pipe_node->right && pipe_node->right->type == COMMAND)
+		{
+			pid_right = w_fork(data);
+			if (pid_right == 0) // CHILD
+			{
+				redir_in(data, fd);
+				return (handle_ast(pipe_node->right, data, fd));
+			}
+			// PARENT
+			w_close(fd[0], data); // close pipe in
+			w_close(fd[1], data); // close pipe out
+			waitpid(pid_right, &status_right, 0);
+			waitpid(pid_left, &status_left, 0);
+			return (status_right); // TODO: CHECK THIS
+		}
 		return (handle_ast(pipe_node->right, data, fd));
 	}
 }
 
 int	handle_ast(t_ast *node, t_data *data, int *fd)
 {
-	if (node->type == AND || node->type == OR)
+	if (node && (node->type == AND || node->type == OR))
 		return (handle_and_or(node, data, fd));
-	else if (node->type == PIPE)
+	else if (node && node->type == PIPE)
 		return (handle_pipe(node, data, fd));
-	// else if (node->type == REDIR_IN_TRUNC || node->type == REDIR_OUT_TRUNC
-	// 	|| node->type == REDIR_OUT_APPEND || node->type == HERE_DOC)
+	// else if (node && (node->type == REDIR_IN_TRUNC
+	// || node->type == REDIR_OUT_TRUNC
+	// 	|| node->type == REDIR_OUT_APPEND || node->type == HERE_DOC))
 	// {
 	// 	// Handle redirect stdin/out
 	// 	// Ouvrir le fichier approprié en fonction du type de redirection
@@ -204,15 +159,27 @@ int	handle_ast(t_ast *node, t_data *data, int *fd)
 	// 	// Si tout se passe bien à droite,
 	// 	// continuer à gauche ou exécuter la commande
 	// 	// Si problème à droite, retourner le code d'erreur du sous-arbre droit
-	// 	;
+	// 	return (-42);
 	// }
 	else // (node->type == COMMAND)
 	{
-		return (exec_command(node, data));
-		if (node->right)
-			return (handle_ast(node->right, data, fd));
-		if (node->left)
-			return (handle_ast(node->left, data, fd));
+		// if (node->right)
+		// 	return (handle_ast(node->right, data, fd));
+		return (handle_exec(node, data, fd));
 	}
 	// Retourner le code de sortie approprié
+}
+
+int exec_ast(t_ast *node, t_data *data)
+{
+	// t_pipe	*pipe;
+	int		ret;
+
+	int		fd[2];
+
+	fd[0] = -1;
+	fd[1] = -1;
+	ret = handle_ast(node, data, fd);
+	// close all fd
+	return (ret);
 }

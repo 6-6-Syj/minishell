@@ -54,7 +54,7 @@ typedef struct s_data	t_data;
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 void					free_split(char **split);
-int						ft_buitins(t_env **env_lst, t_data *data, char *input);
+int						exec_builtin(t_env **env_lst, t_data *data, char *input);
 
 int						handle_cd(t_env *env, char *input);
 int						handle_export(t_env **env_lst, t_data *data, char *input);
