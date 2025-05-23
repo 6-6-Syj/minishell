@@ -72,6 +72,7 @@ typedef struct s_token
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
+int		get_token_priority(t_token *token);
 t_type	get_token_type(t_token *token);
 t_type	get_token_word_type(t_token *token);
 int	init_token(t_token **token_lst, char *input);
@@ -80,5 +81,6 @@ void	free_token_node(t_token *token_node);
 void	free_token_lst(t_token **token_lst);
 int		get_token_len(char *token);
 bool	is_delimiter(char c);
+t_token	*get_last_token(t_token *lst);
 
 #endif

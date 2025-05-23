@@ -31,11 +31,12 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			break ;
 		init_token(&data.token, input);
-		init_ast_lst(&data.ast); // test version
+		init_ast(&data.ast, &data.token); // test version
 		// prepare_execution(&data, env);
 		ft_buitins(&data.env, input);
 		print_all(&data); 
 		free(input);
+		data.ast = NULL;
 		free_token_lst(&data.token);
 	}
 	rl_clear_history();

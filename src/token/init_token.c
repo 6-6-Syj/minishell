@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/20 21:56:13 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/22 01:09:32 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ static int		set_token_content(t_token *token_node, char *new_content)
 
 static int	set_token_priority(t_token *token_node)
 {
-	token_node->priority = -1;
-	// if (token_node->type != TYPE_ARG)
-	// 	token_node->priority = get_token_priority(token_node->type);
+	token_node->priority = get_token_priority(token_node);
 	return (0);
 }
 
