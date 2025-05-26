@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 20:08:01 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/08 20:08:01 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/22 01:17:32 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*get_last_token(t_token *lst)
 	last = lst;
 	if (!lst)
 		return (NULL);
-	while (last->next != NULL)
+	while (last->next)
 		last = last->next;
 	return (last);
 }

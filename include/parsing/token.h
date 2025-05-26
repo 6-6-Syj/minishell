@@ -51,7 +51,8 @@ typedef enum e_type
 	TYPE_SPACE,
 	TYPE_UNKNOWN,
 	TYPE_FILE,
-	TYPE_REDIR
+	TYPE_REDIR,
+	TYPE_EXPAND
 }	t_type;
 
 /****************************************************************************/
@@ -62,6 +63,7 @@ typedef	struct s_data	t_data;
 typedef struct s_token
 {
 	int				err;
+	int				priority;
 	int				type;
 	char			*content;
 	struct s_token	*prev;
@@ -71,6 +73,7 @@ typedef struct s_token
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
+int		get_token_priority(t_token *token);
 t_type	get_token_type(t_token *token);
 t_type	get_token_word_type(t_token *token);
 int	init_token(t_token **token_lst, char *input);
@@ -79,5 +82,10 @@ void	free_token_node(t_token *token_node);
 void	free_token_lst(t_token **token_lst);
 int		get_token_len(char *token);
 bool	is_delimiter(char c);
+bool	is_part_of_word(char c);
+bool	is_parenthesis(char c);
+bool	is_quote(char c);
+bool	is_operator(char c);
+t_token	*get_last_token(t_token *lst);
 
 #endif

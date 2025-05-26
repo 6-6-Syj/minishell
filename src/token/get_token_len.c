@@ -6,96 +6,28 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:20:13 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/07 06:26:49 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/26 19:20:55 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
-
-// int	get_space_len(char *token)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (token[i] && token[i] == C_SPACE)
-// 		i++;
-// 	return (i);
-// }
-
-// int	get_simple_quote_len(char *token)
-// {
-// 	int	i;
-
-// 	i = 1;
-// 	while (token[i] && token[i] != C_SIMPLE_QUOTE)
-// 		i++;
-// 	return (i + 1);
-// }
-
-// int	get_double_quote_len(char *token)
-// {
-// 	int	i;
-
-// 	i = 1;
-// 	while (token[i] && token[i] != C_DOUBLE_QUOTE)
-// 		i++;
-// 	return (i + 1);
-// }
-
-// int	get_word_len(char *token)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (token[i] && !is_delimiter(token[i]))
-// 		i++;
-// 	return (i);
-// }
-
-// int	get_token_len(char *token)
-// {
-// 	if (is_a_parentheses(token))
-// 		return (get_parentheses_len(token));
-// 	if (is_a_operator(token))
-// 		return (get_simple_quote_len(token));
-// 	if (is_a_pipe(token))
-// 		return(get_simple_quote_len); */
-// 	if (token[0] == C_SIMPLE_QUOTE)
-// 		return (get_simple_quote_len(token));
-// 	else if (token[0] == C_DOUBLE_QUOTE)
-// 		return (get_double_quote_len(token));
-// 	else if (token[0] == C_SPACE)
-// 		return (get_space_len(token));
-// 	else
-// 		return (get_word_len(token));
-// 	return (0);
-// }
-
 
 int	get_token_len(char *token)
 {
 	int	i;
 
 	i = 1;
-	if (token[0] == '(' || token[0] == ')')
+	if (is_parenthesis(token[0]))
 		return (1);
-	while  (token[i])
+	while (token[i])
 	{
-		if (token[0] == '<' && token[i] != '<')
+		if (is_operator(token[0]) && !is_operator(token[i]))
 			return (i);
-		else if (token[0] == '>' && token[i] != '>')
-			return (i);
-		else if (token[0] == '|' && token[i] != '|')
-			return (i);
-		else if (token[0] == '&' && token[i] != '&')
-			return (i);
-		else if (token[0] == '\"' && token[i] == '\"')
-			return (i + 1);
-		else if (token[0] == '\'' && token[i] == '\'')
+		else if (is_quote(token[0] && is_quote(token[i])))
 			return (i + 1);
 		else if (token[0] == ' ' && token[i] != ' ')
 			return (i);
-		else if (!is_delimiter(token[0]) && is_delimiter(token[i]))
+		else if (is_part_of_word(token[0]) && !is_part_of_word(token[i]))
 			return (i);
 		i++;
 	}

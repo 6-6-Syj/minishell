@@ -14,6 +14,8 @@ t_token	*add_first_token_node(t_token **token_lst)
 	{
 		*token_lst = new_node;
 		new_node->next = NULL; // NEEDED ?
+		new_node->prev = NULL;
+
 	}
 	else
 	{
@@ -21,7 +23,6 @@ t_token	*add_first_token_node(t_token **token_lst)
 		first_node->prev = new_node;
 		new_node->next = first_node; // NEEDED ?
 	}
-	new_node->prev = NULL;
 	return (new_node);
 }
 

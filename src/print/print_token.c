@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 21:46:36 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/19 19:22:41 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/26 17:17:53 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,37 +15,39 @@
 void	print_token_type(t_type type)
 {
 	if (type == TYPE_PAREN_L)
-		ft_printf(MGT"\t--->   PAREN_L\t\n"RST);
+		ft_printf(MGT"\t--->   PAREN_L\t"RST);
 	else if (type == TYPE_PAREN_R)
-		ft_printf(MGT"\t--->   PAREN_R\t\n"RST);
+		ft_printf(MGT"\t--->   PAREN_R\t"RST);
 	else if (type == TYPE_REDIR_IN)
-		ft_printf(MGT"\t--->   REDIR_IN\t\n"RST);
+		ft_printf(MGT"\t--->   REDIR_IN\t"RST);
 	else if (type == TYPE_HERE_DOC)
-		ft_printf(MGT"\t--->   HERE_DOC\t\n"RST);
+		ft_printf(MGT"\t--->   HERE_DOC\t"RST);
 	else if (type == TYPE_REDIR_OUT)
-		ft_printf(MGT"\t--->   REDIR_OUT\t\n"RST);
+		ft_printf(MGT"\t--->   REDIR_OUT\t"RST);
 	else if (type == TYPE_REDIR_APPEND)
-		ft_printf(MGT"\t--->   REDIR_APPEND\t\n"RST);
+		ft_printf(MGT"\t--->   REDIR_APPEND\t"RST);
 	else if (type == TYPE_PIPE)
-		ft_printf(MGT"\t--->   PIPE\t\n"RST);
+		ft_printf(MGT"\t--->   PIPE\t"RST);
 	else if (type == TYPE_AND)
-		ft_printf(MGT"\t--->   AND\t\n"RST);	
+		ft_printf(MGT"\t--->   AND\t"RST);	
 	else if (type == TYPE_OR)
-		ft_printf(MGT"\t--->   OR\t\n"RST);
+		ft_printf(MGT"\t--->   OR\t"RST);
 	else if (type == TYPE_QUOTE_S)
-		ft_printf(MGT"\t--->   QUOTE_S\t\n"RST);
+		ft_printf(MGT"\t--->   QUOTE_S\t"RST);
 	else if (type == TYPE_QUOTE_D)
-		ft_printf(MGT"\t--->   QUOTE_D\t\n"RST);
+		ft_printf(MGT"\t--->   QUOTE_D\t"RST);
 	else if (type == TYPE_SPACE)
-		ft_printf(MGT"\t--->   SPACE\t\n"RST);
+		ft_printf(MGT"\t--->   SPACE\t"RST);
+	else if (type == TYPE_EXPAND)
+		ft_printf(MGT"\t--->   EXPAND\t"RST);
 	else if (type == TYPE_WORD)
-		ft_printf(MGT"\t--->   WORD\t\n"RST);
+		ft_printf(MGT"\t--->   WORD\t"RST);
 	else if (type == TYPE_CMD)
-		ft_printf(MGT"\t--->   TYPE_CMD\t\n"RST);
+		ft_printf(MGT"\t--->   TYPE_CMD\t"RST);
 	else if (type == TYPE_ARG)
-		ft_printf(MGT"\t--->   TYPE_ARG\t\n"RST);
+		ft_printf(MGT"\t--->   TYPE_ARG\t"RST);
 	else if (type == TYPE_UNKNOWN)
-		ft_printf(MGT"\t--->   UNKNOWN\t\n"RST);
+		ft_printf(MGT"\t--->   UNKNOWN\t"RST);
 }
 
 void	print_token(t_token *token, int i)
@@ -56,6 +58,8 @@ void	print_token(t_token *token, int i)
 			ft_printf(B" |\n |\n V\n"RST, i);
 		ft_printf(G"[%s]"RST, token->content);
 		print_token_type(token->type);
+		ft_printf(R"  (%d)"RST, token->priority);
+		ft_printf("\n");
 	}
 }
 
