@@ -33,6 +33,16 @@ typedef enum e_type_ast
 	COMMAND,
 }					t_type_ast;
 
+// typedef struct s_redirect
+// {
+// 	struct s_ast	*child;
+// 	char			*filename;
+// 	int mode; // par ex. O_WRONLY, O_RDONLY
+// }					t_redirect;
+
+/****************************************************************************/
+/*                                STRUCT									*/
+/****************************************************************************/
 typedef struct s_logic
 {
 	struct s_ast	*left;
@@ -66,23 +76,6 @@ typedef struct s_ast
 	};
 }					t_ast;
 
-// typedef struct s_redirect
-// {
-// 	struct s_ast	*child;
-// 	char			*filename;
-// 	int mode; // par ex. O_WRONLY, O_RDONLY
-// }					t_redirect;
-
-/****************************************************************************/
-/*                                STRUCT									*/
-/****************************************************************************/
-// typedef struct s_ast
-// {
-// 	t_type_ast		type;
-// 	char			**args;
-// 	struct s_ast	*left;
-// 	struct s_ast	*right;
-// }					t_ast;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
