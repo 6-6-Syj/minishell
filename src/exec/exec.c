@@ -40,14 +40,14 @@ static int	exec_command(t_ast *cmd, t_data *data)
 	// int		fd;
 	// fd = 3;
 	path = NULL;
-	if (cmd && cmd->args)
-		path = get_path(cmd->args[0], data);
+	if (cmd && cmd->command.args)
+		path = get_path(cmd->command.args[0], data);
 	if (!path)
 		return (-42); // TODO: CHECK ERROR
 	w_access(path, data);
 	// while (fd < 1024)
 	// 	w_close(fd++, data);
-	w_execve(path, cmd->args, data->env_tab, data);
+	w_execve(path, cmd->command.args, data->env_tab, data);
 	return (0); // UNREACHABLE
 }
 
@@ -56,11 +56,12 @@ static int	exec_fork_command(t_ast *cmd, t_data *data, int *fd)
 	pid_t	pid;
 	int		status;
 
+	(void)fd; // A TEJ
 	pid = w_fork(data);
 	if (pid == 0) // CHILD
 		return (exec_command(cmd, data));
-	else if (cmd && cmd->right)
-		return (handle_ast(cmd->right, data, fd));
+	// else if (cmd && cmd->right)
+	// 	return (handle_ast(cmd->right, data, fd));
 	else // PARENT
 	{
 		waitpid(pid, &status, 0);
@@ -78,10 +79,9 @@ static int	is_builtin(char *cmd)
 
 static int	handle_exec(t_ast *cmd, t_data *data, int *fd)
 {
-	if (is_builtin(cmd->args[0]))
-		return (exec_builtin(&data->env, data, cmd->args[0]));
-	else if (cmd && !cmd->fork)
-		return (exec_command(cmd, data));
+
+	if (is_builtin(cmd->command.args[0]))
+		return (exec_builtin(&data->env, data, cmd->command.args[0]));
 	else
 		return (exec_fork_command(cmd, data, fd));
 	return (0); // UNREACHABLE
@@ -91,52 +91,53 @@ static int	handle_and_or(t_ast *node, t_data *data, int *fd)
 {
 	int	ret;
 
-	ret = handle_ast(node->left, data, fd);
+	ret = handle_ast(node->logic.left, data, fd);
 	if (node->type == AND)
 	{
 		if (ret == 0)
-			ret = handle_ast(node->right, data, fd);
+			ret = handle_ast(node->logic.right, data, fd);
 	}
 	else // type == OR
 	{
 		if (ret != 0)
-			ret = handle_ast(node->right, data, fd);
+			ret = handle_ast(node->logic.right, data, fd);
 	}
 	return (ret);
 }
 
-static int	handle_pipe(t_ast *pipe_node, t_data *data, int *fd)
+static int	handle_pipe(t_ast *node, t_data *data, int *fd)
 {
-	pid_t	pid_left;
 	pid_t	pid_right;
-	int		status_left;
+	pid_t	pid_left;
 	int		status_right;
+	int		status_left;
 
 	w_pipe(fd, data);
-	pid_left = w_fork(data);
-	if (pid_left == 0) // CHILD
+	pid_right = w_fork(data);
+	if (pid_right == 0) // CHILD
 	{
-		redir_out(data, fd);
-		return (handle_ast(pipe_node->left, data, fd));
+		redir_in(data, fd);
+		return (handle_ast(node->pipe.right, data, fd));
 	}
 	else // PARENT
 	{
-		if (pipe_node && pipe_node->right && pipe_node->right->type == COMMAND)
+		if (node && node->pipe.left && node->pipe.left->type == COMMAND)
 		{
-			pid_right = w_fork(data);
-			if (pid_right == 0) // CHILD
+			pid_left = w_fork(data);
+			if (pid_left == 0) // CHILD
 			{
-				redir_in(data, fd);
-				return (handle_ast(pipe_node->right, data, fd));
+				redir_out(data, fd);
+				return (handle_ast(node->pipe.left, data, fd));
 			}
 			// PARENT
 			w_close(fd[0], data); // close pipe in
 			w_close(fd[1], data); // close pipe out
-			waitpid(pid_right, &status_right, 0);
-			waitpid(pid_left, &status_left, 0);
-			return (status_right); // TODO: CHECK THIS
+			waitpid(pid_right, &status_left, 0);
+			waitpid(pid_left, &status_right, 0);
+			return (status_left); // TODO: CHECK THIS
 		}
-		return (handle_ast(pipe_node->right, data, fd));
+		redir_out(data, fd);
+		return (handle_ast(node->pipe.right, data, fd));
 	}
 }
 
@@ -170,13 +171,12 @@ int	handle_ast(t_ast *node, t_data *data, int *fd)
 	// Retourner le code de sortie approprié
 }
 
-int exec_ast(t_ast *node, t_data *data)
+int	exec_ast(t_ast *node, t_data *data)
 {
+	int	ret;
+	int	fd[2];
+
 	// t_pipe	*pipe;
-	int		ret;
-
-	int		fd[2];
-
 	fd[0] = -1;
 	fd[1] = -1;
 	ret = handle_ast(node, data, fd);

@@ -16,7 +16,6 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
-# include "ast.h"
 # include "libft.h"
 # include <stdio.h>
 # include <sys/wait.h>
@@ -34,15 +33,6 @@
 /****************************************************************************/
 typedef struct s_data	t_data;
 typedef struct s_ast	t_ast;
-
-typedef struct s_pipe
-{
-	int					in_prev;
-	int					in_current;
-	int					out_prev;
-	int					out_current;
-	int fds[2]; // stock fds of current pipe
-}						t_pipe;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/

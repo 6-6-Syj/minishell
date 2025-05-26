@@ -33,8 +33,7 @@ int	main(int ac, char **av, char **env)
 		init_token(&data.token, input);
 		init_ast(&data.ast, &data.token);
 		exec_ast(data.ast, &data);
-		exec_builtin(&data.env, &data, input);
-		print_all(&data);
+		// print_all(&data);
 		free(input);
 		free_token_lst(&data.token);
 		data.token = NULL;
