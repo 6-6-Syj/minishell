@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ast.h"
+#include "data.h"
+#include "env.h"
 #include "exec.h"
 
 /*
@@ -30,178 +33,153 @@ Redirection des flux standard (stdin, stdout,
 
 */
 
-// static void free_commands(t_cmds *cmds)
-// {
-//     t_cmds *current;
-//     t_cmds *next;
-//     int i;
-
-//     current = cmds;
-//     while (current)
-//     {
-//         next = current->next;
-//         free(current->path);
-//         i = 0;
-//         while (current->cmds[i])
-//         {
-//             free(current->cmds[i]);
-//             i++;
-//         }
-//         free(current->cmds);
-//         free(current);
-//         current = next;
-//     }
-// }
-
-// static t_cmds *create_cmd(char *path, char **cmds, char **env)
-// {
-//     t_cmds *new_cmd;
-
-// 	new_cmd = malloc(sizeof(t_cmds));
-//     if (!new_cmd)
-//         return NULL;
-//     new_cmd->path = path;
-//     new_cmd->cmds = cmds;
-// 	new_cmd->env = env;
-//     new_cmd->next = NULL;
-//     return (new_cmd);
-// }
-
-static void	ft_access(t_cmds *last)
+static int	exec_command(t_ast *cmd, t_data *data)
 {
-	if (!last->path)
-		exit(EXIT_FAILURE);
-	if (access(last->path, F_OK) == -1)
-	{
-		ft_putstr_fd("Error\nCommand not found\n", 2);
-		exit(127);
-	}
-	if (access(last->path, X_OK) == -1)
-	{
-		ft_putstr_fd("Error\nPermission denied\n", 2);
-		exit(126);
-	}
+	char	*path;
+
+	// int		fd;
+	// fd = 3;
+	path = NULL;
+	if (cmd && cmd->args)
+		path = get_path(cmd->args[0], data);
+	if (!path)
+		return (-42); // TODO: CHECK ERROR
+	w_access(path, data);
+	// while (fd < 1024)
+	// 	w_close(fd++, data);
+	w_execve(path, cmd->args, data->env_tab, data);
+	return (0); // UNREACHABLE
 }
 
-static void execute_command(t_cmds *current_cmd)
+static int	exec_fork_command(t_ast *cmd, t_data *data, int *fd)
 {
-    char **args;
-    char **env;
-    // int i;
-	// int j;
-
-	// i = 0;
-	// j = 0;
-    // while (current_cmd->cmds[i])
-    //     i++;
-    // args = malloc(sizeof(char *) * (i + 1));
-    // if (!args)
-    // {
-    //     perror("malloc");
-    //     exit(EXIT_FAILURE);
-    // }
-    // while (j < i)
-	// {
-    //     args[j] = current_cmd->cmds[j];
-	// 	j++;
-	// }
-    // args[j] = NULL;
-	args = NULL;
-    env = current_cmd->env;
-	ft_access(current_cmd);
-    if (execve(current_cmd->path, args, env) == -1)
-    {
-        perror("execve");
-        free(args);
-        exit(EXIT_FAILURE);
-    }
-    // free(args);
-}
-
-// static void init_test_commands(t_data *data, char **env)
-// {
-//     // Création de commandes de test avec allocation dynamique
-//     char **ls_cmd = malloc(3 * sizeof(char *));
-//     char **cat_cmd = malloc(4 * sizeof(char *));
-//     char **wc_cmd = malloc(2 * sizeof(char *));
-
-//     if (!ls_cmd || !cat_cmd || !wc_cmd)
-//     {
-//         ft_printf("Error allocating memory for commands\n");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     ls_cmd[0] = ft_strdup("ls");
-//     ls_cmd[1] = ft_strdup("-l");
-//     ls_cmd[2] = NULL;
-
-//     cat_cmd[0] = ft_strdup("cat");
-//     cat_cmd[1] = ft_strdup("-e");
-//     cat_cmd[2] = ft_strdup("main.c");
-//     cat_cmd[3] = NULL;
-
-//     wc_cmd[0] = ft_strdup("wc");
-//     wc_cmd[1] = NULL;
-
-//     // Ajout des commandes à la liste
-//     t_cmds *cmd1 = create_cmd(ft_strdup("/usr/bin/ls"), ls_cmd, env);
-//     t_cmds *cmd2 = create_cmd(ft_strdup("/usr/bin/cat"), cat_cmd, env);
-//     t_cmds *cmd3 = create_cmd(ft_strdup("/usr/bin/wc"), wc_cmd, env);
-
-//     if (!cmd1 || !cmd2 || !cmd3)
-//     {
-//         ft_printf("Error creating commands\n");
-//         exit(EXIT_FAILURE);
-//     }
-
-//     // Construction de la liste chaînée
-//     data->cmds = cmd1;
-//     cmd1->next = cmd2;
-//     cmd2->next = cmd3;
-//     cmd3->next = NULL;
-// }
-
-								// ast_node = add_ast_node(ast_lst);
-								// ast_node->args = ft_split("|", ' ');
-								// ast_node->type = PIPE;
-								// ast_node = add_ast_node(ast_lst);
-								// ast_node->args = ft_split("ls", ' ');
-								// ast_node->type = COMMAND;
-								// ast_node = add_ast_node(ast_lst);
-								// ast_node->args = ft_split("cat -e", ' ');
-								// ast_node->type = COMMAND;
-
-void	prepare_execution(t_data *data, char **env)
-{
-	t_cmds	*current_cmd;
 	pid_t	pid;
 	int		status;
 
-	(void)env;
-	// init_test_commands(data, env);
-
-	current_cmd = data->cmds;
-	while (current_cmd != NULL)
+	pid = w_fork(data);
+	if (pid == 0) // CHILD
+		return (exec_command(cmd, data));
+	else if (cmd && cmd->right)
+		return (handle_ast(cmd->right, data, fd));
+	else // PARENT
 	{
-		ft_printf("current_cmd->cmds = %s\n", current_cmd->cmds[0]);
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		else if (pid == 0) // CHILD
-		{
-			execute_command(current_cmd);
-			exit(EXIT_SUCCESS);
-		}
-		else // PARENT
-		{
-			waitpid(pid, &status, 0);
-			if (WIFEXITED(status))
-				ft_printf("Command exited with status %d\n",
-					WEXITSTATUS(status));
-		}
-		current_cmd = current_cmd->next;
+		waitpid(pid, &status, 0);
+		return (WEXITSTATUS(status)); // TODO: CHECK IT
 	}
+}
+
+static int	is_builtin(char *cmd)
+{
+	return (ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "echo") == 0
+		|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0
+		|| ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "env") == 0
+		|| ft_strcmp(cmd, "exit") == 0);
+}
+
+static int	handle_exec(t_ast *cmd, t_data *data, int *fd)
+{
+	if (is_builtin(cmd->args[0]))
+		return (exec_builtin(&data->env, data, cmd->args[0]));
+	else if (cmd && !cmd->fork)
+		return (exec_command(cmd, data));
+	else
+		return (exec_fork_command(cmd, data, fd));
+	return (0); // UNREACHABLE
+}
+
+static int	handle_and_or(t_ast *node, t_data *data, int *fd)
+{
+	int	ret;
+
+	ret = handle_ast(node->left, data, fd);
+	if (node->type == AND)
+	{
+		if (ret == 0)
+			ret = handle_ast(node->right, data, fd);
+	}
+	else // type == OR
+	{
+		if (ret != 0)
+			ret = handle_ast(node->right, data, fd);
+	}
+	return (ret);
+}
+
+static int	handle_pipe(t_ast *pipe_node, t_data *data, int *fd)
+{
+	pid_t	pid_left;
+	pid_t	pid_right;
+	int		status_left;
+	int		status_right;
+
+	w_pipe(fd, data);
+	pid_left = w_fork(data);
+	if (pid_left == 0) // CHILD
+	{
+		redir_out(data, fd);
+		return (handle_ast(pipe_node->left, data, fd));
+	}
+	else // PARENT
+	{
+		if (pipe_node && pipe_node->right && pipe_node->right->type == COMMAND)
+		{
+			pid_right = w_fork(data);
+			if (pid_right == 0) // CHILD
+			{
+				redir_in(data, fd);
+				return (handle_ast(pipe_node->right, data, fd));
+			}
+			// PARENT
+			w_close(fd[0], data); // close pipe in
+			w_close(fd[1], data); // close pipe out
+			waitpid(pid_right, &status_right, 0);
+			waitpid(pid_left, &status_left, 0);
+			return (status_right); // TODO: CHECK THIS
+		}
+		return (handle_ast(pipe_node->right, data, fd));
+	}
+}
+
+int	handle_ast(t_ast *node, t_data *data, int *fd)
+{
+	if (node && (node->type == AND || node->type == OR))
+		return (handle_and_or(node, data, fd));
+	else if (node && node->type == PIPE)
+		return (handle_pipe(node, data, fd));
+	// else if (node && (node->type == REDIR_IN_TRUNC
+	// || node->type == REDIR_OUT_TRUNC
+	// 	|| node->type == REDIR_OUT_APPEND || node->type == HERE_DOC))
+	// {
+	// 	// Handle redirect stdin/out
+	// 	// Ouvrir le fichier approprié en fonction du type de redirection
+	// 	// Dupliquer les descripteurs de fichiers standards
+	// 	// Fermer les descripteurs de fichiers inutiles
+	// 	// Si un sous-arbre droit existe,
+	// 	// cela signifie qu'il y a d'autres redirections à faire
+	// 	// Si tout se passe bien à droite,
+	// 	// continuer à gauche ou exécuter la commande
+	// 	// Si problème à droite, retourner le code d'erreur du sous-arbre droit
+	// 	return (-42);
+	// }
+	else // (node->type == COMMAND)
+	{
+		// if (node->right)
+		// 	return (handle_ast(node->right, data, fd));
+		return (handle_exec(node, data, fd));
+	}
+	// Retourner le code de sortie approprié
+}
+
+int exec_ast(t_ast *node, t_data *data)
+{
+	// t_pipe	*pipe;
+	int		ret;
+
+	int		fd[2];
+
+	fd[0] = -1;
+	fd[1] = -1;
+	ret = handle_ast(node, data, fd);
+	// close all fd
+	return (ret);
 }

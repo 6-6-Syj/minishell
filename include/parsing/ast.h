@@ -31,13 +31,13 @@ typedef enum e_type_ast
 	REDIR_OUT_APPEND,
 	HERE_DOC,
 	COMMAND,
-}						t_type_ast;
+}					t_type_ast;
 
 typedef struct s_logic
 {
 	struct s_ast	*left;
 	struct s_ast	*right;
-}	t_logic;
+}					t_logic;
 
 typedef struct s_command
 {
@@ -52,8 +52,7 @@ typedef struct s_pipe
 
 typedef struct s_redir
 {
-
-}	t_redir;
+}					t_redir;
 
 typedef struct s_ast
 {
@@ -74,7 +73,6 @@ typedef struct s_ast
 // 	int mode; // par ex. O_WRONLY, O_RDONLY
 // }					t_redirect;
 
-
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
@@ -92,5 +90,5 @@ typedef struct s_ast
 // void	init_ast_lst(t_ast **ast_lst); // test version
 int					init_ast(t_ast **ast_lst, t_token **token_lst);
 t_ast				*add_ast_node(t_ast **ast_lst);
-t_ast	*parse_token(t_token *token);
+t_ast				*parse_token(t_token *token);
 #endif

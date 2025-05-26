@@ -14,9 +14,6 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
-
-// Allouer data sur la heap au lieu de la stack !
-//
 int	main(int ac, char **av, char **env)
 {
 	t_data	data;
@@ -25,7 +22,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	init_data(&data);
-	init_env(&data.env, env);
+	init_env(&data, env);
 	while (1)
 	{
 		input = readline("> ");
@@ -34,13 +31,13 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			break ;
 		init_token(&data.token, input);
-		init_ast(&data.ast, &data.token); // test version
-		// prepare_execution(&data, env);
-		ft_buitins(&data.env, input);
+		init_ast(&data.ast, &data.token);
+		exec_ast(data.ast, &data);
+		exec_builtin(&data.env, &data, input);
 		print_all(&data);
 		free(input);
-		data.ast = NULL;
 		free_token_lst(&data.token);
+		data.token = NULL;
 	}
 	rl_clear_history();
 	// exit_error(&data);

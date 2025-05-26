@@ -14,11 +14,16 @@
 
 void	exit_error(t_data *data)
 {
-	free_data(data);
-	if (data->err)
+	int	err;
+
+	err = 0;
+	if (data)
 	{
 		ft_printf("Error\n");
-		ft_printf("%s\n", data->err_msg);
+		if (data->err_msg)
+			ft_printf("%s\n", data->err_msg);
+		err = data->err;
 	}
-	exit(data->err);
+	free_data(data);
+	exit(err);
 }

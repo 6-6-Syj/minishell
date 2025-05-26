@@ -41,7 +41,7 @@ static int	ft_unset(t_env **head, char *key_to_remove)
 	return (0);
 }
 
-int	handle_unset(t_env **env_lst, char *input)
+int	handle_unset(t_env **env_lst, t_data *data, char *input)
 {
 	char	**args;
 	int		i;
@@ -55,5 +55,6 @@ int	handle_unset(t_env **env_lst, char *input)
 	while (args && args[i])
 		free(args[i++]);
 	free(args);
+	upload_env_tab(data);
 	return (res);
 }

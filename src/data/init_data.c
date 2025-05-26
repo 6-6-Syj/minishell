@@ -15,14 +15,9 @@
 
 void	init_data(t_data *data)
 {
-	data->ast = NULL;
-	data->cmds = NULL;
 	data->env = NULL;
 	data->token = NULL;
+	data->ast = NULL;
 	data->err = 0;
 	data->err_msg = NULL;
-	data->cmds = NULL;
-	data->env = NULL;
-	data->token = NULL;
-	data->ast = NULL;
 }

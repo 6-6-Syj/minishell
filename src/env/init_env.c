@@ -33,6 +33,8 @@ void	set_env(t_env *new_env, char *env_line)
 {
 	char	*equal;
 
+	new_env->print_env = 0;
+	new_env->print_exp = 1;
 	equal = ft_strchr(env_line, '=');
 	if (equal)
 	{
@@ -46,6 +48,7 @@ void	set_env(t_env *new_env, char *env_line)
 			free(new_env);
 			return ; // TODO: ERROR ????
 		}
+		new_env->print_env = 1;
 	}
 }
 
@@ -61,7 +64,7 @@ t_env	*get_last_env(t_env *lst)
 	return (last);
 }
 
-t_env	*add_env_node(t_env *env_lst)
+t_env	*add_env_node(t_env **env_lst)
 {
 	t_env	*new_node;
 	t_env	*last_node;
@@ -69,14 +72,14 @@ t_env	*add_env_node(t_env *env_lst)
 	new_node = ft_calloc(1, sizeof(t_env));
 	if (!new_node)
 		return (NULL); // TODO: Malloc error
-	if (!env_lst)
+	if (!*env_lst)
 	{
-		env_lst = new_node;
+		*env_lst = new_node;
 		new_node->prev = NULL; // NEEDED ?
 	}
 	else
 	{
-		last_node = get_last_env(env_lst);
+		last_node = get_last_env(*env_lst);
 		last_node->next = new_node;
 		new_node->prev = last_node; // NEEDED ?
 	}
@@ -84,7 +87,7 @@ t_env	*add_env_node(t_env *env_lst)
 	return (new_node);
 }
 
-void	init_env(t_env **env_lst, char **env)
+void	init_env(t_data *data, char **env)
 {
 	t_env	*new_env;
 	int		i;
@@ -92,14 +95,15 @@ void	init_env(t_env **env_lst, char **env)
 	i = 0;
 	while (env[i])
 	{
-		new_env = add_env_node(*env_lst);
+		new_env = add_env_node(&data->env);
 		if (!new_env)
 			return ;
 		// TODO: Malloc error ?
 		set_env(new_env, env[i]);
 		// If *env is still NULL, update it
-		if (!*env_lst)
-			*env_lst = new_env;
+		if (!data->env)
+			data->env = new_env;
 		i++;
 	}
+	upload_env_tab(data);
 }

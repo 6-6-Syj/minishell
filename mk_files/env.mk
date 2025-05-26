@@ -1,2 +1,2 @@
-ENV_SRC = init_env
+ENV_SRC = init_env env_utils
 ENV_INC = builtins/env.h

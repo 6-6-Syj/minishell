@@ -16,6 +16,9 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
+# include "builtins.h"
+# include "status.h"
+# include "data.h"
 # include "error.h"
 # include "libft.h"
 # include <unistd.h>
@@ -24,7 +27,6 @@
 /*                                DEFINE									*/
 /****************************************************************************/
 
-
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
@@ -32,26 +34,27 @@
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef enum e_status	t_status;
-
 typedef struct s_env
 {
-	t_status		err;
-	char			*key;
-	char			*value;
-	bool			print_env;
-	bool			print_exp;
-	struct s_env	*prev;
-	struct s_env	*next;
-}					t_env;
+	t_status			err;
+	char				*key;
+	char				*value;
+	bool				print_env;
+	bool				print_exp;
+	struct s_env		*prev;
+	struct s_env		*next;
+}						t_env;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void				free_env(t_env *env);
-void				set_env(t_env *new_env, char *env_line);
-t_env				*get_last_env(t_env *lst);
-t_env				*add_env_node(t_env *env_lst);
-void				init_env(t_env **env_lst, char **env);
+void					free_env(t_env *env);
+void					set_env(t_env *new_env, char *env_line);
+t_env					*get_last_env(t_env *lst);
+t_env					*add_env_node(t_env **env_lst);
+void					init_env(t_data *data, char **env);
+
+void					print_env_tab(char **env_tab);
+char					**upload_env_tab(t_data *data);
 
 #endif
