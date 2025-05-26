@@ -51,7 +51,8 @@ typedef enum e_type
 	TYPE_SPACE,
 	TYPE_UNKNOWN,
 	TYPE_FILE,
-	TYPE_REDIR
+	TYPE_REDIR,
+	TYPE_EXPAND
 }	t_type;
 
 /****************************************************************************/
@@ -81,6 +82,10 @@ void	free_token_node(t_token *token_node);
 void	free_token_lst(t_token **token_lst);
 int		get_token_len(char *token);
 bool	is_delimiter(char c);
+bool	is_part_of_word(char c);
+bool	is_parenthesis(char c);
+bool	is_quote(char c);
+bool	is_operator(char c);
 t_token	*get_last_token(t_token *lst);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 21:46:36 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/22 01:12:29 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/26 17:17:53 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	print_token_type(t_type type)
 		ft_printf(MGT"\t--->   QUOTE_D\t"RST);
 	else if (type == TYPE_SPACE)
 		ft_printf(MGT"\t--->   SPACE\t"RST);
+	else if (type == TYPE_EXPAND)
+		ft_printf(MGT"\t--->   EXPAND\t"RST);
 	else if (type == TYPE_WORD)
 		ft_printf(MGT"\t--->   WORD\t"RST);
 	else if (type == TYPE_CMD)

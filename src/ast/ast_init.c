@@ -10,7 +10,9 @@ int	get_args_len(t_token *token)
 
 	tmp = token;
 	arg = 0;
-	while (tmp && (tmp->type == TYPE_ARG || tmp->type == TYPE_CMD
+	while (tmp &&
+			(tmp->type == TYPE_ARG || tmp->type == TYPE_CMD
+				// TODO: sikp space before init_ast ?
 			|| tmp->type == TYPE_SPACE))
 	{
 		if (tmp->type == TYPE_ARG || tmp->type == TYPE_CMD)
@@ -20,10 +22,9 @@ int	get_args_len(t_token *token)
 	return (arg);
 }
 
-
 t_token	*get_prev_priority_token(t_token *root_token)
 {
-	int	priority;
+	int		priority;
 	t_token	*tmp;
 
 	priority = root_token->priority;
@@ -43,7 +44,7 @@ t_token	*get_prev_priority_token(t_token *root_token)
 
 t_token	*get_next_priority_token(t_token *root_token)
 {
-	int	priority;
+	int		priority;
 	t_token	*tmp;
 
 	priority = root_token->priority + 1;
@@ -56,30 +57,9 @@ t_token	*get_next_priority_token(t_token *root_token)
 				return (tmp);
 			tmp = tmp->next;
 		}
-		priority += 1;
+		priority++;
 	}
 	return (NULL);
-}
-
-void	print_ast(t_ast *node, int depth)
-{
-	if (!node)
-		return ;
-	for (int i = 0; i < depth; i++)
-		ft_printf("  ");
-	if (node->type == PIPE)
-	{
-		ft_printf("PIPE\n");
-		print_ast(node->pipe.left, depth + 1);
-		print_ast(node->pipe.right, depth + 1);
-	}
-	else if (node->type == COMMAND)
-	{
-		ft_printf("COMMAND: ");
-		for (int i = 0; node->command.args && node->command.args[i]; i++)
-			ft_printf("%s ", node->command.args[i]);
-		ft_printf("\n");
-	}
 }
 
 t_token	*get_root_token(t_token **token_lst, int priority)
@@ -133,48 +113,63 @@ t_ast	*create_command(t_token *token)
 	return (new_node);
 }
 
-t_ast	*create_pipe(t_ast *left, t_ast *right)
-{
-	t_ast	*new_node;
-	
-	new_node = ft_calloc(1, sizeof(t_ast));
-	if (!new_node)
-		return (NULL);
-	new_node->type = PIPE;
-	new_node->pipe.left = left;
-	new_node->pipe.right = right;
-	return (new_node);
-}
-
-t_ast	*parse_token(t_token *token)
+t_ast	*create_pipe(t_token *token)
 {
 	t_ast	*new_node;
 	t_token	*token_left;
 	t_token	*token_right;
-	t_ast	*node_left;
-	t_ast	*node_right;
 
-	token_left = NULL;
-	token_right = NULL;
-	node_left = NULL;
-	node_right = NULL;
-	new_node = NULL;
+	token_left = get_prev_priority_token(token);
+	token_right = get_next_priority_token(token);
+	new_node = ft_calloc(1, sizeof(t_ast));
+	if (!new_node)
+		return (NULL);
+	new_node->pipe.left = parse_token(token_left);   // TODO: secure
+	new_node->pipe.right = parse_token(token_right); // TODO: secure
+	new_node->type = PIPE;
+	return (new_node);
+}
+
+t_ast	*create_logical_operator(t_token *token)
+{
+	t_ast	*new_node;
+	t_token	*token_left;
+	t_token	*token_right;
+
+	token_left = get_prev_priority_token(token);
+	ft_printf("token_left = %s\n", token_left->content);
+	token_right = get_next_priority_token(token);
+	ft_printf("token_right = %s\n", token_right->content);
+	new_node = ft_calloc(1, sizeof(t_ast));
+	if (!new_node)
+		return (NULL);
+	new_node->logic.left = parse_token(token_left);
+	new_node->logic.right = parse_token(token_right);
+	if (ft_strcmp(token->content, "&&") == 0)
+		new_node->type = AND;
+	if (ft_strcmp(token->content, "||") == 0)
+		new_node->type = OR;
+	return (new_node);
+}
+
+// t_ast	*create_redir(t_token *token)
+// {
+
+// }
+
+
+t_ast	*parse_token(t_token *token)
+{
 	if (!token)
 		return (NULL);
+	if (token->type == TYPE_AND || token->type == TYPE_OR)
+		return (create_logical_operator(token));
 	if (token->type == TYPE_PIPE)
-	{
-		token_left = get_prev_priority_token(token);
-		token_right = get_next_priority_token(token);
-		node_left = parse_token(token_left);
-		node_right = parse_token(token_right);
-		new_node = create_pipe(node_left, node_right);
-		return (new_node);
-	}
+		return (create_pipe(token));
 	if (token->type == TYPE_CMD)
 		return (create_command(token));
 	return (NULL);
 }
-
 
 int	init_ast(t_ast **ast_lst, t_token **token_lst)
 {
