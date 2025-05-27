@@ -54,8 +54,6 @@ typedef struct s_command
 	int				fd_in;
 	int				fd_out;
 	char			**args;
-	int				fd_in;
-	int				fd_out;
 }					t_command;
 
 typedef struct s_pipe
@@ -66,7 +64,7 @@ typedef struct s_pipe
 
 typedef struct s_redir
 {
-	
+
 }					t_redir;
 
 typedef struct s_ast

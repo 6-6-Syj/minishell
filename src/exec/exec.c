@@ -52,6 +52,18 @@ static void	handle_exec(t_command *command, t_data *data)
 		exec_command(command, data);
 }
 
+static void	close_inherited_fds(void)
+{
+	int	fd;
+
+	fd = 3;
+	while (fd < 1024)
+	{
+		close(fd);
+		fd++;
+	}
+}
+
 static void	exec_command(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
@@ -61,8 +73,8 @@ static void	exec_command(t_command *cmd, t_data *data)
 	pid = w_fork(data);
 	if (pid == 0) // CHILD PROCESS
 	{
-		ft_printf("\nexec_cmd \t%s", cmd->args[0]);
-		ft_printf("\tin = %d, out = %d\n", cmd->fd_in, cmd->fd_out);
+		// ft_printf("\nexec_cmd \t%s", cmd->args[0]);
+		// ft_printf("\tin = %d, out = %d\n", cmd->fd_in, cmd->fd_out);
 		if (cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO)
 		{
 			w_dup2(cmd->fd_in, STDIN_FILENO, data);
@@ -73,6 +85,7 @@ static void	exec_command(t_command *cmd, t_data *data)
 			w_dup2(cmd->fd_out, STDOUT_FILENO, data);
 			w_close(cmd->fd_out, data);
 		}
+		close_inherited_fds();
 		if (cmd && cmd->args && cmd->args[0])
 		{
 			if (is_builtin(cmd->args[0]))
@@ -89,10 +102,6 @@ static void	exec_command(t_command *cmd, t_data *data)
 						cmd->args[0]);
 					exit_error(data); // TODO: 127 ?
 				}
-				// if (cmd->fd_in > 2)
-				// 	w_close(cmd->fd_in, data);
-				// if (cmd->fd_out > 2)
-				// 	w_close(cmd->fd_out, data);
 				w_execve(path, cmd->args, data->env_tab, data);
 			}
 		}
@@ -137,9 +146,11 @@ static void	handle_pipe(t_pipe *pipe, t_data *data, int *fd)
 	else if (pipe->right->type == PIPE)
 		assign_pipe_fds(pipe->right, fd[0], -1);
 	handle_ast(pipe->left, data, fd);
-	close(fd[1]); // w_close crash
+	// No check, normal: if w_close: crash. ex sur bash (sleep 2 | cat -e)
+	close(fd[1]);
 	handle_ast(pipe->right, data, fd);
-	close(fd[0]); // w_close crash
+	// No check, normal: if w_close: crash. ex sur bash (sleep 2 | cat -e)
+	close(fd[0]);
 }
 
 // static int	handle_and_or(t_ast *node, t_data *data)
@@ -191,8 +202,9 @@ static void	wait_process(void)
 
 	while ((wpid = wait(&status)) > 0)
 	{
-		printf("Parent: enfant avec PID %d terminé, status = %d\n", wpid,
-			status);
+		ft_printf("\033[0;32m\033[1m");
+		ft_printf("Child PID %d ended with status %d\n", wpid, status);
+		ft_printf("\033[0m");
 	}
 }
 void	exec_ast(t_ast *node, t_data *data)
@@ -204,6 +216,22 @@ void	exec_ast(t_ast *node, t_data *data)
 	handle_ast(node, data, fd);
 	wait_process();
 }
+
+// void	redir_out(t_data *data, int *fd)
+// {
+// 	if (fd[0] != -1)
+// 		w_close(fd[0], data); // Close read (useless fd)
+// 	w_dup2(fd[1], STDOUT_FILENO, data);
+// 	w_close(fd[1], data); // Close old writing fd
+// }
+
+// void	redir_in(t_data *data, int *fd)
+// {
+// 	if (fd[1] != -1)
+// 		w_close(fd[1], data); // Close write (useless fd)
+// 	w_dup2(fd[0], STDIN_FILENO, data);
+// 	w_close(fd[0], data); // Close old reading fd
+// }
 
 /*	TESTS
 
