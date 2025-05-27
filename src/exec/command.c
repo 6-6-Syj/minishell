@@ -31,14 +31,13 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 	path = get_path(cmd->args[0], data);
 	if (!path)
 	{
-		ft_printf("minishell: %s: command not found\n",
-			cmd->args[0]);
+		ft_printf("minishell: %s: command not found\n", cmd->args[0]);
 		exit_error(data); // TODO: 127 ?
 	}
 	w_execve(path, cmd->args, data->env_tab, data);
 }
 
-void	exec_command(t_command *cmd, t_data *data)
+static void	exec_command(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
 
@@ -64,4 +63,12 @@ void	exec_command(t_command *cmd, t_data *data)
 		if (cmd->fd_out > 2)
 			w_close(cmd->fd_out, data);
 	}
+}
+
+void	handle_exec(t_command *command, t_data *data)
+{
+	if (is_builtin(command->args[0])) // NOT OK
+		exec_builtin(&data->env, data, command->args[0]);
+	else
+		exec_command(command, data);
 }

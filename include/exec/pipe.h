@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   pipe.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-09 18:36:03 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-09 18:36:03 by jmagand          ###   ########.fr       */
+/*   Created: 2025-05-27 19:12:46 by jmagand           #+#    #+#             */
+/*   Updated: 2025-05-27 19:12:46 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#ifndef PIPE_H
+# define PIPE_H
 
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
 # include "ast.h"
 # include "data.h"
-# include "libft.h"
 # include "wrappers.h"
-# include <stdio.h>
-# include <sys/wait.h>
+# include "exec.h"
 
 /****************************************************************************/
 /*                                DEFINE									*/
@@ -34,16 +32,13 @@
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_data	t_data;
-typedef struct s_ast	t_ast;
+typedef struct s_data		t_data;
+typedef struct s_pipe		t_pipe;
+typedef struct s_ast		t_ast;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void					handle_ast(t_ast *node, t_data *data, int *fd);
-void					exec_ast(t_ast *node, t_data *data);
-
-char					*get_path(char *cmd, t_data *data);
-void					*free_strs(char **strs);
+void						handle_pipe(t_pipe *pipe, t_data *data, int *fd);
 
 #endif
