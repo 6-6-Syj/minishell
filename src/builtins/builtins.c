@@ -51,6 +51,14 @@ void	free_split(char **split)
 	free(split);
 }
 
+int	is_builtin(char *cmd)
+{
+	return (ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "echo") == 0
+		|| ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0
+		|| ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "env") == 0
+		|| ft_strcmp(cmd, "exit") == 0);
+}
+
 int	exec_builtin(t_env **env_lst, t_data *data, char *input)
 {
 	if (!ft_strncmp(input, "env", 4)) // ft_strtrim(input, "\"")

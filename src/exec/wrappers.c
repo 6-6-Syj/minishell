@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "data.h"
-#include "exec.h"
+#include "wrappers.h"
 #include <errno.h>
 
 void	w_access(char *path, t_data *data)

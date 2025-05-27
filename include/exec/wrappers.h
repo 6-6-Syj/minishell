@@ -1,70 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   wrappers.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/03 20:43:41 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/08 17:24:43 by dabuchhe         ###   ########lyon.fr   */
+/*   Created: 2025-05-27 18:52:14 by jmagand           #+#    #+#             */
+/*   Updated: 2025-05-27 18:52:14 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef WRAPPERS_H
+# define WRAPPERS_H
 
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
 # include "data.h"
-# include "env.h"
-# include <linux/limits.h>
-# include <unistd.h>
-// # include <stdbool.h>
+# include "libft.h"
+# include <stdio.h>
+# include <sys/wait.h>
 
 /****************************************************************************/
 /*                                DEFINE									*/
 /****************************************************************************/
-// # define C_SPACE	' '
-// # define C_SIMPLE_QUOTE '\''
-// # define C_DOUBLE_QUOTE '\"'
 
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
-// typedef enum e_type
-// {
-// 	TYPE_PARENTHESE,
-// 	TYPE_OPERATOR,
-// 	TYPE_PIPE,
-// 	TYPE_REDIRECTION,
-// 	TYPE_COMMAND,
-// 	TYPE_EXPAND,
-// 	TYPE_QUOTE,
-// 	TYPE_SPACE,
-// } t_type;
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_env	t_env;
-typedef struct s_data	t_data;
+typedef struct s_data		t_data;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void					free_split(char **split);
-int						is_builtin(char *cmd);
-int						exec_builtin(t_env **env_lst, t_data *data,
-							char *input);
+// wrappers.c
+void						w_access(char *path, t_data *data);
+void						w_execve(char *path, char **cmds, char **env,
+								t_data *data);
 
-int						handle_cd(t_env *env, char *input);
-int						handle_export(t_env **env_lst, t_data *data,
-							char *input);
-int						print_export(t_env *env_lst);
-int						handle_unset(t_env **env_lst, t_data *data,
-							char *input);
-int						ft_env(t_env *env_lst);
-int						ft_pwd(void);
+// wrappers_2.c
+void						w_close(int fd, t_data *data);
+void						w_pipe(int *fd, t_data *data);
+void						w_dup2(int new, int old, t_data *data);
+int							w_fork(t_data *data);
 
 #endif

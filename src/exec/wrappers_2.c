@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "data.h"
-#include "exec.h"
+#include "wrappers.h"
 #include <errno.h>
 
 void	w_pipe(int *fd, t_data *data)

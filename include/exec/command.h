@@ -1,70 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   command.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/03 20:43:41 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/08 17:24:43 by dabuchhe         ###   ########lyon.fr   */
+/*   Created: 2025-05-27 19:02:10 by jmagand           #+#    #+#             */
+/*   Updated: 2025-05-27 19:02:10 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef COMMAND_H
+# define COMMAND_H
 
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
+# include "ast.h"
 # include "data.h"
-# include "env.h"
-# include <linux/limits.h>
-# include <unistd.h>
-// # include <stdbool.h>
+# include "exec.h"
+# include "builtins.h"
 
 /****************************************************************************/
 /*                                DEFINE									*/
 /****************************************************************************/
-// # define C_SPACE	' '
-// # define C_SIMPLE_QUOTE '\''
-// # define C_DOUBLE_QUOTE '\"'
 
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
-// typedef enum e_type
-// {
-// 	TYPE_PARENTHESE,
-// 	TYPE_OPERATOR,
-// 	TYPE_PIPE,
-// 	TYPE_REDIRECTION,
-// 	TYPE_COMMAND,
-// 	TYPE_EXPAND,
-// 	TYPE_QUOTE,
-// 	TYPE_SPACE,
-// } t_type;
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_env	t_env;
-typedef struct s_data	t_data;
+typedef struct s_data		t_data;
+typedef struct s_ast		t_ast;
+typedef struct s_command	t_command;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void					free_split(char **split);
-int						is_builtin(char *cmd);
-int						exec_builtin(t_env **env_lst, t_data *data,
-							char *input);
+void						exec_command(t_command *cmd, t_data *data);
 
-int						handle_cd(t_env *env, char *input);
-int						handle_export(t_env **env_lst, t_data *data,
-							char *input);
-int						print_export(t_env *env_lst);
-int						handle_unset(t_env **env_lst, t_data *data,
-							char *input);
-int						ft_env(t_env *env_lst);
-int						ft_pwd(void);
+/* UTILS */
+void						redir_in(t_command *cmd, t_data *data);
+void						redir_out(t_command *cmd, t_data *data);
 
 #endif
