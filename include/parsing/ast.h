@@ -52,6 +52,8 @@ typedef struct s_logic
 typedef struct s_command
 {
 	char			**args;
+	int				fd_in;
+	int				fd_out;
 }					t_command;
 
 typedef struct s_pipe
@@ -85,3 +87,4 @@ int					init_ast(t_ast **ast_lst, t_token **token_lst);
 t_ast				*add_ast_node(t_ast **ast_lst);
 t_ast				*parse_token(t_token *token);
 #endif
+

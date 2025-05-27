@@ -37,8 +37,7 @@ typedef struct s_ast	t_ast;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-int						handle_ast(t_ast *node, t_data *data, int *fd);
-int						exec_ast(t_ast *node, t_data *data);
+void					exec_ast(t_ast *node, t_data *data);
 
 void					w_access(char *path, t_data *data);
 void					w_execve(char *path, char **cmds, char **env,
@@ -46,10 +45,8 @@ void					w_execve(char *path, char **cmds, char **env,
 void					w_close(int fd, t_data *data);
 
 void					w_pipe(int *fd, t_data *data);
-void					w_dup2(int old, int new, t_data *data);
+void					w_dup2(int new, int old, t_data *data);
 int						w_fork(t_data *data);
-void					redir_out(t_data *data, int *fd);
-void					redir_in(t_data *data, int *fd);
 
 char					*get_path(char *cmd, t_data *data);
 void					*free_strs(char **strs);

@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "exec.h"
-# include "data.h"
-# include <errno.h>
+#include "data.h"
+#include "exec.h"
+#include <errno.h>
 
 void	w_pipe(int *fd, t_data *data)
 {
@@ -25,9 +25,9 @@ void	w_pipe(int *fd, t_data *data)
 	}
 }
 
-void	w_dup2(int old, int new, t_data *data)
+void	w_dup2(int new, int old, t_data *data)
 {
-	if (dup2(old, new) == -1)
+	if (dup2(new, old) == -1)
 	{
 		perror("dup2");
 		if (data)
@@ -49,20 +49,4 @@ int	w_fork(t_data *data)
 		exit_error(data);
 	}
 	return (pid);
-}
-
-void	redir_out(t_data *data, int *fd)
-{
-	if (fd[0] != -1)
-		w_close(fd[0], data); // Close read (useless fd)
-	w_dup2(fd[1], STDOUT_FILENO, data);
-	w_close(fd[1], data); // Close old writing fd
-}
-
-void	redir_in(t_data *data, int *fd)
-{
-	if (fd[1] != -1)
-		w_close(fd[1], data); // Close write (useless fd)
-	w_dup2(fd[0], STDIN_FILENO, data);
-	w_close(fd[0], data); // Close old reading fd
 }

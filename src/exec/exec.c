@@ -33,41 +33,8 @@ Redirection des flux standard (stdin, stdout,
 
 */
 
-static int	exec_command(t_ast *cmd, t_data *data)
-{
-	char	*path;
-
-	// int		fd;
-	// fd = 3;
-	path = NULL;
-	if (cmd && cmd->command.args)
-		path = get_path(cmd->command.args[0], data);
-	if (!path)
-		return (-42); // TODO: CHECK ERROR
-	w_access(path, data);
-	// while (fd < 1024)
-	// 	w_close(fd++, data);
-	w_execve(path, cmd->command.args, data->env_tab, data);
-	return (0); // UNREACHABLE
-}
-
-static int	exec_fork_command(t_ast *cmd, t_data *data, int *fd)
-{
-	pid_t	pid;
-	int		status;
-
-	(void)fd; // A TEJ
-	pid = w_fork(data);
-	if (pid == 0) // CHILD
-		return (exec_command(cmd, data));
-	// else if (cmd && cmd->right)
-	// 	return (handle_ast(cmd->right, data, fd));
-	else // PARENT
-	{
-		waitpid(pid, &status, 0);
-		return (WEXITSTATUS(status)); // TODO: CHECK IT
-	}
-}
+static void	handle_ast(t_ast *node, t_data *data, int *fd);
+static void	exec_command(t_command *cmd, t_data *data);
 
 static int	is_builtin(char *cmd)
 {
@@ -77,109 +44,175 @@ static int	is_builtin(char *cmd)
 		|| ft_strcmp(cmd, "exit") == 0);
 }
 
-static int	handle_exec(t_ast *cmd, t_data *data, int *fd)
+static void	handle_exec(t_command *command, t_data *data)
 {
-
-	if (is_builtin(cmd->command.args[0]))
-		return (exec_builtin(&data->env, data, cmd->command.args[0]));
+	if (is_builtin(command->args[0])) // if pipeline, need to fork
+		exec_builtin(&data->env, data, command->args[0]);
 	else
-		return (exec_fork_command(cmd, data, fd));
-	return (0); // UNREACHABLE
+		exec_command(command, data);
 }
 
-static int	handle_and_or(t_ast *node, t_data *data, int *fd)
+static void	exec_command(t_command *cmd, t_data *data)
 {
-	int	ret;
+	pid_t	pid;
+	char	*path;
 
-	ret = handle_ast(node->logic.left, data, fd);
-	if (node->type == AND)
+	path = NULL;
+	pid = w_fork(data);
+	if (pid == 0) // CHILD PROCESS
 	{
-		if (ret == 0)
-			ret = handle_ast(node->logic.right, data, fd);
-	}
-	else // type == OR
-	{
-		if (ret != 0)
-			ret = handle_ast(node->logic.right, data, fd);
-	}
-	return (ret);
-}
-
-static int	handle_pipe(t_ast *node, t_data *data, int *fd)
-{
-	pid_t	pid_right;
-	pid_t	pid_left;
-	int		status_right;
-	int		status_left;
-
-	w_pipe(fd, data);
-	pid_right = w_fork(data);
-	if (pid_right == 0) // CHILD
-	{
-		redir_in(data, fd);
-		return (handle_ast(node->pipe.right, data, fd));
-	}
-	else // PARENT
-	{
-		if (node && node->pipe.left && node->pipe.left->type == COMMAND)
+		ft_printf("\nexec_cmd \t%s", cmd->args[0]);
+		ft_printf("\tin = %d, out = %d\n", cmd->fd_in, cmd->fd_out);
+		if (cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO)
 		{
-			pid_left = w_fork(data);
-			if (pid_left == 0) // CHILD
-			{
-				redir_out(data, fd);
-				return (handle_ast(node->pipe.left, data, fd));
-			}
-			// PARENT
-			w_close(fd[0], data); // close pipe in
-			w_close(fd[1], data); // close pipe out
-			waitpid(pid_right, &status_left, 0);
-			waitpid(pid_left, &status_right, 0);
-			return (status_left); // TODO: CHECK THIS
+			w_dup2(cmd->fd_in, STDIN_FILENO, data);
+			w_close(cmd->fd_in, data);
 		}
-		redir_out(data, fd);
-		return (handle_ast(node->pipe.right, data, fd));
+		if (cmd->fd_out > 1 && cmd->fd_out != STDOUT_FILENO)
+		{
+			w_dup2(cmd->fd_out, STDOUT_FILENO, data);
+			w_close(cmd->fd_out, data);
+		}
+		if (cmd && cmd->args && cmd->args[0])
+		{
+			if (is_builtin(cmd->args[0]))
+			{
+				exec_builtin(&data->env, data, cmd->args[0]);
+				exit(0); // TODO: CHECK IF THERE ?
+			}
+			else
+			{
+				path = get_path(cmd->args[0], data);
+				if (!path)
+				{
+					ft_printf("minishell: %s: command not found\n",
+						cmd->args[0]);
+					exit_error(data); // TODO: 127 ?
+				}
+				// if (cmd->fd_in > 2)
+				// 	w_close(cmd->fd_in, data);
+				// if (cmd->fd_out > 2)
+				// 	w_close(cmd->fd_out, data);
+				w_execve(path, cmd->args, data->env_tab, data);
+			}
+		}
+		exit(1); // TODO: CHECK ERROR
 	}
-}
-
-int	handle_ast(t_ast *node, t_data *data, int *fd)
-{
-	if (node && (node->type == AND || node->type == OR))
-		return (handle_and_or(node, data, fd));
-	else if (node && node->type == PIPE)
-		return (handle_pipe(node, data, fd));
-	// else if (node && (node->type == REDIR_IN_TRUNC
-	// || node->type == REDIR_OUT_TRUNC
-	// 	|| node->type == REDIR_OUT_APPEND || node->type == HERE_DOC))
-	// {
-	// 	// Handle redirect stdin/out
-	// 	// Ouvrir le fichier approprié en fonction du type de redirection
-	// 	// Dupliquer les descripteurs de fichiers standards
-	// 	// Fermer les descripteurs de fichiers inutiles
-	// 	// Si un sous-arbre droit existe,
-	// 	// cela signifie qu'il y a d'autres redirections à faire
-	// 	// Si tout se passe bien à droite,
-	// 	// continuer à gauche ou exécuter la commande
-	// 	// Si problème à droite, retourner le code d'erreur du sous-arbre droit
-	// 	return (-42);
-	// }
-	else // (node->type == COMMAND)
+	else // PARENT PROCESS
 	{
-		// if (node->right)
-		// 	return (handle_ast(node->right, data, fd));
-		return (handle_exec(node, data, fd));
+		if (cmd->fd_in > 2)
+			w_close(cmd->fd_in, data);
+		if (cmd->fd_out > 2)
+			w_close(cmd->fd_out, data);
 	}
-	// Retourner le code de sortie approprié
 }
 
-int	exec_ast(t_ast *node, t_data *data)
+static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 {
-	int	ret;
+	if (!node)
+		return ;
+	if (node->type == COMMAND)
+	{
+		if (fd_in != -1)
+			node->command.fd_in = fd_in;
+		if (fd_out != -1)
+			node->command.fd_out = fd_out;
+	}
+	else if (node->type == PIPE)
+	{
+		assign_pipe_fds(node->pipe.left, fd_in, -1);   // left inherits fd_in
+		assign_pipe_fds(node->pipe.right, -1, fd_out); // right inherits fd_out
+	}
+}
+
+static void	handle_pipe(t_pipe *pipe, t_data *data, int *fd)
+{
+	w_pipe(fd, data);
+	if (pipe->left->type == COMMAND)
+		pipe->left->command.fd_out = fd[1];
+	else if (pipe->left->type == PIPE)
+		assign_pipe_fds(pipe->left, -1, fd[1]);
+	if (pipe->right->type == COMMAND)
+		pipe->right->command.fd_in = fd[0];
+	else if (pipe->right->type == PIPE)
+		assign_pipe_fds(pipe->right, fd[0], -1);
+	handle_ast(pipe->left, data, fd);
+	close(fd[1]); // w_close crash
+	handle_ast(pipe->right, data, fd);
+	close(fd[0]); // w_close crash
+}
+
+// static int	handle_and_or(t_ast *node, t_data *data)
+// {
+// 	ret = handle_ast(node->logic.left, data);
+// 	if (node->type == AND)
+// 	{
+// 		if (ret == 0)
+// 			ret = handle_ast(node->logic.right, data);
+// 	}
+// 	else // type == OR
+// 	{
+// 		if (ret != 0)
+// 			ret = handle_ast(node->logic.right, data);
+// 	}
+// 	return (ret);
+// }
+
+static void	handle_ast(t_ast *node, t_data *data, int *fd)
+{
+	if (!node)
+		return ;
+	// else if (node && (node->type == AND || node->type == OR))
+	// 	handle_and_or(node, data);
+	if (node && (node->type == REDIR_IN_TRUNC || node->type == REDIR_OUT_TRUNC
+			|| node->type == REDIR_OUT_APPEND || node->type == HERE_DOC))
+	{
+		// Handle redirect stdin/out
+		// Ouvrir le fichier approprié en fonction du type de redirection
+		// Dupliquer les descripteurs de fichiers standards
+		// Fermer les descripteurs de fichiers inutiles
+		// Si un sous-arbre droit existe,
+		// cela signifie qu'il y a d'autres redirections à faire
+		// Si tout se passe bien à droite,
+		// continuer à gauche ou exécuter la commande
+		// Si problème à droite, retourner le code d'erreur du sous-arbre droit
+		// return (-42);
+	}
+	else if (node->type == COMMAND)
+		handle_exec(&node->command, data);
+	else if (node->type == PIPE)
+		handle_pipe(&node->pipe, data, fd);
+}
+
+static void	wait_process(void)
+{
+	int		status;
+	pid_t	wpid;
+
+	while ((wpid = wait(&status)) > 0)
+	{
+		printf("Parent: enfant avec PID %d terminé, status = %d\n", wpid,
+			status);
+	}
+}
+void	exec_ast(t_ast *node, t_data *data)
+{
 	int	fd[2];
 
-	// t_pipe	*pipe;
 	fd[0] = -1;
 	fd[1] = -1;
-	ret = handle_ast(node, data, fd);
-	// close all fd
-	return (ret);
+	handle_ast(node, data, fd);
+	wait_process();
 }
+
+/*	TESTS
+
+ls | cat -e | sleep 2 | ls | cat -e | cat -e
+
+sleep 1 | sleep 2 | sleep 6 | ls | sleep 6 | cat -e | sleep 2 | ls | cat
+	-e | sleep 1 | sleep 2 | sleep 6 | ls | sleep 6 | cat
+	-e | sleep 2 | ls | cat
+	-e | sleep 1 | sleep 2 | sleep 6 | ls | sleep 6 | cat
+	-e | sleep 2 | ls | cat -e
+
+*/
