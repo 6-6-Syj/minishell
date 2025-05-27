@@ -52,7 +52,8 @@ typedef enum e_type
 	TYPE_UNKNOWN,
 	TYPE_FILE,
 	TYPE_REDIR,
-	TYPE_EXPAND
+	TYPE_EXPAND,
+	TYPE_VAR
 }	t_type;
 
 /****************************************************************************/
