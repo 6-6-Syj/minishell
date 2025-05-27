@@ -95,6 +95,8 @@ t_ast	*create_command(t_token *token)
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
 		return (NULL);
+	new_node->command.fd_in = -1;
+	new_node->command.fd_out = -1;
 	new_node->type = COMMAND;
 	len = get_args_len(tmp);
 	new_node->command.args = ft_calloc(len + 1, sizeof(char *));
@@ -103,12 +105,10 @@ t_ast	*create_command(t_token *token)
 			|| tmp->type == TYPE_SPACE))
 	{
 		if (tmp->type == TYPE_CMD || tmp->type == TYPE_ARG)
-		{
-			new_node->command.args[i] = ft_strdup(tmp->content);
-			i++;
-		}
+			new_node->command.args[i++] = ft_strdup(tmp->content);
 		tmp = tmp->next;
 	}
+
 	new_node->command.args[i] = NULL;
 	return (new_node);
 }
@@ -183,4 +183,3 @@ int	init_ast(t_ast **ast_lst, t_token **token_lst)
 	*ast_lst = parse_token(root_token);
 	return (0);
 }
-

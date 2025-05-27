@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:11:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/25 17:46:18 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/27 18:23:34 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_logic
 
 typedef struct s_command
 {
+	int				fd_in;
+	int				fd_out;
 	char			**args;
 }					t_command;
 
@@ -62,6 +64,7 @@ typedef struct s_pipe
 
 typedef struct s_redir
 {
+	
 }					t_redir;
 
 typedef struct s_ast
@@ -84,4 +87,5 @@ typedef struct s_ast
 int					init_ast(t_ast **ast_lst, t_token **token_lst);
 t_ast				*add_ast_node(t_ast **ast_lst);
 t_ast				*parse_token(t_token *token);
+void				free_ast(t_ast **node);
 #endif
