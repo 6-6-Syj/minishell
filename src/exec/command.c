@@ -12,14 +12,16 @@
 
 #include "command.h"
 
-static void	close_inherited_fds(void)
+static void	close_inherited_fds(t_command *cmd)
 {
 	int	fd;
 
 	fd = 3;
 	while (fd < 1024)
 	{
-		close(fd);
+		// Ne pas fermer les FDs que nous utilisons
+		if (fd != cmd->fd_in && fd != cmd->fd_out)
+			close(fd);
 		fd++;
 	}
 }
@@ -46,11 +48,14 @@ void	exec_command(t_command *cmd, t_data *data)
 	{
 		redir_in(cmd, data);
 		redir_out(cmd, data);
-		close_inherited_fds();
+		close_inherited_fds(cmd);
 		if (cmd && cmd->args && cmd->args[0])
 		{
 			if (is_builtin(cmd->args[0])) // TODO: CHECK THIS IN MULTI-PIPE
-				exec_builtin(&data->env, data, cmd->args[0]);
+			{
+				data->err = exec_builtin(&data->env, data, cmd->args[0]);
+				exit(0); // TODO: CHECK ERROR
+			}
 			else
 				search_cmd_and_exec(cmd, data);
 		}
@@ -64,4 +69,3 @@ void	exec_command(t_command *cmd, t_data *data)
 			w_close(cmd->fd_out, data);
 	}
 }
-

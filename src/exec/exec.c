@@ -34,17 +34,14 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 {
 	if (!node)
 		return ;
-	// if (node && node->type == COMMAND)
-	// {
-	// 	ft_printf("┌─────────── Command Info ──────────┐\n");
-	// 	ft_printf("│       Command: %s\n", node->command.args[0]);
-	// 	ft_printf("│       Input FD: %d\n", node->command.fd_in);
-	// 	ft_printf("│       Output FD: %d\n", node->command.fd_out);
-	// 	ft_printf("├─────────── Pipe FDs ──────────────┤\n");
-	// 	ft_printf("│       Pipe In: %d\n", fd[0]);
-	// 	ft_printf("│       Pipe Out: %d\n", fd[1]);
-	// 	ft_printf("└───────────────────────────────────┘\n");
-	// }
+	if (node && node->type == COMMAND)
+	{
+		ft_printf("┌─────────── Command Info ──────────┐\n");
+		ft_printf("│       Command: %s\n", node->command.args[0]);
+		ft_printf("│       Input FD: %d\n", node->command.fd_in);
+		ft_printf("│       Output FD: %d\n", node->command.fd_out);
+		ft_printf("└───────────────────────────────────┘\n");
+	}
 	// else if (node && (node->type == AND || node->type == OR))
 	// 	handle_and_or(node, data);
 	if (node->type == COMMAND)

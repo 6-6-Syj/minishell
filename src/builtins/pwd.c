@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include <stdio.h>
 
 // TODO: Error if directory is inaccessible, or deleted...
 int	ft_pwd(void)
@@ -19,6 +20,7 @@ int	ft_pwd(void)
 
 	if (getcwd(res, PATH_MAX))
 	{
+		fprintf(stderr, "DEBUG pwd: writing to fd %d\n", STDOUT_FILENO); // Sur stderr pour voir
 		ft_putstr_fd(res, 1);
 		ft_putchar_fd('\n', 1);
 		return (0);

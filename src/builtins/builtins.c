@@ -61,6 +61,8 @@ int	is_builtin(char *cmd)
 
 int	exec_builtin(t_env **env_lst, t_data *data, char *input)
 {
+	(void)env_lst;
+	(void)data;
 	if (!ft_strncmp(input, "pwd", 4))
 		return (ft_pwd());
 	// else if (!ft_strncmp(input, "env", 4)) // ft_strtrim(input, "\"")
