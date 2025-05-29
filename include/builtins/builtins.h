@@ -20,29 +20,6 @@
 # include "env.h"
 # include <linux/limits.h>
 # include <unistd.h>
-// # include <stdbool.h>
-
-/****************************************************************************/
-/*                                DEFINE									*/
-/****************************************************************************/
-// # define C_SPACE	' '
-// # define C_SIMPLE_QUOTE '\''
-// # define C_DOUBLE_QUOTE '\"'
-
-/****************************************************************************/
-/*                                ENUM										*/
-/****************************************************************************/
-// typedef enum e_type
-// {
-// 	TYPE_PARENTHESE,
-// 	TYPE_OPERATOR,
-// 	TYPE_PIPE,
-// 	TYPE_REDIRECTION,
-// 	TYPE_COMMAND,
-// 	TYPE_EXPAND,
-// 	TYPE_QUOTE,
-// 	TYPE_SPACE,
-// } t_type;
 
 /****************************************************************************/
 /*                                STRUCT									*/

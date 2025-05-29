@@ -65,7 +65,7 @@ typedef struct s_pipe
 
 typedef struct s_redir
 {
-	char	*file;
+	char			*target;
 	struct s_redir	*next;
 }					t_redir;
 
@@ -81,7 +81,6 @@ typedef struct s_ast
 	};
 }					t_ast;
 
-
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
@@ -90,5 +89,5 @@ int					init_ast(t_ast **ast_lst, t_token **token_lst);
 t_ast				*add_ast_node(t_ast **ast_lst);
 t_ast				*parse_token(t_token *token);
 void				free_ast(t_ast **node);
-#endif
 
+#endif
