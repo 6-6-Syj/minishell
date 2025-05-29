@@ -14,57 +14,76 @@ typedef struct s_layout {
 // 1) Calculer la taille (width) et centre (center_x) de chaque sous-arbre, sans dessiner
 t_layout calc_layout(t_ast *node)
 {
-	t_layout layout = {0, 0, 0};
-	if (!node)
-		return layout;
+    t_layout layout = {0, 0, 0};
+    if (!node)
+        return layout;
 
-	char label[64] = {0};
-	if (node->type == PIPE)
-		snprintf(label, sizeof(label), "PIPE");
-	else if (node->type == AND)
-		snprintf(label, sizeof(label), "&&");
-	else if (node->type == OR)
-		snprintf(label, sizeof(label), "||");
-	else if (node->type == COMMAND)
-	{
-		if (node->command.args && node->command.args[0])
-			snprintf(label, sizeof(label), "%s", node->command.args[0]);
-		else
-			snprintf(label, sizeof(label), "CMD");
+    char label[64] = {0};
+    if (node->type == PIPE)
+        snprintf(label, sizeof(label), "PIPE");
+    else if (node->type == AND)
+        snprintf(label, sizeof(label), "&&");
+    else if (node->type == OR)
+        snprintf(label, sizeof(label), "||");
+    else if (node->type == COMMAND)
+    {
+        if (node->command.args && node->command.args[0])
+            snprintf(label, sizeof(label), "%s", node->command.args[0]);
+        else
+            snprintf(label, sizeof(label), "CMD");
 
-		for (int i = 1; node->command.args && node->command.args[i]; i++) {
-			strncat(label, " ", sizeof(label) - strlen(label) - 1);
-			strncat(label, node->command.args[i], sizeof(label) - strlen(label) - 1);
-		}
-	}
-	else
-		snprintf(label, sizeof(label), "NODE");
+        for (int i = 1; node->command.args && node->command.args[i]; i++) {
+            strncat(label, " ", sizeof(label) - strlen(label) - 1);
+            strncat(label, node->command.args[i], sizeof(label) - strlen(label) - 1);
+        }
+    }
+    else if (node->type == REDIR_IN_TRUNC)
+        snprintf(label, sizeof(label), "< \"%s\"", node->redir.file);
+    else if (node->type == REDIR_OUT_TRUNC)
+        snprintf(label, sizeof(label), "> \"%s\"", node->redir.file);
+    else if (node->type == REDIR_OUT_APPEND)
+        snprintf(label, sizeof(label), ">> \"%s\"", node->redir.file);
+    else
+        snprintf(label, sizeof(label), "NODE");
 
-	int label_len = strlen(label);
-	int box_width = label_len + 4;
+    int label_len = strlen(label);
+    int box_width = label_len + 4;
 
-	if (node->type == PIPE || node->type == AND || node->type == OR)
-	{
-		t_layout left = calc_layout(node->pipe.left);
-		t_layout right = calc_layout(node->pipe.right);
-		int spacing = 6;
+    if (node->type == PIPE || node->type == AND || node->type == OR)
+    {
+        t_layout left = calc_layout(node->pipe.left);
+        t_layout right = calc_layout(node->pipe.right);
+        int spacing = 6;
 
-		// Largeur totale = somme des largeurs + espacement
-		layout.width = left.width + right.width + spacing;
-		if (layout.width < box_width)
-			layout.width = box_width;
+        layout.width = left.width + right.width + spacing;
+        if (layout.width < box_width)
+            layout.width = box_width;
 
-		// Centre au milieu de la largeur totale
-		layout.center_x = layout.width / 2;
-	}
-	else
-	{
-		layout.width = box_width;
-		layout.center_x = box_width / 2;
-	}
+        layout.center_x = layout.width / 2;
+    }
+    else if (node->type == REDIR_IN_TRUNC
+          || node->type == REDIR_OUT_TRUNC
+          || node->type == REDIR_OUT_APPEND)
+    {
+        t_layout left = calc_layout(node->redir.left);
+        t_layout right = calc_layout(node->redir.right);
+        int spacing = 4;
 
-	return layout;
+        layout.width = left.width + right.width + spacing;
+        if (layout.width < box_width)
+            layout.width = box_width;
+
+        layout.center_x = layout.width / 2;
+    }
+    else
+    {
+        layout.width = box_width;
+        layout.center_x = box_width / 2;
+    }
+
+    return layout;
 }
+
 
 void place_node(char canvas[MAX_HEIGHT][MAX_WIDTH], int x, int y, const char *label)
 {
@@ -103,82 +122,120 @@ void place_node(char canvas[MAX_HEIGHT][MAX_WIDTH], int x, int y, const char *la
 // 2) Dessiner en positionnant avec layout calculé
 void draw_ast_at(t_ast *node, char canvas[MAX_HEIGHT][MAX_WIDTH], int x, int y, t_layout layout)
 {
-	if (!node)
-		return;
+    if (!node)
+        return;
 
-	char label[64] = {0};
-	if (node->type == PIPE)
-		snprintf(label, sizeof(label), "PIPE");
-	else if (node->type == AND)
-		snprintf(label, sizeof(label), "&&");
-	else if (node->type == OR)
-		snprintf(label, sizeof(label), "||");
-	else if (node->type == COMMAND)
-	{
-		if (node->command.args && node->command.args[0])
-			snprintf(label, sizeof(label), "%s", node->command.args[0]);
-		else
-			snprintf(label, sizeof(label), "CMD");
+    char label[64] = {0};
+    if (node->type == PIPE)
+        snprintf(label, sizeof(label), "PIPE");
+    else if (node->type == AND)
+        snprintf(label, sizeof(label), "&&");
+    else if (node->type == OR)
+        snprintf(label, sizeof(label), "||");
+    else if (node->type == COMMAND)
+    {
+        if (node->command.args && node->command.args[0])
+            snprintf(label, sizeof(label), "%s", node->command.args[0]);
+        else
+            snprintf(label, sizeof(label), "CMD");
 
-		for (int i = 1; node->command.args && node->command.args[i]; i++) {
-			strncat(label, " ", sizeof(label) - strlen(label) - 1);
-			strncat(label, node->command.args[i], sizeof(label) - strlen(label) - 1);
-		}
-	}
-	else
-		snprintf(label, sizeof(label), "NODE");
+        for (int i = 1; node->command.args && node->command.args[i]; i++) {
+            strncat(label, " ", sizeof(label) - strlen(label) - 1);
+            strncat(label, node->command.args[i], sizeof(label) - strlen(label) - 1);
+        }
+    }
+    else if (node->type == REDIR_IN_TRUNC)
+        snprintf(label, sizeof(label), "< \"%s\"", node->redir.file);
+    else if (node->type == REDIR_OUT_TRUNC)
+        snprintf(label, sizeof(label), "> \"%s\"", node->redir.file);
+    else if (node->type == REDIR_OUT_APPEND)
+        snprintf(label, sizeof(label), ">> \"%s\"", node->redir.file);
+    else
+        snprintf(label, sizeof(label), "NODE");
 
-	int label_len = strlen(label);
-	int box_width = label_len + 4;
+    int label_len = strlen(label);
+    int box_width = label_len + 4;
 
-	if (node->type == PIPE || node->type == AND || node->type == OR)
-	{
-		t_layout left_layout = calc_layout(node->pipe.left);
-		t_layout right_layout = calc_layout(node->pipe.right);
-		int spacing = 6;
+    if (node->type == PIPE || node->type == AND || node->type == OR)
+    {
+        t_layout left_layout = calc_layout(node->pipe.left);
+        t_layout right_layout = calc_layout(node->pipe.right);
+        int spacing = 6;
 
-		// Position enfants
-		int left_x = x - layout.width/2 + left_layout.center_x;
-		int right_x = left_x + left_layout.width + spacing;
+        int left_x = x - layout.width / 2 + left_layout.center_x;
+        int right_x = left_x + left_layout.width + spacing;
 
-		// Dessiner enfants
-		draw_ast_at(node->pipe.left, canvas, left_x, y + 6, left_layout);
-		draw_ast_at(node->pipe.right, canvas, right_x, y + 6, right_layout);
+        draw_ast_at(node->pipe.left, canvas, left_x, y + 6, left_layout);
+        draw_ast_at(node->pipe.right, canvas, right_x, y + 6, right_layout);
 
-		// Dessiner parent
-		place_node(canvas, x - box_width/2, y, label);
+        place_node(canvas, x - box_width / 2, y, label);
 
-		// Dessiner connexions verticales
-		int vert_start_y = y + 3;
-		canvas[vert_start_y][x] = '|';
+        int vert_start_y = y + 3;
+        canvas[vert_start_y][x] = '|';
 
-		int vert_end_y = y + 5;
-		canvas[vert_end_y][left_x] = '|';
-		canvas[vert_end_y][right_x] = '|';
+        int vert_end_y = y + 5;
+        canvas[vert_end_y][left_x] = '|';
+        canvas[vert_end_y][right_x] = '|';
 
-		// Ligne horizontale entre branches enfants
-		for (int i = left_x + 1; i < right_x; i++)
-			canvas[vert_end_y][i] = '-';
+        for (int i = left_x + 1; i < right_x; i++)
+            canvas[vert_end_y][i] = '-';
 
-		// Branches diagonales
-		if (vert_end_y - vert_start_y > 1)
-		{
-			int mid_y = (vert_start_y + vert_end_y) / 2;
-			canvas[mid_y][x - 1] = '/';
-			canvas[mid_y][x + 1] = '\\';
-		}
-		else
-		{
-			canvas[vert_start_y + 1][x - 1] = '/';
-			canvas[vert_start_y + 1][x + 1] = '\\';
-		}
-	}
-	else
-	{
-		// Feuille simple
-		place_node(canvas, x - box_width / 2, y, label);
-	}
+        if (vert_end_y - vert_start_y > 1)
+        {
+            int mid_y = (vert_start_y + vert_end_y) / 2;
+            canvas[mid_y][x - 1] = '/';
+            canvas[mid_y][x + 1] = '\\';
+        }
+        else
+        {
+            canvas[vert_start_y + 1][x - 1] = '/';
+            canvas[vert_start_y + 1][x + 1] = '\\';
+        }
+    }
+    else if (node->type == REDIR_IN_TRUNC
+          || node->type == REDIR_OUT_TRUNC
+          || node->type == REDIR_OUT_APPEND)
+    {
+        t_layout left_layout = calc_layout(node->redir.left);
+        t_layout right_layout = calc_layout(node->redir.right);
+        int spacing = 4;
+
+        int left_x = x - layout.width / 2 + left_layout.center_x;
+        int right_x = left_x + left_layout.width + spacing;
+
+        draw_ast_at(node->redir.left, canvas, left_x, y + 6, left_layout);
+        draw_ast_at(node->redir.right, canvas, right_x, y + 6, right_layout);
+
+        place_node(canvas, x - box_width / 2, y, label);
+
+        int vert_start_y = y + 3;
+        canvas[vert_start_y][x] = '|';
+
+        int vert_end_y = y + 5;
+        canvas[vert_end_y][left_x] = '|';
+        canvas[vert_end_y][right_x] = '|';
+
+        for (int i = left_x + 1; i < right_x; i++)
+            canvas[vert_end_y][i] = '-';
+
+        if (vert_end_y - vert_start_y > 1)
+        {
+            int mid_y = (vert_start_y + vert_end_y) / 2;
+            canvas[mid_y][x - 1] = '/';
+            canvas[mid_y][x + 1] = '\\';
+        }
+        else
+        {
+            canvas[vert_start_y + 1][x - 1] = '/';
+            canvas[vert_start_y + 1][x + 1] = '\\';
+        }
+    }
+    else
+    {
+        place_node(canvas, x - box_width / 2, y, label);
+    }
 }
+
 
 void print_canvas(char canvas[MAX_HEIGHT][MAX_WIDTH])
 {

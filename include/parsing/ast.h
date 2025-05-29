@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:11:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/27 18:23:34 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/29 16:53:57 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef enum e_type_ast
 	REDIR_OUT_APPEND,
 	HERE_DOC,
 	COMMAND,
+	
 }					t_type_ast;
 
 // typedef struct s_redirect
@@ -43,20 +44,13 @@ typedef enum e_type_ast
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
+
+
 typedef struct s_logic
 {
 	struct s_ast	*left;
 	struct s_ast	*right;
 }					t_logic;
-
-typedef struct s_command
-{
-	int				fd_in;
-	int				fd_out;
-	char			**args;
-	int				fd_in;
-	int				fd_out;
-}					t_command;
 
 typedef struct s_pipe
 {
@@ -66,8 +60,19 @@ typedef struct s_pipe
 
 typedef struct s_redir
 {
-	
+	// NEED REDIR_TYPE
+	char			*file;
+	struct s_redir	*next;
 }					t_redir;
+
+typedef struct s_command
+{
+	int				fd_in;
+	int				fd_out;
+	char			**args;
+	struct s_redir	redir; 
+}					t_command;
+
 
 typedef struct s_ast
 {

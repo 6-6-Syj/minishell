@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:20:13 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/26 19:20:55 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/28 18:21:30 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	get_token_len(char *token)
 			return (i);
 		else if (is_quote(token[0] && is_quote(token[i])))
 			return (i + 1);
-		else if (token[0] == ' ' && token[i] != ' ')
-			return (i);
+		// else if (token[0] == ' ' && token[i] != ' ')
+		// 	return (i);
 		else if (is_part_of_word(token[0]) && !is_part_of_word(token[i]))
 			return (i);
 		i++;

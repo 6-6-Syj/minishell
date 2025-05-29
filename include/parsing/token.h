@@ -25,35 +25,33 @@
 # define C_SIMPLE_QUOTE '\''
 # define C_DOUBLE_QUOTE '\"'
 
-
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
 typedef enum e_type
 {
-	TYPE_WORD,
-	TYPE_REDIR_IN,
-	TYPE_REDIR_OUT,
-	TYPE_REDIR_APPEND,
-	TYPE_HERE_DOC,
-
-	TYPE_PIPE,
-	TYPE_AND,
-	TYPE_OR,
-
-	TYPE_CMD,
-	TYPE_ARG,
-	TYPE_PAREN_L,
-	TYPE_PAREN_R,
-	TYPE_NEW_LINE,
-	TYPE_QUOTE_S,
-	TYPE_QUOTE_D,
-	TYPE_SPACE,
-	TYPE_UNKNOWN,
-	TYPE_FILE,
-	TYPE_REDIR,
-	TYPE_EXPAND,
-	TYPE_VAR
+	TYPE_WORD = 0,		// 0000 0000
+	TYPE_AND = 1 << 0,	// 0000 0001
+	TYPE_OR = 1 << 1,	// 0000 0010
+	TYPE_PIPE = 1 << 2, // 0000 0100
+	TYPE_HERE_DOC = 1 << 3,
+	TYPE_REDIR_IN = 1 << 4,
+	TYPE_REDIR_OUT = 1 << 5,
+	TYPE_REDIR_APPEND = 1 << 6,
+	TYPE_QUOTE_S = 1 << 7,
+	TYPE_QUOTE_D = 1 << 8,
+	TYPE_PAREN_L = 1 << 9,
+	TYPE_PAREN_R = 1 << 10,
+	TYPE_CMD = 1 << 11,
+	TYPE_ARG = 1 << 12,
+	TYPE_NEW_LINE = 1 << 13,
+	TYPE_SPACE = 1 << 14,
+	TYPE_UNKNOWN = 1 << 15,
+	TYPE_FILE = 1 << 16,
+	TYPE_EXPAND = 1 << 17,
+	TYPE_VAR = 1 << 18,
+	TYPE_REDIR = TYPE_REDIR_IN | TYPE_REDIR_OUT | TYPE_REDIR_APPEND | TYPE_HERE_DOC,
+	TYPE_OPERATOR = TYPE_AND | TYPE_OR | TYPE_PIPE
 }	t_type;
 
 /****************************************************************************/
@@ -77,7 +75,7 @@ typedef struct s_token
 int		get_token_priority(t_token *token);
 t_type	get_token_type(t_token *token);
 t_type	get_token_word_type(t_token *token);
-int	init_token(t_token **token_lst, char *input);
+int		init_token(t_token **token_lst, char *input);
 t_token	*add_token_node(t_token **token_lst);
 void	free_token_node(t_token *token_node);
 void	free_token_lst(t_token **token_lst);
@@ -87,6 +85,7 @@ bool	is_part_of_word(char c);
 bool	is_parenthesis(char c);
 bool	is_quote(char c);
 bool	is_operator(char c);
+int		parse_token_lst(t_token **token_lst);
 t_token	*get_last_token(t_token *lst);
 
 #endif

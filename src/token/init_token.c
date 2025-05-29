@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/26 14:48:28 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/05/28 18:22:09 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@
 // TODO: handle space when subshell or quote
 // TODO: handle expand
 // TODO: 
+
 static int		set_token_type(t_token *token_node)
 {
 	token_node->type = get_token_type(token_node);
 	if (token_node->type == TYPE_UNKNOWN)
 		return (-1);
-	if (token_node->type == TYPE_WORD)
-		token_node->type = get_token_word_type(token_node);
+	// if (token_node->type == TYPE_WORD)
+	// 	token_node->type = get_token_word_type(token_node);
 	return (0);
 }
 
@@ -73,6 +74,8 @@ int	init_token(t_token **token_lst, char *input)
 	i = 0;
 	while (input[i] && input[i] != '\n')
 	{
+		while (input[i] == ' ')
+			i++;
 		new_token = add_token_node(token_lst);
 		if (!new_token)
 			return (-1);
