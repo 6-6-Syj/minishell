@@ -71,7 +71,7 @@ void	exec_ast(t_ast *node, t_data *data)
 	if (!node)
 		exit_error(data); // TODO: CHECK ERROR
 	if (node->type == COMMAND && is_builtin(node->command.args[0]))
-		data->err = exec_builtin(&data->env, data, node->command.args[0]);
+		data->err = exec_builtin(&node->command, &data->env, data);
 	else
 	{
 		handle_ast(node, data, fd);

@@ -59,12 +59,11 @@ int	is_builtin(char *cmd)
 		|| ft_strcmp(cmd, "exit") == 0);
 }
 
-int	exec_builtin(t_env **env_lst, t_data *data, char *input)
+int	exec_builtin(t_command *command, t_env **env_lst, t_data *data)
 {
 	(void)env_lst;
-	(void)data;
-	if (!ft_strncmp(input, "pwd", 4))
-		return (ft_pwd());
+	if (!ft_strncmp(command->args[0], "pwd", 4))
+		return (ft_pwd(command, data));
 	// else if (!ft_strncmp(input, "env", 4)) // ft_strtrim(input, "\"")
 	// 	return (ft_env(*env_lst));
 	// else if (!ft_strncmp(input, "echo", 5)) // care -n

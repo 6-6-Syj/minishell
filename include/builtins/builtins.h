@@ -16,6 +16,7 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
+# include "command.h"
 # include "data.h"
 # include "env.h"
 # include <linux/limits.h>
@@ -24,24 +25,25 @@
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_env	t_env;
-typedef struct s_data	t_data;
+typedef struct s_env		t_env;
+typedef struct s_data		t_data;
+typedef struct s_command	t_command;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void					free_split(char **split);
-int						is_builtin(char *cmd);
-int						exec_builtin(t_env **env_lst, t_data *data,
-							char *input);
+void						free_split(char **split);
+int							is_builtin(char *cmd);
+int							exec_builtin(t_command *command, t_env **env_lst,
+								t_data *data);
 
-int						handle_cd(t_env *env, char *input);
-int						handle_export(t_env **env_lst, t_data *data,
-							char *input);
-int						print_export(t_env *env_lst);
-int						handle_unset(t_env **env_lst, t_data *data,
-							char *input);
-int						ft_env(t_env *env_lst);
-int						ft_pwd(void);
+int							handle_cd(t_env *env, char *input);
+int							handle_export(t_env **env_lst, t_data *data,
+								char *input);
+int							print_export(t_env *env_lst);
+int							handle_unset(t_env **env_lst, t_data *data,
+								char *input);
+int							ft_env(t_env *env_lst);
+int							ft_pwd(t_command *command, t_data *data);
 
 #endif

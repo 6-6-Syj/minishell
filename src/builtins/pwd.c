@@ -14,15 +14,18 @@
 #include <stdio.h>
 
 // TODO: Error if directory is inaccessible, or deleted...
-int	ft_pwd(void)
+int	ft_pwd(t_command *command, t_data *data)
 {
 	char	res[PATH_MAX];
 
+	(void)data; // DEL
 	if (getcwd(res, PATH_MAX))
 	{
-		fprintf(stderr, "DEBUG pwd: writing to fd %d\n", STDOUT_FILENO); // Sur stderr pour voir
-		ft_putstr_fd(res, 1);
-		ft_putchar_fd('\n', 1);
+		ft_printf("builtin fd_in = %d\n", command->fd_in);
+		ft_printf("builtin fd_out = %d\n", command->fd_out);
+
+		ft_putstr_fd(res, command->fd_out);
+		ft_putchar_fd('\n', command->fd_out);
 		return (0);
 	}
 	else

@@ -19,7 +19,6 @@ static void	close_inherited_fds(t_command *cmd)
 	fd = 3;
 	while (fd < 1024)
 	{
-		// Ne pas fermer les FDs que nous utilisons
 		if (fd != cmd->fd_in && fd != cmd->fd_out)
 			close(fd);
 		fd++;
@@ -36,6 +35,8 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 		ft_printf("minishell: %s: command not found\n", cmd->args[0]);
 		exit_error(data); // TODO: 127 ?
 	}
+	ft_printf("cmd fd_in = %d\n", cmd->fd_in);
+	ft_printf("cmd fd_out = %d\n", cmd->fd_out);
 	w_execve(path, cmd->args, data->env_tab, data);
 }
 
@@ -53,7 +54,7 @@ void	exec_command(t_command *cmd, t_data *data)
 		{
 			if (is_builtin(cmd->args[0])) // TODO: CHECK THIS IN MULTI-PIPE
 			{
-				data->err = exec_builtin(&data->env, data, cmd->args[0]);
+				data->err = exec_builtin(cmd, &data->env, data);
 				exit(0); // TODO: CHECK ERROR
 			}
 			else
