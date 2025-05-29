@@ -47,21 +47,7 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 	// }
 	// else if (node && (node->type == AND || node->type == OR))
 	// 	handle_and_or(node, data);
-	if (node && (node->type == REDIR_IN_TRUNC || node->type == REDIR_OUT_TRUNC
-			|| node->type == REDIR_OUT_APPEND || node->type == HERE_DOC))
-	{
-		// Handle redirect stdin/out
-		// Ouvrir le fichier approprié en fonction du type de redirection
-		// Dupliquer les descripteurs de fichiers standards
-		// Fermer les descripteurs de fichiers inutiles
-		// Si un sous-arbre droit existe,
-		// cela signifie qu'il y a d'autres redirections à faire
-		// Si tout se passe bien à droite,
-		// continuer à gauche ou exécuter la commande
-		// Si problème à droite, retourner le code d'erreur du sous-arbre droit
-		// return (-42);
-	}
-	else if (node->type == COMMAND)
+	if (node->type == COMMAND)
 		exec_command(&node->command, data);
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd);

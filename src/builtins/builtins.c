@@ -61,18 +61,18 @@ int	is_builtin(char *cmd)
 
 int	exec_builtin(t_env **env_lst, t_data *data, char *input)
 {
-	if (!ft_strncmp(input, "env", 4)) // ft_strtrim(input, "\"")
-		return (ft_env(*env_lst));
-	else if (!ft_strncmp(input, "pwd", 4))
+	if (!ft_strncmp(input, "pwd", 4))
 		return (ft_pwd());
+	// else if (!ft_strncmp(input, "env", 4)) // ft_strtrim(input, "\"")
+	// 	return (ft_env(*env_lst));
 	// else if (!ft_strncmp(input, "echo", 5)) // care -n
-	// 	ft_echo(env);
-	else if (!ft_strncmp(input, "cd", 3))
-		return (handle_cd(*env_lst, input));
-	else if (!ft_strncmp(input, "export", 7))
-		return (handle_export(env_lst, data, input));
-	else if (!ft_strncmp(input, "unset", 6))
-		return (handle_unset(env_lst, data, input));
+	// // 	ft_echo(env);
+	// else if (!ft_strncmp(input, "cd", 3))
+	// 	return (handle_cd(*env_lst, input));
+	// else if (!ft_strncmp(input, "export", 7))
+	// 	return (handle_export(env_lst, data, input));
+	// else if (!ft_strncmp(input, "unset", 6))
+	// 	return (handle_unset(env_lst, data, input));
 	// else if (!ft_strncmp(input, "exit", 5))
 	// 	ft_exit(env);
 	return (0);
