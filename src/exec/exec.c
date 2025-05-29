@@ -34,6 +34,17 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 {
 	if (!node)
 		return ;
+	// if (node && node->type == COMMAND)
+	// {
+	// 	ft_printf("┌─────────── Command Info ──────────┐\n");
+	// 	ft_printf("│       Command: %s\n", node->command.args[0]);
+	// 	ft_printf("│       Input FD: %d\n", node->command.fd_in);
+	// 	ft_printf("│       Output FD: %d\n", node->command.fd_out);
+	// 	ft_printf("├─────────── Pipe FDs ──────────────┤\n");
+	// 	ft_printf("│       Pipe In: %d\n", fd[0]);
+	// 	ft_printf("│       Pipe Out: %d\n", fd[1]);
+	// 	ft_printf("└───────────────────────────────────┘\n");
+	// }
 	// else if (node && (node->type == AND || node->type == OR))
 	// 	handle_and_or(node, data);
 	if (node && (node->type == REDIR_IN_TRUNC || node->type == REDIR_OUT_TRUNC
@@ -51,7 +62,7 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 		// return (-42);
 	}
 	else if (node->type == COMMAND)
-		handle_exec(&node->command, data);
+		exec_command(&node->command, data);
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd);
 }
@@ -74,8 +85,15 @@ void	exec_ast(t_ast *node, t_data *data)
 
 	fd[0] = -1;
 	fd[1] = -1;
-	handle_ast(node, data, fd);
-	wait_process();
+	if (!node)
+		exit_error(data); // TODO: CHECK ERROR
+	if (node->type == COMMAND && is_builtin(node->command.args[0]))
+		data->err = exec_builtin(&data->env, data, node->command.args[0]);
+	else
+	{
+		handle_ast(node, data, fd);
+		wait_process();
+	}
 }
 
 /*	TESTS

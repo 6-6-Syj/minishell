@@ -39,7 +39,7 @@ typedef struct s_command	t_command;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void						handle_exec(t_command *command, t_data *data);
+void						exec_command(t_command *cmd, t_data *data);
 
 /* UTILS */
 void						redir_in(t_command *cmd, t_data *data);

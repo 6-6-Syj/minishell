@@ -37,7 +37,7 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 	w_execve(path, cmd->args, data->env_tab, data);
 }
 
-static void	exec_command(t_command *cmd, t_data *data)
+void	exec_command(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
 
@@ -65,10 +65,3 @@ static void	exec_command(t_command *cmd, t_data *data)
 	}
 }
 
-void	handle_exec(t_command *command, t_data *data)
-{
-	if (is_builtin(command->args[0])) // NOT OK
-		exec_builtin(&data->env, data, command->args[0]);
-	else
-		exec_command(command, data);
-}
