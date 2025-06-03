@@ -21,11 +21,8 @@ int	ft_pwd(t_command *command, t_data *data)
 	(void)data; // DEL
 	if (getcwd(res, PATH_MAX))
 	{
-		ft_printf("builtin fd_in = %d\n", command->fd_in);
-		ft_printf("builtin fd_out = %d\n", command->fd_out);
-
-		ft_putstr_fd(res, command->fd_out);
-		ft_putchar_fd('\n', command->fd_out);
+		ft_putstr_fd(res, STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		return (0);
 	}
 	else

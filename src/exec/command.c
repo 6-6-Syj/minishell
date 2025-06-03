@@ -35,8 +35,6 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 		ft_printf("minishell: %s: command not found\n", cmd->args[0]);
 		exit_error(data); // TODO: 127 ?
 	}
-	ft_printf("cmd fd_in = %d\n", cmd->fd_in);
-	ft_printf("cmd fd_out = %d\n", cmd->fd_out);
 	w_execve(path, cmd->args, data->env_tab, data);
 }
 
