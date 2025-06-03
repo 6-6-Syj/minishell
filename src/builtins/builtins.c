@@ -47,7 +47,7 @@ int	exec_builtin(t_command *cmd, t_env **env_lst, t_data *data)
 		return (handle_export(cmd, env_lst, data));
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		return (handle_unset(cmd, env_lst, data));
-	// else if (!ft_strncmp(input, "exit", 5))
-	// 	ft_exit(env);
+	else if (!ft_strncmp(cmd->args[0], "exit", 5))
+		ft_exit(cmd, data);
 	return (0);
 }

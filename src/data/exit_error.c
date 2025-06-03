@@ -19,7 +19,6 @@ void	exit_error(t_data *data)
 	err = 0;
 	if (data)
 	{
-		ft_printf("Error\n");
 		if (data->err_msg)
 			ft_printf("%s\n", data->err_msg);
 		err = data->err;
