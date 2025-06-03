@@ -37,13 +37,14 @@ int							is_builtin(char *cmd);
 int							exec_builtin(t_command *command, t_env **env_lst,
 								t_data *data);
 
-int							handle_cd(t_env *env, char *input);
-int							handle_export(t_env **env_lst, t_data *data,
-								char *input);
+int							ft_cd(t_command *cmd, t_data *data);
+int							handle_export(t_command *cmd, t_env **env_lst,
+								t_data *data);
 int							print_export(t_env *env_lst);
-int							handle_unset(t_env **env_lst, t_data *data,
-								char *input);
+int							handle_unset(t_command *cmd, t_env **env_lst,
+								t_data *data);
 int							ft_env(t_env *env_lst);
-int							ft_pwd(t_command *command, t_data *data);
+int							ft_pwd(t_data *data);
+int							ft_echo(t_command *cmd);
 
 #endif

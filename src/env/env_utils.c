@@ -71,6 +71,5 @@ char	**upload_env_tab(t_data *data)
 		env_node = env_node->next;
 	}
 	data->env_tab[i] = NULL;
-	// print_env_tab(data->env_tab);
 	return (data->env_tab);
 }

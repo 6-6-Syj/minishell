@@ -14,17 +14,21 @@
 #include <stdio.h>
 
 // TODO: Error if directory is inaccessible, or deleted...
-int	ft_pwd(t_command *command, t_data *data)
+int	ft_pwd(t_data *data)
 {
 	char	res[PATH_MAX];
 
-	(void)data; // DEL
 	if (getcwd(res, PATH_MAX))
 	{
 		ft_putstr_fd(res, STDOUT_FILENO);
 		ft_putchar_fd('\n', STDOUT_FILENO);
+		data->err = 0;
 		return (0);
 	}
 	else
+	{
+		// CHECK THIS
+		data->err = 1;
 		return (1);
+	}
 }

@@ -19,19 +19,18 @@ int	ft_env(t_env *env_lst)
 	t_env	*current;
 
 	current = env_lst;
+	while (current && current->prev)
+		current = current->prev;
 	while (current)
 	{
-		if (current->print_env)
+		if (current->key && current->value)
 		{
-			if (current->key && current->value)
-			{
-				ft_putstr_fd(current->key, 1);
-				write(1, "=", 1);
-				ft_putstr_fd(current->value, 1);
-				write(1, "\n", 1);
-			}
-			current = current->next;
+			ft_putstr_fd(current->key, STDOUT_FILENO);
+			ft_putchar_fd('=', STDOUT_FILENO);
+			ft_putstr_fd(current->value, STDOUT_FILENO);
+			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
+		current = current->next;
 	}
 	return (NO_ERROR);
 }

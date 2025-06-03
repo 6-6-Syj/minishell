@@ -76,12 +76,8 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 		*equal = '\0';     // cut "key" at '='
 		value = equal + 1; // start "value" after '='
 	}
-	if (search_key_update_value(env_lst, key, value))
-	{
-		upload_env_tab(data);
-		return (NO_ERROR);
-	}
-	if (add_key(env_lst, key, value))
+	if (search_key_update_value(env_lst, key, value) || add_key(env_lst, key,
+			value))
 	{
 		upload_env_tab(data);
 		return (NO_ERROR);
@@ -91,33 +87,21 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 // 1 failure: Some rare cases.	ex:
 // not enough memory or fd is full
 
-// TODO: if variable got a value "with spaces", there are problems. (PARSING EXPORT)
+// TODO: if variable got a value "with spaces",
+	// there are problems. (PARSING EXPORT)
 // It exports at each ' ';
 // See raw 110
-int	handle_export(t_env **env_lst, t_data *data, char *input)
+int	handle_export(t_command *cmd, t_env **env_lst, t_data *data)
 {
-	char	**args;
-	int		i;
-	int		res;
-	int		j;
+	int	i;
 
-	res = 0;
-	i = 0;
-	args = ft_split(input, ' ');
-	if (!args)
-		return (1); // TODO: ERROR MALLOC
-	if (!args[1])
-		res = print_export(*env_lst);
+	i = 1;
+	if (cmd && !cmd->args[1])
+		data->err = print_export(*env_lst);
 	else
 	{
-		while (args[++i])
-		{
-			j = 0;
-			while (args[i] && args[i][j] == ' ') // Probably there with ' '
-				j++;
-			res = ft_export(env_lst, data, args[i]);
-		}
+		while (cmd->args[i])
+			data->err = ft_export(env_lst, data, cmd->args[i++]);
 	}
-	free_split(args);
-	return (res);
+	return (data->err);
 }

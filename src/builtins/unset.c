@@ -12,7 +12,7 @@
 
 #include "builtins.h"
 
-static int	ft_unset(t_env **head, char *key_to_remove)
+static int	ft_unset(t_command *cmd, t_env **head)
 {
 	t_env	*curr;
 	t_env	*prev;
@@ -21,7 +21,7 @@ static int	ft_unset(t_env **head, char *key_to_remove)
 	prev = NULL;
 	while (curr)
 	{
-		if (curr-> key && !ft_strcmp(curr->key, key_to_remove))
+		if (curr->key && !ft_strcmp(curr->key, cmd->args[1]))
 		{
 			if (prev)
 				prev->next = curr->next;
@@ -35,26 +35,16 @@ static int	ft_unset(t_env **head, char *key_to_remove)
 		prev = curr;
 		curr = curr->next;
 	}
-	/* TODO: ERROR if unset a readonly var
-	f.e.: CHECK ACCESS
-	bash: unset: VAR: cannot unset: readonly variable */
 	return (0);
 }
 
-int	handle_unset(t_env **env_lst, t_data *data, char *input)
+int	handle_unset(t_command *cmd, t_env **env_lst, t_data *data)
 {
-	char	**args;
-	int		i;
 	int		res;
 
 	res = 0;
-	args = ft_split(input, ' ');
-	if (args && args[1])
-		res = ft_unset(env_lst, args[1]);
-	i = 0;
-	while (args && args[i])
-		free(args[i++]);
-	free(args);
+	if (cmd->args && cmd->args[1])
+		res = ft_unset(cmd, env_lst);
 	upload_env_tab(data);
 	return (res);
 }

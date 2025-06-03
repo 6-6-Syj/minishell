@@ -12,6 +12,7 @@
 
 #include "builtins.h"
 #include "libft.h"
+
 /*
 	ERRORS FROM CHDIR:
 
@@ -22,41 +23,29 @@
 	● ENOTDIR (20): Part of the specified path is not a directory.
 */
 
-static int	ft_cd(char *path)
+int	ft_cd(t_command *cmd, t_data *data)
 {
-	ft_printf("PATH=%s\n", path);
-	if (chdir(path) == -1)
+	int	i;
+
+	i = 0;
+	while (cmd && cmd->args[i])
+		i++;
+	// TODO: CHECK
+	// cd /hwffewefwef | sleep 5 | ls | cat -e (not working)
+	if (i > 2 || chdir(cmd->args[1]) == -1)
 	{
-		ft_printf("ERROR\n");
-		free(path);
-		return (1); // TODO: HANDLE ERRORS CODE
+		if (i > 2)
+			ft_printf("cd: too many arguments\n");
+		else
+			ft_printf("cd: %s: No such file or directory\n", cmd->args[1]);
+		data->err = 1;
+		return (1);
 	}
 	else
 	{
-		free(path);
+		data->err = 0;
 		return (NO_ERROR);
 	}
-}
-
-int	handle_cd(t_env *env, char *input)
-{
-	char	*path;
-	int		len;
-	int		i;
-
-	(void)env;
-	i = 0;
-	while (input[i] == ' ')
-		i++;
-	i += 3; // Exclude "cd"
-	while (input[i] == ' ')
-		i++;
-	len = ft_strlen(input - i);
-	path = malloc(len + 1);
-	if (!path)
-		return (-42); // TODO: MALLOC ERROR
-	ft_strcpy(path, input); // maybe use strlcpy ? 
-	return (ft_cd(path));
 }
 
 // TODO: HANDLE CD WITH NO ARG ?
