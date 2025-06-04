@@ -21,24 +21,60 @@
 	● ENOENT (2): The specified directory does not exist.
 
 	● ENOTDIR (20): Part of the specified path is not a directory.
+
+	TODO: cd - Change vers $OLDPWD et l'affiche. Erreur si OLDPWD non défini.
 */
+
+static int	cd_home(t_data *data)
+{
+	t_env	*current;
+
+	current = data->env;
+	while (current)
+	{
+		if (!ft_strcmp(current->key, "HOME"))
+		{
+			if (chdir(current->value) == -1)
+			{
+				ft_putstr_fd("cd: ", STDERR_FILENO);
+				ft_putstr_fd(current->value, STDERR_FILENO);
+				ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+				data->err = 1;
+				return (data->err);
+			}
+			else
+			{
+				data->err = 0;
+				return (NO_ERROR);
+			}
+		}
+		current = current->next;
+	}
+	ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
+	data->err = 1;
+	return (data->err);
+}
 
 int	ft_cd(t_command *cmd, t_data *data)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (cmd && cmd->args[i])
 		i++;
-	// TODO: CHECK
-	// cd /hwffewefwef | sleep 5 | ls | cat -e (not working)
+	if (i == 1)
+		return (cd_home(data));
 	if (i > 2 || chdir(cmd->args[1]) == -1)
 	{
 		if (i > 2)
-			ft_printf("cd: too many arguments\n");
+			ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
 		else
-			ft_printf("cd: %s: No such file or directory\n", cmd->args[1]);
-		data->err = 1;
+		{
+			ft_putstr_fd("cd: ", STDERR_FILENO);
+			ft_putstr_fd(cmd->args[1], STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		}
+		data->err = 1; // TODO: CHECK
 		return (1);
 	}
 	else
@@ -47,22 +83,3 @@ int	ft_cd(t_command *cmd, t_data *data)
 		return (NO_ERROR);
 	}
 }
-
-// TODO: HANDLE CD WITH NO ARG ?
-
-/*
-
-/home/jmagand/bin
-/home/jmagand/bin
-/usr/local/sbin
-/usr/local/bin
-/usr/sbin
-/usr/bin
-/sbin
-/bin
-/usr/games
-/usr/local/games
-/snap/bin
-/home/jmagand/.dotnet/tools
-
-*/
