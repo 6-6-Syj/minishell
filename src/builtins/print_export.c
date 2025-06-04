@@ -12,15 +12,17 @@
 
 #include "builtins.h"
 
-static void	free_env_lst(t_env *copy_env_lst)
+static void	free_copy_env_lst(t_env *copy_env_lst)
 {
 	t_env	*tmp;
 
 	while (copy_env_lst)
 	{
 		tmp = copy_env_lst->next;
-		free(copy_env_lst->key); // TODO: if()
-		free(copy_env_lst->value);
+		if (copy_env_lst->key)
+			free(copy_env_lst->key);
+		if (copy_env_lst->value)
+			free(copy_env_lst->value);
 		free(copy_env_lst);
 		copy_env_lst = tmp;
 	}
@@ -109,6 +111,6 @@ int	print_export(t_env *env_lst)
 			ft_printf("export %s\n", current->key);
 		current = current->next;
 	}
-	free_env_lst(copy);
+	free_copy_env_lst(copy);
 	return (0);
 }

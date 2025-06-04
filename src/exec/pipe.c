@@ -43,8 +43,8 @@ void	handle_pipe(t_pipe *pipe, t_data *data, int *fd)
 		assign_pipe_fds(pipe->right, fd[0], -1);
 	handle_ast(pipe->left, data, fd);
 	// No check, normal: if w_close: crash. ex sur bash (sleep 2 | cat -e)
-	close(fd[1]);
 	handle_ast(pipe->right, data, fd);
 	// No check, normal: if w_close: crash. ex sur bash (sleep 2 | cat -e)
+	close(fd[1]);
 	close(fd[0]);
 }

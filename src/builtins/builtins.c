@@ -12,19 +12,6 @@
 
 #include "builtins.h"
 
-void	free_split(char **split)
-{
-	int	i;
-
-	i = 0;
-	while (split && split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
 int	is_builtin(char *cmd)
 {
 	return (ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "echo") == 0

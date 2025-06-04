@@ -32,7 +32,6 @@ typedef struct s_command	t_command;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void						free_split(char **split);
 int							is_builtin(char *cmd);
 int							exec_builtin(t_command *command, t_env **env_lst,
 								t_data *data);

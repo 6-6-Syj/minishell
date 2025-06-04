@@ -25,11 +25,18 @@ static void	close_inherited_fds(t_command *cmd)
 	}
 }
 
+/*
+TODO:
+	Search and launch the right executable (based on the PATH variable
+	or using a relative or an absolute path).
+*/
+
 static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 {
 	char	*path;
 
 	path = get_path(cmd->args[0], data);
+	ft_printf("PATH = %s\n", path);
 	if (!path)
 	{
 		ft_printf("minishell: %s: command not found\n", cmd->args[0]);
@@ -50,9 +57,10 @@ void	exec_command(t_command *cmd, t_data *data)
 		close_inherited_fds(cmd);
 		if (cmd && cmd->args && cmd->args[0])
 		{
-			if (is_builtin(cmd->args[0])) // TODO: CHECK THIS IN MULTI-PIPE
+			if (is_builtin(cmd->args[0]))
 			{
 				data->err = exec_builtin(cmd, &data->env, data);
+				free_data(data);
 				exit(0); // TODO: CHECK ERROR
 			}
 			else

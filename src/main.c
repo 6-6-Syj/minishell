@@ -40,6 +40,6 @@ int	main(int ac, char **av, char **env)
 		data.token = NULL;
 	}
 	rl_clear_history();
-	// exit_error(&data);
+	exit_error(&data);
 	return (0);
 }

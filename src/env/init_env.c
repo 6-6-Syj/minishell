@@ -12,24 +12,7 @@
 
 #include "env.h"
 
-void	free_env(t_env *env)
-{
-	t_env	*tmp;
-
-	tmp = env;
-	while (env)
-	{
-		tmp = env->next;
-		if (env->key)
-			free(env->key);
-		if (env->value)
-			free(env->value);
-		free(env);
-		env = tmp;
-	}
-}
-
-void	set_env(t_env *new_env, char *env_line)
+bool	is_set_env(t_env *new_env, char *env_line)
 {
 	char	*equal;
 
@@ -40,16 +23,13 @@ void	set_env(t_env *new_env, char *env_line)
 	{
 		new_env->key = ft_strndup(env_line, equal - env_line);
 		if (!new_env->key)
-			return ; // TODO: ERROR ????
+			return (false);
 		new_env->value = ft_strdup(equal + 1);
 		if (!new_env->value)
-		{
-			free(new_env->key);
-			free(new_env);
-			return ; // TODO: ERROR ????
-		}
+			return (false);
 		new_env->print_env = 1;
 	}
+	return (true);
 }
 
 t_env	*get_last_env(t_env *lst)
@@ -97,9 +77,9 @@ void	init_env(t_data *data, char **env)
 	{
 		new_env = add_env_node(&data->env);
 		if (!new_env)
-			return ;
-		// TODO: Malloc error ?
-		set_env(new_env, env[i]);
+			exit_error(data);
+		if (!is_set_env(new_env, env[i]))
+			exit_error(data);
 		// If *env is still NULL, update it
 		if (!data->env)
 			data->env = new_env;

@@ -48,14 +48,14 @@ typedef struct s_env
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void				free_env(t_env *env);
-void				set_env(t_env *new_env, char *env_line);
+bool				is_set_env(t_env *new_env, char *env_line);
 t_env				*get_last_env(t_env *lst);
 t_env				*add_env_node(t_env **env_lst);
 void				init_env(t_data *data, char **env);
 
-void				init_env_i(t_data *data);
 void				print_env_tab(char **env_tab);
 char				**upload_env_tab(t_data *data);
+void				free_env_lst(t_env **env_lst);
+void				free_env_tab(t_data *data);
 
 #endif
