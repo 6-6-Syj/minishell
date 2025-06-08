@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "exec.h"
-# include "data.h"
+#include "data.h"
+#include "exec.h"
 
 void	*free_strs(char **strs)
 {

@@ -18,7 +18,7 @@ void	print_env_tab(char **env_tab)
 
 	if (!env_tab)
 	{
-		ft_printf("NULL.\n");
+		ft_printf("NULL.\n"); //TODO: CHECK
 		return ;
 	}
 	i = 0;
@@ -51,22 +51,35 @@ char	**upload_env_tab(t_data *data)
 	char	*buff;
 	t_env	*env_node;
 
+	if (data && data->env_tab)
+    {
+        free_strs(data->env_tab);
+        data->env_tab = NULL;
+    }
 	i = 0;
 	size = get_size_env_lst(data->env);
 	data->env_tab = malloc(sizeof(char *) * (size + 1));
-	env_node = data->env;
 	if (!data->env_tab)
-		return (NULL); // TODO: MALLOC ERROR
+		exit_error(data);
+	env_node = data->env;
 	while (env_node)
 	{
 		buff = ft_strjoin(env_node->key, "=");
 		if (!buff)
-			return (NULL); // TODO: MALLOC ERROR
-		data->env_tab[i] = ft_strjoin(buff, env_node->value);
+		{
+			free_strs(data->env_tab);
+			exit_error(data);
+		}
+		if (env_node->value)
+			data->env_tab[i] = ft_strjoin(buff, env_node->value);
+		else
+			data->env_tab[i] = ft_strdup(buff);
+		free(buff);
 		if (!data->env_tab[i])
-			return (NULL); // TODO: MALLOC ERROR
-		if (buff)
-			free(buff);
+		{
+			free_strs(data->env_tab);
+			exit_error(data);
+		}
 		i++;
 		env_node = env_node->next;
 	}

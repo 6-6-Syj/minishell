@@ -18,6 +18,8 @@ bool	is_set_env(t_env *new_env, char *env_line)
 
 	new_env->print_env = 0;
 	new_env->print_exp = 1;
+	new_env->key = NULL;
+    new_env->value = NULL;
 	equal = ft_strchr(env_line, '=');
 	if (equal)
 	{

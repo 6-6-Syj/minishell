@@ -12,7 +12,8 @@
 
 #include "builtins.h"
 
-static bool	search_key_update_value(t_env **head, char *key, char *value)
+static bool	search_key_update_value(t_data *data, t_env **head, char *key,
+		char *value)
 {
 	t_env	*curr;
 
@@ -24,7 +25,9 @@ static bool	search_key_update_value(t_env **head, char *key, char *value)
 			if (value)
 			{
 				free(curr->value);
-				curr->value = ft_strdup(value); // NEED PROTECT ?
+				curr->value = ft_strdup(value);
+				if (!curr->value)
+					exit_error(data);
 			}
 			return (true);
 		}
@@ -33,18 +36,18 @@ static bool	search_key_update_value(t_env **head, char *key, char *value)
 	return (false);
 }
 
-static bool	add_key(t_env **head, char *key, char *value)
+static bool	add_key(t_data *data, t_env **head, char *key, char *value)
 {
 	t_env	*new;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
-		return (false); // TODO: ERROR MALLOC
+		exit_error(data);
 	new->key = ft_strdup(key);
 	if (!new->key)
 	{
 		free(new);
-		return (false); // TODO: ERROR MALLOC
+		exit_error(data);
 	}
 	if (value)
 	{
@@ -53,6 +56,7 @@ static bool	add_key(t_env **head, char *key, char *value)
 		{
 			free(new->key);
 			free(new);
+			exit_error(data);
 		}
 	}
 	else
@@ -73,11 +77,11 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 	equal = ft_strchr(key, '=');
 	if (equal)
 	{
-		*equal = '\0';     // cut "key" at '='
-		value = equal + 1; // start "value" after '='
+		*equal = '\0';
+		value = equal + 1;
 	}
-	if (search_key_update_value(env_lst, key, value) || add_key(env_lst, key,
-			value))
+	if (search_key_update_value(data, env_lst, key, value) || add_key(data,
+			env_lst, key, value))
 	{
 		upload_env_tab(data);
 		return (NO_ERROR);
@@ -88,7 +92,7 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 // not enough memory or fd is full
 
 // TODO: if variable got a value "with spaces",
-	// there are problems. (PARSING EXPORT)
+// there are problems. (PARSING EXPORT)
 // It exports at each ' ';
 // See raw 110
 int	handle_export(t_command *cmd, t_env **env_lst, t_data *data)
@@ -97,7 +101,7 @@ int	handle_export(t_command *cmd, t_env **env_lst, t_data *data)
 
 	i = 1;
 	if (cmd && !cmd->args[1])
-		data->err = print_export(*env_lst);
+		data->err = print_export(*env_lst, data);
 	else
 	{
 		while (cmd->args[i])

@@ -16,6 +16,7 @@
 void	init_data(t_data *data)
 {
 	data->env = NULL;
+	data->env_tab = NULL;
 	data->token = NULL;
 	data->ast = NULL;
 	data->err = 0;

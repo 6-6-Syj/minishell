@@ -66,7 +66,7 @@ static void	sort_env_list(t_env *env_lst)
 	}
 }
 
-static t_env	*copy_env_list(t_env *env_lst)
+static t_env	*copy_env_list(t_env *env_lst, t_data *data)
 {
 	t_env	*new;
 
@@ -74,33 +74,37 @@ static t_env	*copy_env_list(t_env *env_lst)
 		return (NULL);
 	new = malloc(sizeof(t_env));
 	if (!new)
-		return (NULL); // TODO: MALLOC ERROR
+		exit_error(data);
 	new->key = ft_strdup(env_lst->key);
 	if (!new->key)
-		return (NULL); // TODO: MALLOC ERROR
+	{
+		free(new);
+		exit_error(data);
+	}
 	if (env_lst->value)
 	{
 		new->value = ft_strdup(env_lst->value);
 		if (!new->value)
 		{
-			free(new->value);
-			return (NULL); // TODO: MALLOC ERROR
+			free(new->key);
+			free(new);
+			exit_error(data);
 		}
 	}
 	else
 		new->value = NULL;
-	new->next = copy_env_list(env_lst->next);
+	new->next = copy_env_list(env_lst->next, data);
 	return (new);
 }
 
-int	print_export(t_env *env_lst)
+int	print_export(t_env *env_lst, t_data *data)
 {
 	t_env	*copy;
 	t_env	*current;
 
-	copy = copy_env_list(env_lst);
+	copy = copy_env_list(env_lst, data);
 	if (!copy)
-		return (1); // TODO: MALLOC ERROR
+		exit_error(data);
 	sort_env_list(copy);
 	current = copy;
 	while (current)
