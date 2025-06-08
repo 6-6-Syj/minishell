@@ -31,7 +31,7 @@ bash-5.1$ exit
 
 static int	w_getcwd(char *path, t_data *data)
 {
-	if (getcwd(path, PATH_MAX) == -1)
+	if (!getcwd(path, PATH_MAX))
 	{
 		ft_putstr_fd("getcwd: ", STDERR_FILENO);
 		ft_putstr_fd(path, STDERR_FILENO);
@@ -54,7 +54,7 @@ int	ft_pwd(t_data *data)
 {
 	char	res[PATH_MAX];
 
-	if (w_getcwd(res, PATH_MAX))
+	if (!w_getcwd(res, data))
 	{
 		ft_putstr_fd(res, STDOUT_FILENO);
 		ft_putchar_fd('\n', STDOUT_FILENO);

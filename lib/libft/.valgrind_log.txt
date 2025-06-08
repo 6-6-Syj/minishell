@@ -1,0 +1,7 @@
+==398668== Memcheck, a memory error detector
+==398668== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==398668== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==398668== Command: /usr/bin/rm -rf .build/ .build/ft_atoi.o .build/ft_atoll.o .build/ft_bzero.o .build/ft_calloc.o .build/ft_isalpha.o .build/ft_isascii.o .build/ft_isdigit.o .build/ft_isprint.o .build/ft_itoa.o .build/ft_memchr.o .build/ft_memcmp.o .build/ft_memcpy.o .build/ft_memmove.o .build/ft_memset.o .build/ft_putchar.o .build/ft_putchar_fd.o .build/ft_putendl_fd.o .build/ft_putnbr_fd.o .build/ft_putstr_fd.o .build/ft_split.o .build/ft_strcat.o .build/ft_strchr.o .build/ft_strcmp.o .build/ft_strcpy.o .build/ft_strdup.o .build/ft_strndup.o .build/ft_striteri.o .build/ft_strjoin.o .build/ft_strlcat.o .build/ft_strlcpy.o .build/ft_strlen.o .build/ft_strmapi.o .build/ft_strncmp.o .build/ft_strnstr.o .build/ft_strrchr.o .build/ft_strtrim.o .build/ft_substr.o .build/ft_tolower.o .build/ft_toupper.o .build/ft_print_char.o .build/ft_print_hex.o .build/ft_print_int.o .build/ft_printf.o .build/get_next_line.o .build/get_next_line_utils.o .build/ft_lstnew.o .build/ft_lstadd_back.o .build/ft_lstadd_front.o .build/ft_lstlast.o .build/ft_lstsize.o .build/ft_lstdelone.o .build/ft_lstclear.o .build/ft_lstiter.o .build/ft_lstmap.o
+==398668== Parent PID: 398630
+==398668== 
+==398668== FATAL: can't open suppressions file "readline.supp"
