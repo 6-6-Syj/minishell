@@ -36,11 +36,11 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 		return ;
 	// if (node && node->type == COMMAND)
 	// {
-	// 	ft_printf("┌─────────── Command Info ──────────┐\n");
-	// 	ft_printf("│       Command: %s\n", node->command.args[0]);
-	// 	ft_printf("│       Input FD: %d\n", node->command.fd_in);
-	// 	ft_printf("│       Output FD: %d\n", node->command.fd_out);
-	// 	ft_printf("└───────────────────────────────────┘\n");
+	// 	ft_printf("┌───────── Command Info ────────┐\n");
+	// 	ft_printf("│\tCommand: %s\t\t│\n", node->command.args[0]);
+	// 	ft_printf("│\tInput FD: %d\t\t│\n", node->command.fd_in);
+	// 	ft_printf("│\tOutput FD: %d\t\t│\n", node->command.fd_out);
+	// 	ft_printf("└───────────────────────────────┘\n");
 	// }
 	// else if (node && (node->type == AND || node->type == OR))
 	// 	handle_and_or(node, data);
@@ -50,6 +50,26 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 		handle_pipe(&node->pipe, data, fd);
 }
 
+/*
+	WIFEXITED(status) : Vrai si le processus fils s'est terminé normalement (par exemple,
+		avec exit() ou return).
+
+	WEXITSTATUS(status) : Si WIFEXITED est vrai,
+		retourne le code de sortie du processus fils (la valeur passée à exit() ou return).
+
+	WIFSIGNALED(status) : Vrai si le processus fils a été terminé par un signal.
+
+	WTERMSIG(status) : Si WIFSIGNALED est vrai,
+		retourne le numéro du signal qui a tué le processus.
+
+	WIFSTOPPED(status) : Vrai si le processus fils a été stoppé (par exemple,
+		par SIGSTOP).
+
+	WSTOPSIG(status) : Si WIFSTOPPED est vrai,
+		retourne le numéro du signal qui a stoppé le processus.
+
+ */
+
 static void	wait_process(void)
 {
 	int		status;
@@ -58,10 +78,18 @@ static void	wait_process(void)
 	while ((wpid = wait(&status)) > 0)
 	{
 		ft_printf("\033[0;32m\033[1m");
-		ft_printf("Child PID %d ended with status %d\n", wpid, status);
+		if (WIFEXITED(status))
+			ft_printf("Child PID %d ended normally with status %d\n", wpid,
+				WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			ft_printf("Child PID %d was killed by signal %d\n", wpid,
+				WTERMSIG(status));
+		else
+			ft_printf("Child PID %d ended with status %d\n", wpid, status);
 		ft_printf("\033[0m");
 	}
 }
+
 void	exec_ast(t_ast *node, t_data *data)
 {
 	int	fd[2];
@@ -78,15 +106,3 @@ void	exec_ast(t_ast *node, t_data *data)
 		wait_process();
 	}
 }
-
-/*	TESTS
-
-ls | cat -e | sleep 2 | ls | cat -e | cat -e
-
-sleep 1 | sleep 2 | sleep 6 | ls | sleep 6 | cat -e | sleep 2 | ls | cat
-	-e | sleep 1 | sleep 2 | sleep 6 | ls | sleep 6 | cat
-	-e | sleep 2 | ls | cat
-	-e | sleep 1 | sleep 2 | sleep 6 | ls | sleep 6 | cat
-	-e | sleep 2 | ls | cat -e
-
-*/

@@ -105,7 +105,10 @@ int	handle_export(t_command *cmd, t_env **env_lst, t_data *data)
 	else
 	{
 		while (cmd->args[i])
-			data->err = ft_export(env_lst, data, cmd->args[i++]);
+		{
+			data->err = ft_export(env_lst, data, cmd->args[i]);
+			i++;
+		}
 	}
 	return (data->err);
 }

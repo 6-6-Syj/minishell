@@ -36,7 +36,6 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 	char	*path;
 
 	path = get_path(cmd->args[0], data);
-	ft_printf("PATH = %s\n", path);
 	if (!path)
 	{
 		ft_printf("minishell: %s: command not found\n", cmd->args[0]);
@@ -50,7 +49,7 @@ void	exec_command(t_command *cmd, t_data *data)
 	pid_t	pid;
 
 	pid = w_fork(data);
-	if (pid == 0) // CHILD PROCESS
+	if (pid == 0)
 	{
 		redir_in(cmd, data);
 		redir_out(cmd, data);
@@ -60,8 +59,7 @@ void	exec_command(t_command *cmd, t_data *data)
 			if (is_builtin(cmd->args[0]))
 			{
 				data->err = exec_builtin(cmd, &data->env, data);
-				free_data(data);
-				exit(0); // TODO: CHECK ERROR
+				exit_error(data);
 			}
 			else
 				search_cmd_and_exec(cmd, data);

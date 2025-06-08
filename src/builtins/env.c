@@ -12,7 +12,11 @@
 
 #include "builtins.h"
 
-// (POSIX) Undeterminated order to show variables
+/*
+	NO ERROR CODE
+		If no env, no path, so command cant be executed
+			else env got PATH="smtg/ok/", so NO error.
+*/
 
 int	ft_env(t_env *env_lst)
 {
@@ -34,7 +38,3 @@ int	ft_env(t_env *env_lst)
 	}
 	return (NO_ERROR);
 }
-
-// NO ERROR CODE
-	// If no env, no path, so command cant be executed
-	// else env got PATH="smtg/ok/", so NO error.

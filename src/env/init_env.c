@@ -34,12 +34,12 @@ bool	is_set_env(t_env *new_env, char *env_line)
 	return (true);
 }
 
-t_env	*get_last_env(t_env *lst)
+t_env	*get_last_env(t_env *env_lst)
 {
 	t_env	*last;
 
-	last = lst;
-	if (!lst)
+	last = env_lst;
+	if (!env_lst)
 		return (NULL);
 	while (last->next != NULL)
 		last = last->next;
@@ -53,7 +53,7 @@ t_env	*add_env_node(t_env **env_lst)
 
 	new_node = ft_calloc(1, sizeof(t_env));
 	if (!new_node)
-		return (NULL); // TODO: Malloc error
+		return (NULL);
 	if (!*env_lst)
 	{
 		*env_lst = new_node;

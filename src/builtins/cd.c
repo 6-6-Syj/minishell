@@ -14,16 +14,6 @@
 #include "errno.h"
 #include "libft.h"
 
-/*
-	ERRORS FROM CHDIR:
-
-	● EACCES (13): Permission denied to access the specified directory.
-
-	● ENOENT (2): The specified directory does not exist.
-
-	● ENOTDIR (20): Part of the specified path is not a directory.
-*/
-
 static int	w_chdir(char *path, t_data *data)
 {
 	if (chdir(path) == -1)
@@ -38,7 +28,7 @@ static int	w_chdir(char *path, t_data *data)
 			ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
 		else
 			ft_putstr_fd(": Cannot access directory\n", STDERR_FILENO);
-		data->err = errno;
+		data->err = 1;
 		return (data->err);
 	}
 	data->err = 0;

@@ -12,13 +12,15 @@
 
 #include "env.h"
 
+// _ variable contains last arg of last command
+// example : _=usr/bin/env
 void	print_env_tab(char **env_tab)
 {
 	int	i;
 
 	if (!env_tab)
 	{
-		ft_printf("NULL.\n"); //TODO: CHECK
+		ft_printf("NULL.\n"); //TODO: CHECK env_tab never NULL (variable "_")
 		return ;
 	}
 	i = 0;
