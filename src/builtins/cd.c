@@ -18,6 +18,8 @@ static int	w_chdir(char *path, t_data *data)
 {
 	if (chdir(path) == -1)
 	{
+		// ft_putstr_fd("chdir: error retrieving current directory: ",
+		// 	STDERR_FILENO);
 		ft_putstr_fd("cd: ", STDERR_FILENO);
 		ft_putstr_fd(path, STDERR_FILENO);
 		if (errno == EACCES)
