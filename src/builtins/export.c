@@ -36,6 +36,13 @@ static bool	search_key_update_value(t_data *data, t_env **head, char *key,
 	return (false);
 }
 
+static void	free_and_exit(t_data *data, t_env *new)
+{
+	free(new->key);
+	free(new);
+	exit_error(data);
+}
+
 static bool	add_key(t_data *data, t_env **head, char *key, char *value)
 {
 	t_env	*new;
@@ -53,11 +60,7 @@ static bool	add_key(t_data *data, t_env **head, char *key, char *value)
 	{
 		new->value = ft_strdup(value);
 		if (!new->value)
-		{
-			free(new->key);
-			free(new);
-			exit_error(data);
-		}
+			free_and_exit(data, new);
 	}
 	else
 		new->value = NULL;

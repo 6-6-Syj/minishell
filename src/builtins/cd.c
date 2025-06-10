@@ -14,14 +14,15 @@
 #include "errno.h"
 #include "libft.h"
 
-static int	w_chdir(char *path, t_data *data)
+static int	w_cd(char *target, t_data *data)
 {
-	if (chdir(path) == -1)
+	char	path[PATH_MAX];
+
+	ft_bzero(path, PATH_MAX);
+	if (chdir(target) == -1)
 	{
-		// ft_putstr_fd("chdir: error retrieving current directory: ",
-		// 	STDERR_FILENO);
 		ft_putstr_fd("cd: ", STDERR_FILENO);
-		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putstr_fd(target, STDERR_FILENO);
 		if (errno == EACCES)
 			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		else if (errno == ENOENT)
@@ -30,6 +31,20 @@ static int	w_chdir(char *path, t_data *data)
 			ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
 		else
 			ft_putstr_fd(": Cannot access directory\n", STDERR_FILENO);
+		data->err = 1;
+		return (data->err);
+	}
+	if (!getcwd(path, PATH_MAX))
+	{
+		ft_putstr_fd("cd: error retrieving current directory: ", STDERR_FILENO);
+		ft_putstr_fd("getcwd: cannot access parent directories: ",
+			STDERR_FILENO);
+		if (errno == ENOENT)
+			ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
+		else if (errno == EACCES)
+			ft_putstr_fd("Permission denied\n", STDERR_FILENO);
+		else
+			ft_putstr_fd("Cannot access directory\n", STDERR_FILENO);
 		data->err = 1;
 		return (data->err);
 	}
@@ -46,10 +61,10 @@ static int	cd_oldpwd(t_data *data)
 	{
 		if (!ft_strcmp(current->key, "OLDPWD"))
 		{
-			if (w_chdir(current->value, data) == 0)
+			if (w_cd(current->value, data) == 0)
 			{
-				ft_putstr_fd(current->value, STDIN_FILENO);
-				ft_putstr_fd("\n", STDIN_FILENO);
+				ft_putstr_fd(current->value, STDOUT_FILENO);
+				ft_putstr_fd("\n", STDOUT_FILENO);
 			}
 			return (data->err);
 		}
@@ -68,7 +83,7 @@ static int	cd_home(t_data *data)
 	while (current)
 	{
 		if (!ft_strcmp(current->key, "HOME"))
-			return (w_chdir(current->value, data));
+			return (w_cd(current->value, data));
 		current = current->next;
 	}
 	ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
@@ -93,5 +108,5 @@ int	ft_cd(t_command *cmd, t_data *data)
 	}
 	if (!ft_strcmp(cmd->args[1], "-"))
 		return (cd_oldpwd(data));
-	return (w_chdir(cmd->args[1], data));
+	return (w_cd(cmd->args[1], data));
 }
