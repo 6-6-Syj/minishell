@@ -19,6 +19,29 @@
 #include <unistd.h>
 
 
+bool	is_metachar(char *token)
+{
+	if (ft_strcmp(token, "<") == 0)
+		return (true);
+	if (ft_strcmp(token, ">") == 0)
+		return (true);
+	if (ft_strcmp(token, "<<") == 0)
+		return (true);
+	if (ft_strcmp(token, ">>") == 0)
+		return (true);
+	if (ft_strcmp(token, "|") == 0)
+		return (true);
+	if (ft_strcmp(token, "||") == 0)
+		return (true);
+	if (ft_strcmp(token, "&&") == 0)
+		return (true);
+	if (ft_strcmp(token, "(") == 0)
+		return (true);
+	if (ft_strcmp(token, ")") == 0)
+		return (true);
+	return (false);
+}
+
 bool	is_operator(char c)
 {
 	// if (c == '$')
@@ -73,29 +96,32 @@ bool	is_part_of_word(char c)
 
 t_type	get_token_word_type(t_token *current)
 {
+	// TODO: handle here_doc delimiter
 	// TODO: handle expand + pipe
 	// TODO: secure if current is NULL ?
 	t_token *prev_token;
 
 	// if (ft_strlen(current->content) > 1 && )
 	prev_token = current->prev;
-	while (prev_token && prev_token->type == TYPE_SPACE)
+	while (prev_token && (prev_token->type == TYPE_SPACE))
 		prev_token = prev_token->prev;
 	// if (ft_strlen(current->content) > 1 && current->content[0] == '$')
-		// return (TYPE_EXPAND);
-	if (!prev_token)
-		return (TYPE_CMD);
+	// return (TYPE_EXPAND);
 	// if (current->prev->type == TYPE_EXPAND)
 	// 	return (TYPE_VAR);
+	if (!prev_token)
+		return (TYPE_CMD);
 	if (prev_token->type == TYPE_CMD)
 		return (TYPE_ARG);
 	if (prev_token->type == TYPE_REDIR_APPEND)
-		return (TYPE_ARG);
+		return (TYPE_FILE);
 	if (prev_token->type == TYPE_REDIR_IN)
-		return (TYPE_ARG);
+		return (TYPE_FILE);
 	if (prev_token->type == TYPE_HERE_DOC)
-		return (TYPE_ARG);
+		return (TYPE_FILE);
 	if (prev_token->type == TYPE_REDIR_OUT)
+		return (TYPE_FILE);
+	if (prev_token->type == TYPE_FILE)
 		return (TYPE_ARG);
 	if (prev_token->type == TYPE_ARG)
 		return (TYPE_ARG);
@@ -123,7 +149,6 @@ t_type	get_operator_type(t_token *token)
 	return (TYPE_UNKNOWN);
 }
 
-
 t_type	get_quote_type(t_token *token)
 {
 	if (token->content[0] == '\"' && ft_strchr(token->content + 1, '"'))
@@ -135,7 +160,7 @@ t_type	get_quote_type(t_token *token)
 
 t_type	get_token_type(t_token *token)
 {
-	int	len;
+	int len;
 
 	len = ft_strlen(token->content);
 	if (token->content[0] == '(')
@@ -156,8 +181,6 @@ t_type	get_token_type(t_token *token)
 int	get_token_priority(t_token *token)
 {
 	if (token->type == TYPE_PAREN_L || token->type == TYPE_PAREN_R)
-		return (5);
-	else if (token->type == TYPE_OR || token->type == TYPE_AND)
 		return (0);
 	else if (token->type == TYPE_PIPE)
 		return (1);
@@ -166,7 +189,9 @@ int	get_token_priority(t_token *token)
 	else if (token->type == TYPE_REDIR_IN || token->type == TYPE_REDIR_OUT
 		|| token->type == TYPE_REDIR_APPEND)
 		return (3);
-	else if (token->type == TYPE_CMD)
+	else if (token->type == TYPE_OR || token->type == TYPE_AND)
 		return (4);
+	else if (token->type == TYPE_CMD)
+		return (5);
 	return (-1);
 }

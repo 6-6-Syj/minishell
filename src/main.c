@@ -36,7 +36,7 @@ int	main(int ac, char **av, char **env)
 		print_all(&data);
 		free(input);
 		free_token_lst(&data.token);
-		free_ast(&data.ast);
+		// free_ast(&data.ast);
 		data.token = NULL;
 	}
 	rl_clear_history();
