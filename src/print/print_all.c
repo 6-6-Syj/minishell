@@ -15,8 +15,8 @@
 void	print_all(t_data *data)
 {
 	ft_printf("\n");
-	// print_token_lst(data->token);
-	// print_ast_graphical(data->ast);
+	print_token_lst(data->token);
+	print_ast_graphical(data->ast);
 	ft_printf("CODE_$?: %d\n", data->err);
 	// print_data(data);
 }

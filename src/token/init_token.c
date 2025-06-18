@@ -32,8 +32,8 @@ static int		set_token_type(t_token *token_node)
 	token_node->type = get_token_type(token_node);
 	if (token_node->type == UNKNOWN)
 		return (-1);
-	// if (token_node->type == WORD)
-	// 	token_node->type = get_token_word_type(token_node);
+	if (token_node->type == WORD)
+		token_node->type = get_token_word_type(token_node);
 	return (0);
 }
 
