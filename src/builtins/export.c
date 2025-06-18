@@ -86,7 +86,7 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 	if (search_key_update_value(data, env_lst, key, value) || add_key(data,
 			env_lst, key, value))
 	{
-		upload_env_tab(data);
+		update_env_tab(data);
 		return (NO_ERROR);
 	}
 	return (1);

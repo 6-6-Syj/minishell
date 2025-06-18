@@ -46,24 +46,10 @@ static int	get_size_env_lst(t_env *current)
 	return (size);
 }
 
-char	**upload_env_tab(t_data *data)
+static void update_key_values(t_data *data, t_env *env_node, int i)
 {
-	int		size;
-	int		i;
 	char	*buff;
-	t_env	*env_node;
 
-	if (data && data->env_tab)
-    {
-        free_strs(data->env_tab);
-        data->env_tab = NULL;
-    }
-	i = 0;
-	size = get_size_env_lst(data->env);
-	data->env_tab = malloc(sizeof(char *) * (size + 1));
-	if (!data->env_tab)
-		exit_error(data);
-	env_node = data->env;
 	while (env_node)
 	{
 		buff = ft_strjoin(env_node->key, "=");
@@ -86,5 +72,25 @@ char	**upload_env_tab(t_data *data)
 		env_node = env_node->next;
 	}
 	data->env_tab[i] = NULL;
+}
+
+char	**update_env_tab(t_data *data)
+{
+	int		size;
+	int		i;
+	t_env	*env_node;
+
+	i = 0;
+	if (data && data->env_tab)
+    {
+        free_strs(data->env_tab);
+        data->env_tab = NULL;
+    }
+	size = get_size_env_lst(data->env);
+	data->env_tab = malloc(sizeof(char *) * (size + 1));
+	if (!data->env_tab)
+		exit_error(data);
+	env_node = data->env;
+	update_key_values(data, env_node, i);
 	return (data->env_tab);
 }

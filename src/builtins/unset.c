@@ -45,6 +45,6 @@ int	handle_unset(t_command *cmd, t_env **env_lst, t_data *data)
 	res = 0;
 	if (cmd->args && cmd->args[1])
 		res = ft_unset(cmd, env_lst);
-	upload_env_tab(data);
+	update_env_tab(data);
 	return (res);
 }

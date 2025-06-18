@@ -1,135 +1,111 @@
-==16977== Memcheck, a memory error detector
-==16977== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==16977== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==16977== Command: ./minishell
-==16977== Parent PID: 9514
-==16977== 
-==17105== 
-==17105== FILE DESCRIPTORS: 3 open (3 std) at exit.
-==17105== 
-==17105== HEAP SUMMARY:
-==17105==     in use at exit: 208,262 bytes in 230 blocks
-==17105==   total heap usage: 993 allocs, 763 frees, 250,378 bytes allocated
-==17105== 
-==17105== 5 bytes in 1 blocks are still reachable in loss record 4 of 68
-==17105==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==17105==    by 0x406EB4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==17105==    by 0x405C75: get_path (path.c:81)
-==17105==    by 0x405633: search_cmd_and_exec (command.c:38)
-==17105==    by 0x405556: exec_command (command.c:65)
-==17105==    by 0x4057A1: handle_ast (exec.c:48)
-==17105==    by 0x40586F: exec_ast (exec.c:105)
-==17105==    by 0x40132A: main (main.c:35)
-==17105== 
-==17105== LEAK SUMMARY:
-==17105==    definitely lost: 0 bytes in 0 blocks
-==17105==    indirectly lost: 0 bytes in 0 blocks
-==17105==      possibly lost: 0 bytes in 0 blocks
-==17105==    still reachable: 5 bytes in 1 blocks
-==17105==         suppressed: 208,257 bytes in 229 blocks
-==17105== 
-==17105== For lists of detected and suppressed errors, rerun with: -s
-==17105== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-==16977== 
-==16977== Process terminating with default action of signal 2 (SIGINT)
-==16977==    at 0x490A75B: kill (syscall-template.S:120)
-==16977==    by 0x48A7F39: _rl_signal_handler (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==16977==    by 0x48A8BEC: rl_getc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==16977==    by 0x48A8460: rl_read_key (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==16977==    by 0x488CC86: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==16977==    by 0x4895D14: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==16977==    by 0x4012CE: main (main.c:28)
-==16977== 
-==16977== FILE DESCRIPTORS: 6 open (3 std) at exit.
-==16977== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==16977==    <inherited from parent>
-==16977== 
-==16977== Open file descriptor 37: /home/jmagand/.config/Code/logs/20250610T165412/ptyhost.log
-==16977==    <inherited from parent>
-==16977== 
-==16977== Open file descriptor 3: /home/jmagand/Documents/wip/3./minishell/.valgrind_log.txt
-==16977==    <inherited from parent>
-==16977== 
-==16977== 
-==16977== HEAP SUMMARY:
-==16977==     in use at exit: 226,755 bytes in 544 blocks
-==16977==   total heap usage: 1,005 allocs, 461 frees, 249,105 bytes allocated
-==16977== 
-==16977== 4 bytes in 1 blocks are still reachable in loss record 4 of 91
-==16977==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==16977==    by 0x406EB4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==16977==    by 0x402AF2: add_key (export.c:53)
-==16977==    by 0x4029B5: ft_export (export.c:86)
-==16977==    by 0x4028FF: handle_export (export.c:112)
-==16977==    by 0x4027B7: exec_builtin (builtins.c:34)
-==16977==    by 0x405850: exec_ast (exec.c:102)
-==16977==    by 0x40132A: main (main.c:35)
-==16977== 
-==16977== 4 bytes in 1 blocks are still reachable in loss record 5 of 91
-==16977==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==16977==    by 0x406EB4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==16977==    by 0x402B32: add_key (export.c:61)
-==16977==    by 0x4029B5: ft_export (export.c:86)
-==16977==    by 0x4028FF: handle_export (export.c:112)
-==16977==    by 0x4027B7: exec_builtin (builtins.c:34)
-==16977==    by 0x405850: exec_ast (exec.c:102)
-==16977==    by 0x40132A: main (main.c:35)
-==16977== 
-==16977== 48 bytes in 1 blocks are still reachable in loss record 30 of 91
-==16977==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==16977==    by 0x402AD1: add_key (export.c:50)
-==16977==    by 0x4029B5: ft_export (export.c:86)
-==16977==    by 0x4028FF: handle_export (export.c:112)
-==16977==    by 0x4027B7: exec_builtin (builtins.c:34)
-==16977==    by 0x405850: exec_ast (exec.c:102)
-==16977==    by 0x40132A: main (main.c:35)
-==16977== 
-==16977== 576 bytes in 1 blocks are still reachable in loss record 43 of 91
-==16977==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==16977==    by 0x405187: upload_env_tab (env_utils.c:63)
-==16977==    by 0x4029CB: ft_export (export.c:89)
-==16977==    by 0x4028FF: handle_export (export.c:112)
-==16977==    by 0x4027B7: exec_builtin (builtins.c:34)
-==16977==    by 0x405850: exec_ast (exec.c:102)
-==16977==    by 0x40132A: main (main.c:35)
-==16977== 
-==16977== 1,048 bytes in 70 blocks are still reachable in loss record 58 of 91
-==16977==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==16977==    by 0x406F7B: ft_strndup (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==16977==    by 0x404E68: is_set_env (init_env.c:26)
-==16977==    by 0x405053: init_env (init_env.c:83)
-==16977==    by 0x4012BF: main (main.c:25)
-==16977== 
-==16977== 3,079 bytes in 70 blocks are still reachable in loss record 63 of 91
-==16977==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==16977==    by 0x406EB4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==16977==    by 0x404E98: is_set_env (init_env.c:29)
-==16977==    by 0x405053: init_env (init_env.c:83)
-==16977==    by 0x4012BF: main (main.c:25)
-==16977== 
-==16977== 3,360 bytes in 70 blocks are still reachable in loss record 64 of 91
-==16977==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==16977==    by 0x40691B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==16977==    by 0x404F5A: add_env_node (init_env.c:54)
-==16977==    by 0x405026: init_env (init_env.c:80)
-==16977==    by 0x4012BF: main (main.c:25)
-==16977== 
-==16977== 4,135 bytes in 71 blocks are still reachable in loss record 77 of 91
-==16977==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==16977==    by 0x407039: ft_strjoin (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==16977==    by 0x40521D: upload_env_tab (env_utils.c:76)
-==16977==    by 0x4029CB: ft_export (export.c:89)
-==16977==    by 0x4028FF: handle_export (export.c:112)
-==16977==    by 0x4027B7: exec_builtin (builtins.c:34)
-==16977==    by 0x405850: exec_ast (exec.c:102)
-==16977==    by 0x40132A: main (main.c:35)
-==16977== 
-==16977== LEAK SUMMARY:
-==16977==    definitely lost: 0 bytes in 0 blocks
-==16977==    indirectly lost: 0 bytes in 0 blocks
-==16977==      possibly lost: 0 bytes in 0 blocks
-==16977==    still reachable: 12,254 bytes in 285 blocks
-==16977==         suppressed: 214,501 bytes in 259 blocks
-==16977== 
-==16977== For lists of detected and suppressed errors, rerun with: -s
-==16977== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==17618== Memcheck, a memory error detector
+==17618== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==17618== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==17618== Command: ./minishell
+==17618== Parent PID: 8806
+==17618== 
+==17618== 
+==17618== Process terminating with default action of signal 2 (SIGINT)
+==17618==    at 0x490A75B: kill (syscall-template.S:120)
+==17618==    by 0x48A7F39: _rl_signal_handler (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==17618==    by 0x48A8BEC: rl_getc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==17618==    by 0x48A8460: rl_read_key (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==17618==    by 0x488CC86: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==17618==    by 0x4895D14: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==17618==    by 0x4012CE: main (main.c:28)
+==17618== 
+==17618== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==17618== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==17618==    <inherited from parent>
+==17618== 
+==17618== Open file descriptor 38: /dev/ptmx
+==17618==    <inherited from parent>
+==17618== 
+==17618== Open file descriptor 37: /home/jmagand/.config/Code/logs/20250610T201426/ptyhost.log
+==17618==    <inherited from parent>
+==17618== 
+==17618== Open file descriptor 3: /home/jmagand/Documents/wip/3./minishell/.valgrind_log.txt
+==17618==    <inherited from parent>
+==17618== 
+==17618== 
+==17618== HEAP SUMMARY:
+==17618==     in use at exit: 226,773 bytes in 546 blocks
+==17618==   total heap usage: 1,174 allocs, 628 frees, 291,114 bytes allocated
+==17618== 
+==17618== 41 bytes in 1 blocks are still reachable in loss record 21 of 87
+==17618==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17618==    by 0x4071E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==17618==    by 0x40575E: update_value (getter_setter.c:43)
+==17618==    by 0x405614: set_env_var (getter_setter.c:58)
+==17618==    by 0x403484: get_oldpwd (cd.c:43)
+==17618==    by 0x403268: w_cd (cd.c:53)
+==17618==    by 0x403088: ft_cd (cd.c:124)
+==17618==    by 0x402776: exec_builtin (builtins.c:32)
+==17618==    by 0x405B80: exec_ast (exec.c:102)
+==17618==    by 0x40132A: main (main.c:35)
+==17618== 
+==17618== 47 bytes in 1 blocks are still reachable in loss record 24 of 87
+==17618==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17618==    by 0x4071E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==17618==    by 0x40575E: update_value (getter_setter.c:43)
+==17618==    by 0x405614: set_env_var (getter_setter.c:58)
+==17618==    by 0x4032EE: w_cd (cd.c:63)
+==17618==    by 0x403088: ft_cd (cd.c:124)
+==17618==    by 0x402776: exec_builtin (builtins.c:32)
+==17618==    by 0x405B80: exec_ast (exec.c:102)
+==17618==    by 0x40132A: main (main.c:35)
+==17618== 
+==17618== 568 bytes in 1 blocks are still reachable in loss record 39 of 87
+==17618==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17618==    by 0x405217: update_env_tab (env_utils.c:90)
+==17618==    by 0x40578A: update_value (getter_setter.c:46)
+==17618==    by 0x405614: set_env_var (getter_setter.c:58)
+==17618==    by 0x4032EE: w_cd (cd.c:63)
+==17618==    by 0x403088: ft_cd (cd.c:124)
+==17618==    by 0x402776: exec_builtin (builtins.c:32)
+==17618==    by 0x405B80: exec_ast (exec.c:102)
+==17618==    by 0x40132A: main (main.c:35)
+==17618== 
+==17618== 1,048 bytes in 70 blocks are still reachable in loss record 54 of 87
+==17618==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17618==    by 0x4072AB: ft_strndup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==17618==    by 0x404EF8: is_set_env (init_env.c:26)
+==17618==    by 0x4050E3: init_env (init_env.c:83)
+==17618==    by 0x4012BF: main (main.c:25)
+==17618== 
+==17618== 2,997 bytes in 68 blocks are still reachable in loss record 59 of 87
+==17618==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17618==    by 0x4071E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==17618==    by 0x404F28: is_set_env (init_env.c:29)
+==17618==    by 0x4050E3: init_env (init_env.c:83)
+==17618==    by 0x4012BF: main (main.c:25)
+==17618== 
+==17618== 3,360 bytes in 70 blocks are still reachable in loss record 60 of 87
+==17618==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17618==    by 0x406C4B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==17618==    by 0x404FEA: add_env_node (init_env.c:54)
+==17618==    by 0x4050B6: init_env (init_env.c:80)
+==17618==    by 0x4012BF: main (main.c:25)
+==17618== 
+==17618== 4,133 bytes in 70 blocks are still reachable in loss record 73 of 87
+==17618==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==17618==    by 0x407369: ft_strjoin (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==17618==    by 0x405349: update_key_values (env_utils.c:62)
+==17618==    by 0x405256: update_env_tab (env_utils.c:94)
+==17618==    by 0x40578A: update_value (getter_setter.c:46)
+==17618==    by 0x405614: set_env_var (getter_setter.c:58)
+==17618==    by 0x4032EE: w_cd (cd.c:63)
+==17618==    by 0x403088: ft_cd (cd.c:124)
+==17618==    by 0x402776: exec_builtin (builtins.c:32)
+==17618==    by 0x405B80: exec_ast (exec.c:102)
+==17618==    by 0x40132A: main (main.c:35)
+==17618== 
+==17618== LEAK SUMMARY:
+==17618==    definitely lost: 0 bytes in 0 blocks
+==17618==    indirectly lost: 0 bytes in 0 blocks
+==17618==      possibly lost: 0 bytes in 0 blocks
+==17618==    still reachable: 12,194 bytes in 281 blocks
+==17618==         suppressed: 214,579 bytes in 265 blocks
+==17618== 
+==17618== For lists of detected and suppressed errors, rerun with: -s
+==17618== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
