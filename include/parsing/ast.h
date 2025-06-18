@@ -21,19 +21,6 @@
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
-typedef enum e_type_ast
-{
-	AND,
-	OR,
-	PIPE,
-	REDIR_IN_TRUNC,
-	REDIR_OUT_TRUNC,
-	REDIR_OUT_APPEND,
-	HERE_DOC,
-	COMMAND,
-
-}					t_type_ast;
-
 // typedef struct s_redirect
 // {
 // 	struct s_ast	*child;
@@ -44,7 +31,6 @@ typedef enum e_type_ast
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-
 
 typedef struct s_logic
 {
@@ -80,10 +66,9 @@ typedef struct s_command
 	struct s_redir	redir;
 }					t_command;
 
-
 typedef struct s_ast
 {
-	t_type_ast		type;
+	t_type			type;
 	union
 	{
 		t_logic		logic;
