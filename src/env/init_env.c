@@ -87,5 +87,5 @@ void	init_env(t_data *data, char **env)
 			data->env = new_env;
 		i++;
 	}
-	upload_env_tab(data);
+	update_env_tab(data);
 }

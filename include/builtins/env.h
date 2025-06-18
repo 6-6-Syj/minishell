@@ -54,8 +54,10 @@ t_env				*add_env_node(t_env **env_lst);
 void				init_env(t_data *data, char **env);
 
 void				print_env_tab(char **env_tab);
-char				**upload_env_tab(t_data *data);
+char				**update_env_tab(t_data *data);
 void				free_env_lst(t_env **env_lst);
 void				free_env_tab(t_data *data);
 
+char				*get_env_var(t_data *data, char *key);
+int					set_env_var(t_data *data, char *key, char *value);
 #endif

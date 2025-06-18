@@ -59,11 +59,9 @@ bash-5.1$ exit
 static int	w_getcwd(char *path, t_data *data)
 {
 	if (!getcwd(path, PATH_MAX))
-	{
 		data->err = 1;
-		return (data->err);
-	}
-	data->err = 0;
+	else
+		data->err = 0;
 	return (data->err);
 }
 
