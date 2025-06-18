@@ -15,12 +15,12 @@ int	get_args_len(t_token *token) // TODO: refacto
 
 	tmp = token;
 	arg = 0;
-	while (tmp && (tmp->type == TYPE_ARG || tmp->type == TYPE_CMD
-			|| tmp->type == TYPE_REDIR_APPEND || tmp->type == TYPE_REDIR_IN
-			|| tmp->type == TYPE_REDIR_OUT || tmp->type == TYPE_SPACE))
+	while (tmp && (tmp->type == ARG || tmp->type == CMD
+			|| tmp->type == REDIR_APPEND || tmp->type == REDIR_IN
+			|| tmp->type == REDIR_OUT || tmp->type == SPACE))
 	// TODO: sikp space before init_ast ?
 	{
-		if (tmp->type == TYPE_ARG || tmp->type == TYPE_CMD)
+		if (tmp->type == ARG || tmp->type == CMD)
 			arg++;
 		tmp = tmp->next;
 	}
@@ -102,15 +102,15 @@ t_ast	*create_command_node(t_token *token)
 		return (NULL);
 	new_node->command.fd_in = STDIN_FILENO;
 	new_node->command.fd_out = STDOUT_FILENO;
-	new_node->type = COMMAND;
+	new_node->type = CMD;
 	len = get_args_len(tmp);
 	new_node->command.args = ft_calloc(len + 1, sizeof(char *));
 	i = 0;
-	while (tmp && (tmp->type == TYPE_CMD || tmp->type == TYPE_ARG
-			|| tmp->type == TYPE_SPACE || tmp->type == TYPE_REDIR_APPEND
-			|| tmp->type == TYPE_REDIR_IN || tmp->type == TYPE_REDIR_OUT))
+	while (tmp && (tmp->type == CMD || tmp->type == ARG
+			|| tmp->type == SPACE || tmp->type == REDIR_APPEND
+			|| tmp->type == REDIR_IN || tmp->type == REDIR_OUT))
 	{
-		if (tmp->type == TYPE_CMD || tmp->type == TYPE_ARG)
+		if (tmp->type == CMD || tmp->type == ARG)
 			new_node->command.args[i++] = ft_strdup(tmp->content);
 		tmp = tmp->next;
 	}
@@ -160,9 +160,9 @@ t_token	*get_redir_file(t_token *token)
 	t_token	*tmp;
 
 	tmp = token->next;
-	while (tmp && tmp->type == TYPE_SPACE)
+	while (tmp && tmp->type == SPACE)
 		tmp = tmp->next;
-	if (tmp->type == TYPE_FILE)
+	if (tmp->type == REDIR_TARGET)
 		return (tmp);
 	return (NULL);
 }
@@ -174,8 +174,8 @@ t_token	*get_next_redir(t_token *root_token)
 	tmp = root_token->prev;
 	while (tmp) //
 	{
-		if (tmp->type == TYPE_REDIR_APPEND || tmp->type == TYPE_REDIR_IN
-			|| tmp->type == TYPE_REDIR_OUT)
+		if (tmp->type == REDIR_APPEND || tmp->type == REDIR_IN
+			|| tmp->type == REDIR_OUT)
 			return (tmp);
 		tmp = tmp->prev;
 	}
@@ -187,70 +187,35 @@ t_token	*get_target_command(t_token *root_token) ///////////////////////////
 	t_token *tmp;
 
 	tmp = root_token->prev;
-	while (tmp && tmp->type != TYPE_AND && tmp->type != TYPE_OR
-		&& tmp->type != TYPE_PIPE && tmp->type != TYPE_REDIR_IN
-		&& tmp->type != TYPE_REDIR_OUT && tmp->type != TYPE_REDIR_APPEND) //
+	while (tmp && tmp->type != AND && tmp->type != OR
+		&& tmp->type != PIPE && tmp->type != REDIR_IN
+		&& tmp->type != REDIR_OUT && tmp->type != REDIR_APPEND) //
 	{
-		if (tmp->type == TYPE_CMD)
+		if (tmp->type == CMD)
 			return (tmp);
 		tmp = tmp->prev;
 	}
 	tmp = root_token->next;
-	while (tmp && tmp->type != TYPE_AND && tmp->type != TYPE_OR
-		&& tmp->type != TYPE_PIPE && tmp->type != TYPE_REDIR_IN
-		&& tmp->type != TYPE_REDIR_OUT && tmp->type != TYPE_REDIR_APPEND) //
+	while (tmp && tmp->type != AND && tmp->type != OR
+		&& tmp->type != PIPE && tmp->type != REDIR_IN
+		&& tmp->type != REDIR_OUT && tmp->type != REDIR_APPEND) //
 	{
-		if (tmp->type == TYPE_CMD)
+		if (tmp->type == CMD)
 			return (tmp);
 		tmp = tmp->next;
 	}
 	return (NULL);
 }
 
-t_ast	*create_redir_node(t_token *token)
-{
-	t_token	*token_left;
-	t_token	*token_right;
-	t_token	*token_file;
-	t_ast	*new_node;
-
-	token_left = get_target_command(token);
-	token_right = get_next_redir(token);
-	if (token_left)
-		ft_printf("token_left = %s\n", token_left->content);
-	if (token_right)
-		ft_printf("token_right = %s\n", token_right->content);
-	token_file = get_redir_file(token);
-	if (!token_file)
-		return (NULL);
-	ft_printf("file = %s\n", token_file->content);
-	new_node = ft_calloc(1, sizeof(t_ast));
-	if (!new_node)
-		return (NULL);
-	new_node->redir.file = ft_strdup(token_file->content); // redir_out
-	if (token->type == TYPE_REDIR_IN)
-		new_node->type = REDIR_IN_TRUNC;
-	if (token->type == TYPE_REDIR_OUT)
-		new_node->type = REDIR_OUT_TRUNC;
-	if (token->type == TYPE_REDIR_APPEND)
-		new_node->type = REDIR_OUT_APPEND;
-	new_node->redir.left = parse_token(token_left);
-	new_node->redir.right = parse_token(token_right);
-	return (new_node);
-}
-
 t_ast	*parse_token(t_token *token)
 {
 	if (!token)
 		return (NULL);
-	if (token->type == TYPE_REDIR_IN || token->type == TYPE_REDIR_OUT
-		|| token->type == TYPE_REDIR_APPEND)
-		return (create_redir_node(token));
-	// if (token->type == TYPE_AND || token->type == TYPE_OR)
+	// if (token->type == AND || token->type == OR)
 	// 	return (create_logic_node(token));
-	if (token->type == TYPE_PIPE)
+	if (token->type == PIPE)
 		return (create_pipe_node(token));
-	if (token->type == TYPE_CMD)
+	if (token->type == CMD)
 		return (create_command_node(token));
 	return (NULL);
 }

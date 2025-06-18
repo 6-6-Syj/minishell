@@ -34,7 +34,7 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 {
 	if (!node)
 		return ;
-	// if (node && node->type == COMMAND)
+	// if (node && node->type == CMD)
 	// {
 	// 	ft_printf("┌───────── Command Info ────────┐\n");
 	// 	ft_printf("│\tCommand: %s\t\t│\n", node->command.args[0]);
@@ -44,7 +44,7 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 	// }
 	// else if (node && (node->type == AND || node->type == OR))
 	// 	handle_and_or(node, data);
-	if (node->type == COMMAND)
+	if (node->type == CMD)
 		exec_command(&node->command, data);
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd);
@@ -98,7 +98,7 @@ void	exec_ast(t_ast *node, t_data *data)
 	fd[1] = -1;
 	if (!node)
 		exit_error(data); // TODO: CHECK ERROR
-	if (node->type == COMMAND && is_builtin(node->command.args[0]))
+	if (node->type == CMD && is_builtin(node->command.args[0]))
 		data->err = exec_builtin(&node->command, &data->env, data);
 	else
 	{

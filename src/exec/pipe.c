@@ -17,7 +17,7 @@ static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 	// ft_printf("\nASSIGN\n");
 	if (!node)
 		return ;
-	if (node->type == COMMAND)
+	if (node->type == CMD)
 	{
         // ft_printf("COMMAND %s\n", node->command.args[0]);
 		if (fd_in != -1)
@@ -45,7 +45,7 @@ void	handle_pipe(t_pipe *pipe, t_data *data, int *fd)
 {
 	w_pipe(fd, data);
     // ft_printf("\n\tHANDLE\nPipe crated: fd[0] = %d (in), fd[1] = %d (out)\n", fd[0], fd[1]);
-	if (pipe->left->type == COMMAND)
+	if (pipe->left && pipe->left->type == CMD)
 	{
         // ft_printf("-> Assign à gauche du pipe (COMMAND) : fd_out = %d\n", fd[1]);
 		pipe->left->command.fd_out = fd[1];
@@ -55,7 +55,7 @@ void	handle_pipe(t_pipe *pipe, t_data *data, int *fd)
 		// ft_printf("-> Assign récursive à gauche (PIPE) : fd_out = %d\n", fd[1]);
 		assign_pipe_fds(pipe->left, -1, fd[1]);
 	}
-	if (pipe->right->type == COMMAND)
+	if (pipe->right->type == CMD)
 	{
 		// ft_printf("-> Assign à droite du pipe (COMMAND) : fd_in = %d\n", fd[0]);
 		pipe->right->command.fd_in = fd[0];

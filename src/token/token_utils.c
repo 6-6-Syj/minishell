@@ -103,59 +103,59 @@ t_type	get_token_word_type(t_token *current)
 
 	// if (ft_strlen(current->content) > 1 && )
 	prev_token = current->prev;
-	while (prev_token && (prev_token->type == TYPE_SPACE))
+	while (prev_token && (prev_token->type == SPACE))
 		prev_token = prev_token->prev;
 	// if (ft_strlen(current->content) > 1 && current->content[0] == '$')
-	// return (TYPE_EXPAND);
-	// if (current->prev->type == TYPE_EXPAND)
-	// 	return (TYPE_VAR);
+	// return (EXPAND);
+	// if (current->prev->type == EXPAND)
+	// 	return (VAR);
 	if (!prev_token)
-		return (TYPE_CMD);
-	if (prev_token->type == TYPE_CMD)
-		return (TYPE_ARG);
-	if (prev_token->type == TYPE_REDIR_APPEND)
-		return (TYPE_FILE);
-	if (prev_token->type == TYPE_REDIR_IN)
-		return (TYPE_FILE);
-	if (prev_token->type == TYPE_HERE_DOC)
-		return (TYPE_FILE);
-	if (prev_token->type == TYPE_REDIR_OUT)
-		return (TYPE_FILE);
-	if (prev_token->type == TYPE_FILE)
-		return (TYPE_ARG);
-	if (prev_token->type == TYPE_ARG)
-		return (TYPE_ARG);
-	return (TYPE_CMD);
+		return (CMD);
+	if (prev_token->type == CMD)
+		return (ARG);
+	if (prev_token->type == REDIR_APPEND)
+		return (REDIR_TARGET);
+	if (prev_token->type == REDIR_IN)
+		return (REDIR_TARGET);
+	if (prev_token->type == HERE_DOC)
+		return (REDIR_TARGET);
+	if (prev_token->type == REDIR_OUT)
+		return (REDIR_TARGET);
+	if (prev_token->type == REDIR_TARGET)
+		return (ARG);
+	if (prev_token->type == ARG)
+		return (ARG);
+	return (CMD);
 }
 
 t_type	get_operator_type(t_token *token)
 {
 	// if (ft_strcmp(token->content, "$") == 0)
-	// 	return (TYPE_EXPAND);
+	// 	return (EXPAND);
 	if (ft_strcmp(token->content, "<") == 0)
-		return (TYPE_REDIR_IN);
+		return (REDIR_IN);
 	else if (ft_strcmp(token->content, "<<") == 0)
-		return (TYPE_HERE_DOC);
+		return (HERE_DOC);
 	else if (ft_strcmp(token->content, ">") == 0)
-		return (TYPE_REDIR_OUT);
+		return (REDIR_OUT);
 	else if (ft_strcmp(token->content, ">>") == 0)
-		return (TYPE_REDIR_APPEND);
+		return (REDIR_APPEND);
 	else if (ft_strcmp(token->content, "|") == 0)
-		return (TYPE_PIPE);
+		return (PIPE);
 	else if (ft_strcmp(token->content, "||") == 0)
-		return (TYPE_OR);
+		return (OR);
 	else if (ft_strcmp(token->content, "&&") == 0)
-		return (TYPE_AND);
-	return (TYPE_UNKNOWN);
+		return (AND);
+	return (UNKNOWN);
 }
 
 t_type	get_quote_type(t_token *token)
 {
 	if (token->content[0] == '\"' && ft_strchr(token->content + 1, '"'))
-		return (TYPE_QUOTE_D);
+		return (QUOTE_D);
 	else if (token->content[0] == '\'' && ft_strchr(token->content + 1, '\''))
-		return (TYPE_QUOTE_S);
-	return (TYPE_UNKNOWN);
+		return (QUOTE_S);
+	return (UNKNOWN);
 }
 
 t_type	get_token_type(t_token *token)
@@ -164,34 +164,34 @@ t_type	get_token_type(t_token *token)
 
 	len = ft_strlen(token->content);
 	if (token->content[0] == '(')
-		return (TYPE_PAREN_L);
+		return (PAREN_L);
 	else if (token->content[0] == ')')
-		return (TYPE_PAREN_R);
+		return (PAREN_R);
 	else if (is_operator(token->content[0]) && (is_operator(token->content[len - 1])))
 		return (get_operator_type(token));
 	else if (is_quote(token->content[0]) && is_quote(token->content[len - 1]))
 		return (get_quote_type(token));
 	else if (token->content[0] == ' ')
-		return (TYPE_SPACE);
+		return (SPACE);
 	else if (is_part_of_word(token->content[0]))
-		return (TYPE_WORD);
-	return (TYPE_UNKNOWN);
+		return (WORD);
+	return (UNKNOWN);
 }
 
 int	get_token_priority(t_token *token)
 {
-	if (token->type == TYPE_PAREN_L || token->type == TYPE_PAREN_R)
+	if (token->type == PAREN_L || token->type == PAREN_R)
 		return (0);
-	else if (token->type == TYPE_PIPE)
+	else if (token->type == PIPE)
 		return (1);
-	else if (token->type == TYPE_HERE_DOC)
+	else if (token->type == HERE_DOC)
 		return (2);
-	else if (token->type == TYPE_REDIR_IN || token->type == TYPE_REDIR_OUT
-		|| token->type == TYPE_REDIR_APPEND)
+	else if (token->type == REDIR_IN || token->type == REDIR_OUT
+		|| token->type == REDIR_APPEND)
 		return (3);
-	else if (token->type == TYPE_OR || token->type == TYPE_AND)
+	else if (token->type == OR || token->type == AND)
 		return (4);
-	else if (token->type == TYPE_CMD)
+	else if (token->type == CMD)
 		return (5);
 	return (-1);
 }

@@ -58,14 +58,6 @@ typedef struct s_redir
 	struct s_redir	*next;
 }					t_redir;
 
-typedef struct s_command
-{
-	int				fd_in;
-	int				fd_out;
-	char			**args;
-	struct s_redir	redir;
-}					t_command;
-
 typedef struct s_ast
 {
 	t_type			type;

@@ -51,8 +51,8 @@ void	free_ast(t_ast **node)
 		return ;
 	else if ((*node)->type == PIPE)
 		free_pipe_node(*node);
-	else if ((*node)->type == COMMAND)
+	else if ((*node)->type == CMD)
 		free_command_node(*node);
 	else if ((*node)->type == AND || (*node)->type == OR)
-		free_logic_node(*node);	
+		free_logic_node(*node);
 }

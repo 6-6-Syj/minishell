@@ -32,14 +32,14 @@
 /****************************************************************************/
 // typedef enum e_type
 // {
-// 	TYPE_PARENTHESE,
-// 	TYPE_OPERATOR,
-// 	TYPE_PIPE,
-// 	TYPE_REDIRECTION,
-// 	TYPE_COMMAND,
-// 	TYPE_EXPAND,
-// 	TYPE_QUOTE,
-// 	TYPE_SPACE,
+// 	PARENTHESE,
+// 	OPERATOR,
+// 	PIPE,
+// 	REDIRECTION,
+// 	COMMAND,
+// 	EXPAND,
+// 	QUOTE,
+// 	SPACE,
 // } t_type;
 
 /****************************************************************************/

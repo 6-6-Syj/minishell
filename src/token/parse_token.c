@@ -24,7 +24,7 @@ int	remove_node(t_token *node)
 // {
 // 	if (!node || !node->prev || !node->next)
 // 		return (-1);
-// 	if (node->prev->type != TYPE_SPACE || node->next->type != TYPE_SPACE)
+// 	if (node->prev->type != SPACE || node->next->type != SPACE)
 // 		return (-1);
 // 	return (0);
 // }
@@ -37,10 +37,10 @@ int	remove_node(t_token *node)
 // 	if (!node)
 // 		return (-1);
 // 	tmp = node->next;
-// 	while (tmp && tmp->type != TYPE_AND && tmp->type != TYPE_OR
-// && tmp->type != TYPE_PIPE) // TODO: handle parenthesis
+// 	while (tmp && tmp->type != AND && tmp->type != OR
+// && tmp->type != PIPE) // TODO: handle parenthesis
 // 	{
-// 		if (tmp->type == TYPE_ARG)
+// 		if (tmp->type == ARG)
 // 		{
 // 			buff = ft_strjoin(node.)
 // 		}
@@ -52,13 +52,13 @@ int	remove_node(t_token *node)
 // {
 // 	int	status;
 
-// 	if (token_node->type == TYPE_AND || token_node->type == TYPE_OR)
+// 	if (token_node->type == AND || token_node->type == OR)
 // 		status = parse_logic_node(token_node);
-// 	if (token_node->type == TYPE_CMD)
+// 	if (token_node->type == CMD)
 // 		status = parse_command_node(token_node);
-// 	if (token_node->type == TYPE_QUOTE_S)
+// 	if (token_node->type == QUOTE_S)
 // 		status = parse_quote_s_node(token_node);
-// 	if (token_node->type == TYPE_QUOTE_D)
+// 	if (token_node->type == QUOTE_D)
 // 		status = parse_quote_d_node(token_node);
 // }
 
@@ -71,13 +71,13 @@ int	set_command_type(t_token **token_lst)
 	while (token_node)
 	{
 		tmp = token_node->next;
-		if (token_node->type == TYPE_WORD)
+		if (token_node->type == WORD)
 		{
-			token_node->type = TYPE_CMD;
-			while (tmp && !(tmp->type & TYPE_OPERATOR))
+			token_node->type = CMD;
+			while (tmp && !(tmp->type & OPERATOR))
 			{
-				if (tmp->type == TYPE_WORD)
-					tmp->type = TYPE_ARG;
+				if (tmp->type == WORD)
+					tmp->type = ARG;
 				tmp = tmp->next;
 			}
 		}
@@ -93,9 +93,9 @@ int	set_file_type(t_token **token_lst)
 	token_node = *token_lst;
 	while (token_node)
 	{
-		if (token_node->type & TYPE_REDIR && token_node->next)
+		if (token_node->type & REDIR && token_node->next)
 		{
-			token_node->next->type = TYPE_FILE;
+			token_node->next->type = REDIR_TARGET;
 		}
 		token_node = token_node->next;
 	}
@@ -113,10 +113,10 @@ int	parse_command(t_token **token_lst) ///////////
 	while (token_node)
 	{
 		tmp = token_node->next;
-		while (token_node->type == TYPE_CMD && tmp
-			&& !(tmp->type & TYPE_OPERATOR))
+		while (token_node->type == CMD && tmp
+			&& !(tmp->type & OPERATOR))
 		{
-			if (tmp->type == TYPE_ARG)
+			if (tmp->type == ARG)
 			{
 				buff = ft_strjoin(" ", tmp->content);
 				buff2 = ft_strjoin(token_node->content, buff);

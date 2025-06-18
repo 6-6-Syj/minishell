@@ -38,9 +38,9 @@ typedef enum e_type
 	OR = 1 << 1,
 	PIPE = 1 << 2,
 	HERE_DOC = 1 << 3,
-	REDIR_IN = 1 << 4,
-	REDIR_OUT = 1 << 5,
-	REDIR_APPEND = 1 << 6,
+	REDIR_IN = 1 << 4, // TRUNC
+	REDIR_OUT = 1 << 5, // TRUNC
+	REDIR_APPEND = 1 << 6, // APPEND
 	QUOTE_S = 1 << 7,
 	QUOTE_D = 1 << 8,
 	PAREN_L = 1 << 9,
@@ -50,7 +50,7 @@ typedef enum e_type
 	NEW_LINE = 1 << 13,
 	SPACE = 1 << 14,
 	UNKNOWN = 1 << 15,
-	FILE = 1 << 16,
+	REDIR_TARGET = 1 << 16,
 	EXPAND = 1 << 17,
 	VAR = 1 << 18,
 	REDIR = REDIR_IN | REDIR_OUT | REDIR_APPEND | HERE_DOC,

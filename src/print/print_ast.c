@@ -25,7 +25,7 @@ t_layout calc_layout(t_ast *node)
         snprintf(label, sizeof(label), "&&");
     else if (node->type == OR)
         snprintf(label, sizeof(label), "||");
-    else if (node->type == COMMAND)
+    else if (node->type == CMD)
     {
         if (node->command.args && node->command.args[0])
             snprintf(label, sizeof(label), "%s", node->command.args[0]);
@@ -37,12 +37,6 @@ t_layout calc_layout(t_ast *node)
             strncat(label, node->command.args[i], sizeof(label) - strlen(label) - 1);
         }
     }
-    else if (node->type == REDIR_IN_TRUNC)
-        snprintf(label, sizeof(label), "< \"%s\"", node->redir.file);
-    else if (node->type == REDIR_OUT_TRUNC)
-        snprintf(label, sizeof(label), "> \"%s\"", node->redir.file);
-    else if (node->type == REDIR_OUT_APPEND)
-        snprintf(label, sizeof(label), ">> \"%s\"", node->redir.file);
     else
         snprintf(label, sizeof(label), "NODE");
 
@@ -54,20 +48,6 @@ t_layout calc_layout(t_ast *node)
         t_layout left = calc_layout(node->pipe.left);
         t_layout right = calc_layout(node->pipe.right);
         int spacing = 6;
-
-        layout.width = left.width + right.width + spacing;
-        if (layout.width < box_width)
-            layout.width = box_width;
-
-        layout.center_x = layout.width / 2;
-    }
-    else if (node->type == REDIR_IN_TRUNC
-          || node->type == REDIR_OUT_TRUNC
-          || node->type == REDIR_OUT_APPEND)
-    {
-        t_layout left = calc_layout(node->redir.left);
-        t_layout right = calc_layout(node->redir.right);
-        int spacing = 4;
 
         layout.width = left.width + right.width + spacing;
         if (layout.width < box_width)
@@ -132,7 +112,7 @@ void draw_ast_at(t_ast *node, char canvas[MAX_HEIGHT][MAX_WIDTH], int x, int y, 
         snprintf(label, sizeof(label), "&&");
     else if (node->type == OR)
         snprintf(label, sizeof(label), "||");
-    else if (node->type == COMMAND)
+    else if (node->type == CMD)
     {
         if (node->command.args && node->command.args[0])
             snprintf(label, sizeof(label), "%s", node->command.args[0]);
@@ -144,12 +124,6 @@ void draw_ast_at(t_ast *node, char canvas[MAX_HEIGHT][MAX_WIDTH], int x, int y, 
             strncat(label, node->command.args[i], sizeof(label) - strlen(label) - 1);
         }
     }
-    else if (node->type == REDIR_IN_TRUNC)
-        snprintf(label, sizeof(label), "< \"%s\"", node->redir.file);
-    else if (node->type == REDIR_OUT_TRUNC)
-        snprintf(label, sizeof(label), "> \"%s\"", node->redir.file);
-    else if (node->type == REDIR_OUT_APPEND)
-        snprintf(label, sizeof(label), ">> \"%s\"", node->redir.file);
     else
         snprintf(label, sizeof(label), "NODE");
 
@@ -192,48 +166,8 @@ void draw_ast_at(t_ast *node, char canvas[MAX_HEIGHT][MAX_WIDTH], int x, int y, 
             canvas[vert_start_y + 1][x + 1] = '\\';
         }
     }
-    else if (node->type == REDIR_IN_TRUNC
-          || node->type == REDIR_OUT_TRUNC
-          || node->type == REDIR_OUT_APPEND)
-    {
-        t_layout left_layout = calc_layout(node->redir.left);
-        t_layout right_layout = calc_layout(node->redir.right);
-        int spacing = 4;
-
-        int left_x = x - layout.width / 2 + left_layout.center_x;
-        int right_x = left_x + left_layout.width + spacing;
-
-        draw_ast_at(node->redir.left, canvas, left_x, y + 6, left_layout);
-        draw_ast_at(node->redir.right, canvas, right_x, y + 6, right_layout);
-
-        place_node(canvas, x - box_width / 2, y, label);
-
-        int vert_start_y = y + 3;
-        canvas[vert_start_y][x] = '|';
-
-        int vert_end_y = y + 5;
-        canvas[vert_end_y][left_x] = '|';
-        canvas[vert_end_y][right_x] = '|';
-
-        for (int i = left_x + 1; i < right_x; i++)
-            canvas[vert_end_y][i] = '-';
-
-        if (vert_end_y - vert_start_y > 1)
-        {
-            int mid_y = (vert_start_y + vert_end_y) / 2;
-            canvas[mid_y][x - 1] = '/';
-            canvas[mid_y][x + 1] = '\\';
-        }
-        else
-        {
-            canvas[vert_start_y + 1][x - 1] = '/';
-            canvas[vert_start_y + 1][x + 1] = '\\';
-        }
-    }
     else
-    {
         place_node(canvas, x - box_width / 2, y, label);
-    }
 }
 
 
