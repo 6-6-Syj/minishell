@@ -18,19 +18,19 @@ t_layout calc_layout(t_ast *node)
     if (!node)
         return layout;
 
-    char label[64] = {0};
-    if (node->type == PIPE)
-        snprintf(label, sizeof(label), "PIPE");
-    else if (node->type == AND)
-        snprintf(label, sizeof(label), "&&");
-    else if (node->type == OR)
-        snprintf(label, sizeof(label), "||");
-    else if (node->type == CMD)
-    {
-        if (node->command.args && node->command.args[0])
-            snprintf(label, sizeof(label), "%s", node->command.args[0]);
-        else
-            snprintf(label, sizeof(label), "CMD");
+	char label[64] = {0};
+	if (node->type == PIPE)
+		snprintf(label, sizeof(label), "PIPE");
+	else if (node->type == AND)
+		snprintf(label, sizeof(label), "&&");
+	else if (node->type == OR)
+		snprintf(label, sizeof(label), "||");
+	else if (node->type == CMD)
+	{
+		if (node->command.args && node->command.args[0])
+			snprintf(label, sizeof(label), "%s", node->command.args[0]);
+		else
+			snprintf(label, sizeof(label), "CMD");
 
         for (int i = 1; node->command.args && node->command.args[i]; i++) {
             strncat(label, " ", sizeof(label) - strlen(label) - 1);
@@ -105,19 +105,19 @@ void draw_ast_at(t_ast *node, char canvas[MAX_HEIGHT][MAX_WIDTH], int x, int y, 
     if (!node)
         return;
 
-    char label[64] = {0};
-    if (node->type == PIPE)
-        snprintf(label, sizeof(label), "PIPE");
-    else if (node->type == AND)
-        snprintf(label, sizeof(label), "&&");
-    else if (node->type == OR)
-        snprintf(label, sizeof(label), "||");
-    else if (node->type == CMD)
-    {
-        if (node->command.args && node->command.args[0])
-            snprintf(label, sizeof(label), "%s", node->command.args[0]);
-        else
-            snprintf(label, sizeof(label), "CMD");
+	char label[64] = {0};
+	if (node->type == PIPE)
+		snprintf(label, sizeof(label), "PIPE");
+	else if (node->type == AND)
+		snprintf(label, sizeof(label), "&&");
+	else if (node->type == OR)
+		snprintf(label, sizeof(label), "||");
+	else if (node->type == CMD)
+	{
+		if (node->command.args && node->command.args[0])
+			snprintf(label, sizeof(label), "%s", node->command.args[0]);
+		else
+			snprintf(label, sizeof(label), "CMD");
 
         for (int i = 1; node->command.args && node->command.args[i]; i++) {
             strncat(label, " ", sizeof(label) - strlen(label) - 1);

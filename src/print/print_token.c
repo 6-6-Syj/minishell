@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 21:46:36 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/27 18:49:15 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 18:03:59 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,10 @@ void	print_token_type(t_type type)
 		ft_printf(MGT "\t--->   CMD\t" RST);
 	else if (type == ARG)
 		ft_printf(MGT "\t--->   ARG\t" RST);
-	else if (type == EXPAND)
-		ft_printf(MGT "\t--->   EXPAND\t" RST);
 	else if (type == VAR)
 		ft_printf(MGT "\t--->   VAR\t" RST);
 	else if (type == REDIR_TARGET)
-		ft_printf(MGT "\t--->   FILE\t" RST);
+		ft_printf(MGT "\t--->   REDIR_TARGET\t" RST);
 	else if (type == UNKNOWN)
 		ft_printf(MGT "\t--->   UNKNOWN\t" RST);
 }
