@@ -171,9 +171,9 @@ t_ast	*parse_token(t_token *token)
 	// if (token->type == AND || token->type == OR)
 	// 	return (create_logical_operator(token));
 	if (token->type == PIPE)
-		return (create_pipe(token));
+		return (create_pipe_node(token));
 	if (token->type == CMD)
-		return (create_command(token));
+		return (create_command_node(token));
 	return (NULL);
 }
 

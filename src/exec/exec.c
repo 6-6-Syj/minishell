@@ -3,33 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/09 18:36:22 by jmagand           #+#    #+#             */
-/*   Updated: 2025/06/20 18:00:22 by dabuchhe         ###   ########lyon.fr   */
+/*   Created: 2025-05-09 18:36:22 by jmagand           #+#    #+#             */
+/*   Updated: 2025-05-09 18:36:22 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
 #include "exec.h"
-
-/*
-
-Création des processus enfants : Pour chaque commande dans l’AST,
-	créer un processus enfant via fork() pour l'exécution de la commande.
-
-Gestion des redirections : Avant de lancer l'exécution,
-	configurer les redirections de fichiers et les pipes pour
-		que les commandes puissent fonctionner comme prévu.
-
-Si une redirection est présente (par exemple, >, <, >>, 2>),
-	les descripteurs de fichiers doivent être modifiés
-		avant d'exécuter la commande.
-
-Redirection des flux standard (stdin, stdout,
-	stderr) selon les opérateurs dans la commande.
-
-*/
+#include "pipe.h"
 
 // static int	handle_and_or(t_ast *node, t_data *data)
 // {
@@ -61,22 +44,8 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 	// }
 	// else if (node && (node->type == AND || node->type == OR))
 	// 	handle_and_or(node, data);
-	if (node && (node->type == REDIR_IN || node->type == REDIR_OUT
-			|| node->type == REDIR_APPEND || node->type == HERE_DOC))
-	{
-		// Handle redirect stdin/out
-		// Ouvrir le fichier approprié en fonction du type de redirection
-		// Dupliquer les descripteurs de fichiers standards
-		// Fermer les descripteurs de fichiers inutiles
-		// Si un sous-arbre droit existe,
-		// cela signifie qu'il y a d'autres redirections à faire
-		// Si tout se passe bien à droite,
-		// continuer à gauche ou exécuter la commande
-		// Si problème à droite, retourner le code d'erreur du sous-arbre droit
-		// return (-42);
-	}
-	else if (node->type == CMD)
-		handle_exec(&node->command, data);
+	if (node->type == CMD)
+		exec_command(&node->command, data);
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd);
 }
