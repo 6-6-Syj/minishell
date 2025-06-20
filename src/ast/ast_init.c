@@ -1,5 +1,7 @@
 #include "ast.h"
 #include "libft.h"
+#include "print.h"
+#include "redir.h"
 #include "token.h"
 #include "unistd.h"
 
@@ -11,11 +13,12 @@ int	get_args_len(t_token *token)
 	tmp = token;
 	arg = 0;
 	while (tmp &&
-			(tmp->type == TYPE_ARG || tmp->type == TYPE_CMD
-				// TODO: sikp space before init_ast ?
-			|| tmp->type == TYPE_SPACE))
+			(tmp->type == ARG ||
+			tmp->type == CMD
+			// TODO: sikp space before init_ast ?
+			|| tmp->type == SPACE))
 	{
-		if (tmp->type == TYPE_ARG || tmp->type == TYPE_CMD)
+		if (tmp->type == ARG || tmp->type == CMD)
 			arg++;
 		tmp = tmp->next;
 	}
@@ -94,21 +97,23 @@ t_ast	*create_command(t_token *token)
 	tmp = token;
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
+	{
 		return (NULL);
+	}
 	new_node->command.fd_in = -1;
 	new_node->command.fd_out = -1;
-	new_node->type = COMMAND;
+	new_node->type = CMD;
 	len = get_args_len(tmp);
 	new_node->command.args = ft_calloc(len + 1, sizeof(char *));
 	i = 0;
-	while (tmp && (tmp->type == TYPE_CMD || tmp->type == TYPE_ARG
-			|| tmp->type == TYPE_SPACE))
+	while (tmp && (tmp->type == CMD || tmp->type == ARG || tmp->type == SPACE))
 	{
-		if (tmp->type == TYPE_CMD || tmp->type == TYPE_ARG)
+		if (tmp->type == CMD || tmp->type == ARG)
 			new_node->command.args[i++] = ft_strdup(tmp->content);
 		tmp = tmp->next;
 	}
-
+	init_redir(token, &new_node->command.redir);
+	print_redir_lst(new_node->command.redir);
 	new_node->command.args[i] = NULL;
 	return (new_node);
 }
@@ -157,16 +162,15 @@ t_ast	*create_logical_operator(t_token *token)
 
 // }
 
-
 t_ast	*parse_token(t_token *token)
 {
 	if (!token)
 		return (NULL);
-	if (token->type == TYPE_AND || token->type == TYPE_OR)
-		return (create_logical_operator(token));
-	if (token->type == TYPE_PIPE)
+	// if (token->type == AND || token->type == OR)
+	// 	return (create_logical_operator(token));
+	if (token->type == PIPE)
 		return (create_pipe(token));
-	if (token->type == TYPE_CMD)
+	if (token->type == CMD)
 		return (create_command(token));
 	return (NULL);
 }

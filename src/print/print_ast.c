@@ -25,7 +25,7 @@ t_layout calc_layout(t_ast *node)
 		snprintf(label, sizeof(label), "&&");
 	else if (node->type == OR)
 		snprintf(label, sizeof(label), "||");
-	else if (node->type == COMMAND)
+	else if (node->type == CMD)
 	{
 		if (node->command.args && node->command.args[0])
 			snprintf(label, sizeof(label), "%s", node->command.args[0]);
@@ -113,7 +113,7 @@ void draw_ast_at(t_ast *node, char canvas[MAX_HEIGHT][MAX_WIDTH], int x, int y, 
 		snprintf(label, sizeof(label), "&&");
 	else if (node->type == OR)
 		snprintf(label, sizeof(label), "||");
-	else if (node->type == COMMAND)
+	else if (node->type == CMD)
 	{
 		if (node->command.args && node->command.args[0])
 			snprintf(label, sizeof(label), "%s", node->command.args[0]);

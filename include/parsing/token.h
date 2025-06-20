@@ -31,29 +31,29 @@
 /****************************************************************************/
 typedef enum e_type
 {
-	TYPE_WORD,
-	TYPE_REDIR_IN,
-	TYPE_REDIR_OUT,
-	TYPE_REDIR_APPEND,
-	TYPE_HERE_DOC,
+	WORD,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	HERE_DOC,
 
-	TYPE_PIPE,
-	TYPE_AND,
-	TYPE_OR,
+	PIPE,
+	AND,
+	OR,
 
-	TYPE_CMD,
-	TYPE_ARG,
-	TYPE_PAREN_L,
-	TYPE_PAREN_R,
-	TYPE_NEW_LINE,
-	TYPE_QUOTE_S,
-	TYPE_QUOTE_D,
-	TYPE_SPACE,
-	TYPE_UNKNOWN,
-	TYPE_FILE,
-	TYPE_REDIR,
-	TYPE_EXPAND,
-	TYPE_VAR
+	CMD,
+	ARG,
+	PAREN_L,
+	PAREN_R,
+	NEW_LINE,
+	QUOTE_S,
+	QUOTE_D,
+	SPACE,
+	UNKNOWN,
+	REDIR_TARGET,
+	REDIR,
+	EXPAND,
+	VAR
 }	t_type;
 
 /****************************************************************************/

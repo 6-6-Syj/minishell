@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-09 18:36:22 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-09 18:36:22 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/09 18:36:22 by jmagand           #+#    #+#             */
+/*   Updated: 2025/06/20 18:00:22 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 {
 	if (!node)
 		return ;
-	if (node->type == COMMAND)
+	if (node->type == CMD)
 	{
 		if (fd_in != -1)
 			node->command.fd_in = fd_in;
@@ -128,11 +128,11 @@ static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 static void	handle_pipe(t_pipe *pipe, t_data *data, int *fd)
 {
 	w_pipe(fd, data);
-	if (pipe->left->type == COMMAND)
+	if (pipe->left->type == CMD)
 		pipe->left->command.fd_out = fd[1];
 	else if (pipe->left->type == PIPE)
 		assign_pipe_fds(pipe->left, -1, fd[1]);
-	if (pipe->right->type == COMMAND)
+	if (pipe->right->type == CMD)
 		pipe->right->command.fd_in = fd[0];
 	else if (pipe->right->type == PIPE)
 		assign_pipe_fds(pipe->right, fd[0], -1);
@@ -164,8 +164,8 @@ static void	handle_ast(t_ast *node, t_data *data, int *fd)
 		return ;
 	// else if (node && (node->type == AND || node->type == OR))
 	// 	handle_and_or(node, data);
-	if (node && (node->type == REDIR_IN_TRUNC || node->type == REDIR_OUT_TRUNC
-			|| node->type == REDIR_OUT_APPEND || node->type == HERE_DOC))
+	if (node && (node->type == REDIR_IN || node->type == REDIR_OUT
+			|| node->type == REDIR_APPEND || node->type == HERE_DOC))
 	{
 		// Handle redirect stdin/out
 		// Ouvrir le fichier approprié en fonction du type de redirection
@@ -178,7 +178,7 @@ static void	handle_ast(t_ast *node, t_data *data, int *fd)
 		// Si problème à droite, retourner le code d'erreur du sous-arbre droit
 		// return (-42);
 	}
-	else if (node->type == COMMAND)
+	else if (node->type == CMD)
 		handle_exec(&node->command, data);
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd);
