@@ -31,6 +31,7 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			break ;
 		init_token(&data.token, input);
+		parse_token_lst(&data.token);
 		init_ast(&data.ast, &data.token);
 		exec_ast(data.ast, &data);
 		print_all(&data);

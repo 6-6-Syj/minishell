@@ -102,16 +102,14 @@ t_ast	*create_command_node(t_token *token)
 	tmp = token;
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
-	{
 		return (NULL);
-	}
 	new_node->command.fd_in = -1;
 	new_node->command.fd_out = -1;
 	new_node->type = CMD;
 	len = get_args_len(tmp);
-	new_node->command.args = ft_calloc(len + 1, sizeof(char *));
+	new_node->command.args = ft_calloc(len + 2, sizeof(char *));
 	i = 0;
-	while (tmp && (tmp->type == CMD || tmp->type == ARG || tmp->type == SPACE))
+	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == CMD || tmp->type == ARG)
 			new_node->command.args[i++] = ft_strdup(tmp->content);
@@ -131,6 +129,10 @@ t_ast	*create_pipe_node(t_token *token)
 
 	token_left = get_prev_priority_token(token);
 	token_right = get_next_priority_token(token);
+	// if (token_left)
+	// 	ft_printf("left = %s\n", token_left->content);
+	// if (token_right)
+	// 	ft_printf("right = %s\n", token_right->content);
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
 		return (NULL);
@@ -147,7 +149,9 @@ t_ast	*create_logic_node(t_token *token)
 	t_token	*token_right;
 
 	token_left = get_prev_priority_token(token);
+	// ft_printf("token_left = %s\n", token_left->content);
 	token_right = get_next_priority_token(token);
+	// ft_printf("token_right = %s\n", token_right->content);
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
 		return (NULL);
@@ -158,18 +162,6 @@ t_ast	*create_logic_node(t_token *token)
 	if (ft_strcmp(token->content, "||") == 0)
 		new_node->type = OR;
 	return (new_node);
-}
-
-t_token	*get_redir_file(t_token *token)
-{
-	t_token	*tmp;
-
-	tmp = token->next;
-	while (tmp && tmp->type == SPACE)
-		tmp = tmp->next;
-	if (tmp->type == REDIR_TARGET)
-		return (tmp);
-	return (NULL);
 }
 
 t_ast	*parse_token(t_token *token)

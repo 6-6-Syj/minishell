@@ -74,7 +74,7 @@ int	set_command_type(t_token **token_lst)
 		if (token_node->type == WORD)
 		{
 			token_node->type = CMD;
-			while (tmp && !(tmp->type & OPERATOR))
+			while (tmp && tmp->type != PIPE)
 			{
 				if (tmp->type == WORD)
 					tmp->type = ARG;
@@ -102,6 +102,22 @@ int	set_file_type(t_token **token_lst)
 	return (0);
 }
 
+int	remove_space(t_token **token_lst)
+{
+	t_token	*token_node;
+	t_token	*tmp;
+
+	token_node = *token_lst;
+	while (token_node)
+	{
+		tmp = token_node->next;
+		if (token_node->type == SPACE)
+			remove_node(token_node);
+		token_node = tmp;
+	}
+	return (0);
+}
+
 int	parse_command(t_token **token_lst) ///////////
 {
 	t_token *token_node;
@@ -114,7 +130,7 @@ int	parse_command(t_token **token_lst) ///////////
 	{
 		tmp = token_node->next;
 		while (token_node->type == CMD && tmp
-			&& !(tmp->type & OPERATOR))
+			&& tmp->type != PIPE)
 		{
 			if (tmp->type == ARG)
 			{
@@ -134,12 +150,29 @@ int	parse_command(t_token **token_lst) ///////////
 	return (0);
 }
 
+void	set_token_priority(t_token **token_lst) // TODO: refacto
+{
+	t_token	*token_node;
+
+	token_node = *token_lst;
+	while (token_node)
+	{
+		if (token_node->type == PIPE)
+			token_node->priority = 1;
+		else if (token_node->type == CMD)
+			token_node->priority = 2;
+		token_node = token_node->next;
+	}
+}
+
 int	parse_token_lst(t_token **token_lst)
 {
+	remove_space(token_lst);
 	set_file_type(token_lst);
 	set_command_type(token_lst);
+	set_token_priority(token_lst);
 	// concatenate command + args;
 	//
-	parse_command(token_lst);
+	// parse_command(token_lst);
 	return (0);
 }

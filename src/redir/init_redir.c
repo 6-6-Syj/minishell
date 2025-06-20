@@ -23,7 +23,7 @@ t_token	*get_first_redir(t_token **root_token)
 {
 	t_token	*token_node;
 
-	printf("XXXXXXXXXXXXXXXXX\n\n\n");
+	// printf("XXXXXXXXXXXXXXXXX\n\n\n");
 	if (!*root_token)
 		return (NULL);
 	token_node = *root_token;
@@ -80,7 +80,7 @@ void	init_redir(t_token *token_node, t_redir **redir_lst)
 	t_redir	*new_redir;
 
 	new_redir = *redir_lst;
-	ft_printf("XXXXXXXXXXXXXXXXX\n\n\n");
+	// ft_printf("XXXXXXXXXXXXXXXXX\n\n\n");
 	token_node = get_first_redir(&token_node);
 	while (token_node)
 	{

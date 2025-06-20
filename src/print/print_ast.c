@@ -192,6 +192,8 @@ void print_ast_graphical(t_ast *root)
 	printf("|          AST	        |\n");
 	printf("+-----------------------+\n");
 
+	if (!root)
+		return;
 	for (int i = 0; i < MAX_HEIGHT; i++)
 		for (int j = 0; j < MAX_WIDTH; j++)
 			canvas[i][j] = ' ';
