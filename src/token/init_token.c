@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:21:31 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/06/20 17:58:37 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 23:09:42 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static int		set_token_type(t_token *token_node)
 	token_node->type = get_token_type(token_node);
 	if (token_node->type == UNKNOWN)
 		return (-1);
-	if (token_node->type == WORD)
-		token_node->type = get_token_word_type(token_node);
+	// if (token_node->type == WORD)
+	// 	token_node->type = get_token_word_type(token_node);
 	return (0);
 }
 

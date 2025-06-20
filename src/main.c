@@ -31,15 +31,16 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			break ;
 		init_token(&data.token, input);
+		parse_token_lst(&data.token);
 		init_ast(&data.ast, &data.token);
-		print_all(&data);
 		// exec_ast(data.ast, &data);
+		print_all(&data);
 		free(input);
 		free_token_lst(&data.token);
 		free_ast(&data.ast);
 		data.token = NULL;
 	}
 	rl_clear_history();
-	// exit_error(&data);
+	exit_error(&data);
 	return (0);
 }

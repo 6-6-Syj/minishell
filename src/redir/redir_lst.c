@@ -1,6 +1,8 @@
 #include "redir.h"
 #include "unistd.h"
 
+
+
 t_redir	*get_first_redir_node(t_redir *current)
 {
 	if (!current)

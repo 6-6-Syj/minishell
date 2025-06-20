@@ -61,6 +61,8 @@ void	print_redir_lst(t_redir *redir_lst)
 	t_redir	*redir;
 	int		i;
 
+	if (!redir_lst)
+		return;
 	ft_printf("+-----------------------+\n");
 	ft_printf("|  REDIR LST            |\n");
 	ft_printf("+-----------------------+\n");
