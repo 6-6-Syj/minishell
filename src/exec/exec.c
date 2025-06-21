@@ -13,6 +13,7 @@
 #include "command.h"
 #include "exec.h"
 #include "pipe.h"
+#include "redir.h"
 
 // static int	handle_and_or(t_ast *node, t_data *data)
 // {
@@ -99,7 +100,10 @@ void	exec_ast(t_ast *node, t_data *data)
 	if (!node)
 		exit_error(data); // TODO: CHECK ERROR
 	if (node->type == CMD && is_builtin(node->command.args[0]))
+	{
+		open_outfile(&node->command, data);
 		data->err = exec_builtin(&node->command, &data->env, data);
+	}
 	else
 	{
 		handle_ast(node, data, fd);

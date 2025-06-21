@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "command.h"
+#include "redir.h"
 
 static void	close_inherited_fds(t_command *cmd)
 {
@@ -51,6 +52,7 @@ void	exec_command(t_command *cmd, t_data *data)
 	pid = w_fork(data);
 	if (pid == 0)
 	{
+		open_outfile(cmd, data);
 		redir_in(cmd, data);
 		redir_out(cmd, data);
 		close_inherited_fds(cmd);

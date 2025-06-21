@@ -97,7 +97,7 @@ static t_env	*copy_env_list(t_env *env_lst, t_data *data)
 	return (new);
 }
 
-int	print_export(t_env *env_lst, t_data *data)
+int	print_export(t_command *cmd, t_env *env_lst, t_data *data)
 {
 	t_env	*copy;
 	t_env	*current;
@@ -110,9 +110,18 @@ int	print_export(t_env *env_lst, t_data *data)
 	while (current)
 	{
 		if (current->value)
-			ft_printf("export %s=\"%s\"\n", current->key, current->value);
+		{
+			ft_putstr_fd("export ", cmd->fd_out);
+			ft_putstr_fd(current->key, cmd->fd_out);
+			ft_putstr_fd("=\"", cmd->fd_out);
+			ft_putstr_fd(current->value, cmd->fd_out);
+			ft_putendl_fd("\"", cmd->fd_out);
+		}
 		else
-			ft_printf("export %s\n", current->key);
+		{
+			ft_putstr_fd("export ", cmd->fd_out);
+			ft_putendl_fd(current->key, cmd->fd_out);
+		}
 		current = current->next;
 	}
 	free_copy_env_lst(copy);

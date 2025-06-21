@@ -18,7 +18,7 @@
 			else env got PATH="smtg/ok/", so NO error.
 */
 
-int	ft_env(t_env *env_lst)
+int	ft_env(t_command *cmd, t_env *env_lst)
 {
 	t_env	*current;
 
@@ -29,10 +29,10 @@ int	ft_env(t_env *env_lst)
 	{
 		if (current->key && current->value)
 		{
-			ft_putstr_fd(current->key, STDOUT_FILENO);
-			ft_putchar_fd('=', STDOUT_FILENO);
-			ft_putstr_fd(current->value, STDOUT_FILENO);
-			ft_putchar_fd('\n', STDOUT_FILENO);
+			ft_putstr_fd(current->key, cmd->fd_out);
+			ft_putchar_fd('=', cmd->fd_out);
+			ft_putstr_fd(current->value, cmd->fd_out);
+			ft_putchar_fd('\n', cmd->fd_out);
 		}
 		current = current->next;
 	}

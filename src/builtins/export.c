@@ -104,7 +104,7 @@ int	handle_export(t_command *cmd, t_env **env_lst, t_data *data)
 
 	i = 1;
 	if (cmd && !cmd->args[1])
-		data->err = print_export(*env_lst, data);
+		data->err = print_export(cmd, *env_lst, data);
 	else
 	{
 		while (cmd->args[i])

@@ -35,6 +35,7 @@ typedef struct s_redir
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 t_redir				*add_redir_node(t_redir **redir_lst);
-void	init_redir(t_token *token_node, t_redir **redir_lst);
+void				init_redir(t_token *token_node, t_redir **redir_lst);
+void				open_outfile(t_command *cmd, t_data *data);
 
 #endif
