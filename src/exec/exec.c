@@ -92,7 +92,7 @@ static void	wait_process(void)
 }
 
 void	exec_ast(t_ast *node, t_data *data)
-{	
+{
 	int	fd[2];
 
 	fd[0] = -1;
@@ -101,7 +101,11 @@ void	exec_ast(t_ast *node, t_data *data)
 		exit_error(data); // TODO: CHECK ERROR
 	if (node->type == CMD && is_builtin(node->command.args[0]))
 	{
+		open_infile(&node->command, data);
 		open_outfile(&node->command, data);
+		ft_printf("&fd[0] = %x | &fd[1] = %x\n", &fd[0], &fd[1]);
+		redir_builtin_solo(&fd[0], &fd[1], data);
+		close_inherited_fds(&node->command);
 		data->err = exec_builtin(&node->command, &data->env, data);
 	}
 	else

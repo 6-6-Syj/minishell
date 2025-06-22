@@ -83,8 +83,8 @@ char	*get_path(char *cmd, t_data *data)
 	paths = split_path(data);
 	if (!paths)
 		return (ft_strdup(cmd));
-	i = 0;
-	while (paths[i])
+	i = -1;
+	while (paths[++i])
 	{
 		full_path = build_full_path(paths[i], cmd);
 		if (full_path && access(full_path, F_OK) == 0) // tODO: CHECK OTHER PARAMS ?
@@ -93,7 +93,6 @@ char	*get_path(char *cmd, t_data *data)
 			return (full_path);
 		}
 		free(full_path);
-		i++;
 	}
 	free_strs(paths);
 	return (NULL);

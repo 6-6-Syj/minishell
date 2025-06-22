@@ -65,7 +65,7 @@ static int	w_getcwd(char *path, t_data *data)
 	return (data->err);
 }
 
-int	ft_pwd(t_command *cmd, t_data *data)
+int	ft_pwd(t_data *data)
 {
 	char	path[PATH_MAX];
 
@@ -85,8 +85,8 @@ int	ft_pwd(t_command *cmd, t_data *data)
 	}
 	else
 	{
-		ft_putstr_fd(path, cmd->fd_out);
-		ft_putchar_fd('\n', cmd->fd_out);
+		ft_putstr_fd(path, STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	}
 	return (data->err);
 }

@@ -23,9 +23,9 @@ int	is_builtin(char *cmd)
 int	exec_builtin(t_command *cmd, t_env **env_lst, t_data *data)
 {
 	if (!ft_strncmp(cmd->args[0], "pwd", 4))
-		return (ft_pwd(cmd, data));
+		return (ft_pwd(data));
 	else if (!ft_strncmp(cmd->args[0], "env", 4))
-		return (ft_env(cmd, *env_lst));
+		return (ft_env(*env_lst));
 	else if (!ft_strncmp(cmd->args[0], "echo", 5))
 		return (ft_echo(cmd));
 	else if (!ft_strncmp(cmd->args[0], "cd", 3))

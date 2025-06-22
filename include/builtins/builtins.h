@@ -43,8 +43,8 @@ int							print_export(t_command *cmd, t_env *env_lst,
 								t_data *data);
 int							handle_unset(t_command *cmd, t_env **env_lst,
 								t_data *data);
-int							ft_env(t_command *cmd, t_env *env_lst);
-int							ft_pwd(t_command *cmd, t_data *data);
+int							ft_env(t_env *env_lst);
+int							ft_pwd(t_data *data);
 int							ft_echo(t_command *cmd);
 
 long long					ft_atoll_shell(const char *str);

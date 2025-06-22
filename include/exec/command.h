@@ -40,8 +40,11 @@ typedef struct s_command	t_command;
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 void						exec_command(t_command *cmd, t_data *data);
+void						close_inherited_fds(t_command *cmd);
 
 /* UTILS */
 void						redir(t_command *cmd, t_data *data);
+void						redir_builtin_solo(int *fd_in, int *fd_out,
+								t_data *data);
 
 #endif
