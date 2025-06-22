@@ -14,6 +14,7 @@
 #include "redir.h"
 #include "token.h"
 #include <fcntl.h>
+#include <errno.h>
 
 /*
 
@@ -31,54 +32,55 @@ ou -1 si l'accès est refusé ou si une erreur survient.
 
 */
 
-static void	open_outfile(t_command *cmd, t_data *data)
+// TODO: CHECK ACCESS ?
+static void open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 {
-	t_redir	*file;
 	int		flags;
-	int		new_fd_out;
 
-	file = cmd->redir;
-	while (file)
-	{
-		if (file->type == REDIR_OUT || file->type == REDIR_APPEND)
+	if (file->type == REDIR_OUT || file->type == REDIR_APPEND)
 		{
 			if (file->type == REDIR_OUT)
 				flags = (O_CREAT | O_TRUNC | O_RDWR);
 			else
 				flags = (O_CREAT | O_APPEND | O_RDWR);
-			// NEED TO CHECK ACCESS !
-			new_fd_out = open(file->filename, flags, 0644);
-			if (new_fd_out == -1)
-				exit_error(data); // TODO: CHECK
-			cmd->fd_out = new_fd_out;
+			*fd = open(file->filename, flags, 0644);
+			if (*fd == -1)
+			{
+				perror(file->filename);
+				if (data)
+					data->err = errno;
+			}
+			cmd->fd_out = *fd;
 		}
-		file = file->next;
-	}
 }
 
-static void	open_infile(t_command *cmd, t_data *data)
+static void	open_infile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 {
-	t_redir	*file;
-	int		new_fd_in;
-
-	file = cmd->redir;
-	while (file)
+	if (file->type == REDIR_IN)
 	{
-		if (file->type == REDIR_IN)
+		*fd = open(file->filename, O_RDONLY, 0644);
+		if (*fd == -1)
 		{
-			// NEED TO CHECK ACCESS !
-			new_fd_in = open(file->filename, O_RDONLY, 0644);
-			if (new_fd_in == -1)
-				exit_error(data); // TODO: CHECK
-			cmd->fd_in = new_fd_in;
+			perror(file->filename);
+			if (data)
+				data->err = errno;
 		}
-		file = file->next;
+		cmd->fd_in = *fd;
 	}
 }
 
 void	open_files(t_command *cmd, t_data *data)
 {
-	open_infile(cmd, data);
-	open_outfile(cmd, data);
+	t_redir	*file;
+	int		new_fd_out;
+	int		new_fd_in;
+
+	file = cmd->redir;
+	while (file)
+	{
+		open_infile(file, &new_fd_in, cmd, data);
+		open_outfile(file, &new_fd_out, cmd, data);
+		file = file->next;
+	}
 	redir(cmd, data);
 }

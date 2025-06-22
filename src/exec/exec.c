@@ -114,10 +114,13 @@ void	exec_ast(t_ast *node, t_data *data)
 		if (backup_fds(&backup) == -1)
 			exit_error(data);
 		open_files(&node->command, data);
+		if (!data->err)
+		{
 		data->err = exec_builtin(&node->command, &data->env, data);
 		restore_fds(&backup, data);
 		unset_redirect_fds(&node->command);
 		close_inherited_fds(&node->command);
+		}
 	}
 	else
 	{
