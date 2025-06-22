@@ -26,12 +26,20 @@ typedef struct s_env	t_env;
 typedef struct s_ast	t_ast;
 typedef struct s_pipe	t_pipe;
 
+typedef struct s_fd_backup
+{
+    int 	fd_in;
+    int 	fd_out;
+    int 	fd_err;
+} 	t_fd_backup;
+
 typedef struct s_data
 {
 	t_ast	*ast;
 	t_env	*env;
 	t_token	*token;
 	t_pipe	*pipe;
+	t_fd_backup	*backup;
 	char	**env_tab;
 	char	*err_msg;
 	int		err;

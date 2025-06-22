@@ -47,4 +47,9 @@ void						redir(t_command *cmd, t_data *data);
 void						redir_builtin_solo(int *fd_in, int *fd_out,
 								t_data *data);
 
+/* HANDLE_FDS */
+int							backup_fds(t_fd_backup *backup);
+void						restore_fds(t_fd_backup *backup, t_data *data);
+void						unset_redirect_fds(t_command *cmd);
+
 #endif

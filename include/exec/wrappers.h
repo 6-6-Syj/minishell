@@ -32,20 +32,20 @@
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_data		t_data;
+typedef struct s_data	t_data;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 // wrappers.c
-void						w_access(char *path, t_data *data);
-void						w_execve(char *path, char **cmds, char **env,
-								t_data *data);
+void					w_access(char *path, t_data *data);
+void					w_execve(char *path, char **cmds, char **env,
+							t_data *data);
+void					w_close(int fd, t_data *data);
 
 // wrappers_2.c
-void						w_close(int fd, t_data *data);
-void						w_pipe(int *fd, t_data *data);
-void						w_dup2(int new, int old, t_data *data);
-int							w_fork(t_data *data);
+void					w_pipe(int *fd, t_data *data);
+void					w_dup2(int new, int old, t_data *data);
+int						w_fork(t_data *data);
 
 #endif

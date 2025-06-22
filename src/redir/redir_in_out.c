@@ -18,15 +18,14 @@
 /*
 
 ACCESS: int access(const char *pathname, int mode);
-◆ Librairies à inclure:
-●  #include <unistd.h>
-◆  La  fonction  vérifie  si  le  le  path  en  fonction  du/des  mode(s)  sélectionnés
-renseigne en paramètres est valides.
+
+	◆  La  fonction  vérifie  si  le  le  path  en  fonction  du/des  mode(s)  sélectionnés
+	renseigne en paramètres est valides.
 ◆  Valeur de mode:
-●  R_OK : Lecture.
-●  W_OK : Ecriture.
-●  X_OK : Exécution.
-●  F_OK : Existence.
+	●  R_OK : Lecture.
+	●  W_OK : Ecriture.
+	●  X_OK : Exécution.
+	●  F_OK : Existence.
 ◆  Retour: La fonction renvoie 0 si les permissions demandées sont disponibles
 ou -1 si l'accès est refusé ou si une erreur survient.
 

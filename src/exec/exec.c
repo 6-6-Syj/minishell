@@ -91,26 +91,59 @@ static void	wait_process(void)
 	}
 }
 
-void	exec_ast(t_ast *node, t_data *data)
+// Version corrigée de exec_ast
+void exec_ast(t_ast *node, t_data *data)
 {
-	int	fd[2];
+    int fd[2];
+    t_fd_backup backup = {-1, -1, -1}; // Initialisation explicite
 
-	fd[0] = -1;
-	fd[1] = -1;
-	if (!node)
-		exit_error(data); // TODO: CHECK ERROR
-	if (node->type == CMD && is_builtin(node->command.args[0]))
-	{
-		open_infile(&node->command, data);
-		open_outfile(&node->command, data);
-		ft_printf("&fd[0] = %x | &fd[1] = %x\n", &fd[0], &fd[1]);
-		redir_builtin_solo(&fd[0], &fd[1], data);
+    fd[0] = -1;
+    fd[1] = -1;
+    if (!node)
+        exit_error(data);
+    if (node->type == CMD && node->command.args && node->command.args[0] &&
+        is_builtin(node->command.args[0]))
+    {
+        if (backup_fds(&backup) == -1)
+        {
+			// TODO: CHECK -> if DUP FAILS - printf smtg ?
+            exit_error(data);
+        }
+        open_infile(&node->command, data);
+        open_outfile(&node->command, data);
+        redir(&node->command, data);
+        data->err = exec_builtin(&node->command, &data->env, data);
+        restore_fds(&backup, data);
+        unset_redirect_fds(&node->command);
 		close_inherited_fds(&node->command);
-		data->err = exec_builtin(&node->command, &data->env, data);
-	}
-	else
-	{
-		handle_ast(node, data, fd);
-		wait_process();
-	}
+    }
+    else
+    {
+        handle_ast(node, data, fd);
+        wait_process();
+    }
 }
+
+// void	exec_ast(t_ast *node, t_data *data)
+// {
+// 	int	fd[2];
+
+// 	fd[0] = -1;
+// 	fd[1] = -1;
+// 	if (!node)
+// 		exit_error(data); // TODO: CHECK ERROR
+// 	if (node->type == CMD && is_builtin(node->command.args[0]))
+// 	{
+// 		open_infile(&node->command, data);
+// 		open_outfile(&node->command, data);
+// 		ft_printf("&fd[0] = %x | &fd[1] = %x\n", &fd[0], &fd[1]);
+// 		redir_builtin_solo(&fd[0], &fd[1], data);
+// 		close_inherited_fds(&node->command);
+// 		data->err = exec_builtin(&node->command, &data->env, data);
+// 	}
+// 	else
+// 	{
+// 		handle_ast(node, data, fd);
+// 		wait_process();
+// 	}
+// }
