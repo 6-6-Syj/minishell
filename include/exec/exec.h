@@ -42,6 +42,8 @@ typedef struct s_ast	t_ast;
 /****************************************************************************/
 void					handle_ast(t_ast *node, t_data *data, int *fd);
 void					exec_ast(t_ast *node, t_data *data);
+void					exec_and_restore_fd(t_fd_backup *backup,
+							t_command *cmd, t_data *data);
 
 char					*get_path(char *cmd, t_data *data);
 void					*free_strs(char **strs);

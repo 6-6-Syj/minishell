@@ -14,7 +14,6 @@
 #include "redir.h"
 #include "token.h"
 #include <fcntl.h>
-#include <errno.h>
 
 /*
 
@@ -48,7 +47,7 @@ static void open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 			{
 				perror(file->filename);
 				if (data)
-					data->err = errno;
+					data->err = 1;
 			}
 			cmd->fd_out = *fd;
 		}
@@ -63,7 +62,7 @@ static void	open_infile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 		{
 			perror(file->filename);
 			if (data)
-				data->err = errno;
+				data->err = 1;
 		}
 		cmd->fd_in = *fd;
 	}
@@ -80,7 +79,10 @@ void	open_files(t_command *cmd, t_data *data)
 	{
 		open_infile(file, &new_fd_in, cmd, data);
 		open_outfile(file, &new_fd_out, cmd, data);
-		file = file->next;
+		if (!data->err)
+			file = file->next;
+		else
+			break ;
 	}
 	redir(cmd, data);
 }

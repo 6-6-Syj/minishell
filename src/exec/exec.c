@@ -15,36 +15,10 @@
 #include "pipe.h"
 #include "redir.h"
 
-// static int	handle_and_or(t_ast *node, t_data *data)
-// {
-// 	ret = handle_ast(node->logic.left, data);
-// 	if (node->type == AND)
-// 	{
-// 		if (ret == 0)
-// 			ret = handle_ast(node->logic.right, data);
-// 	}
-// 	else // type == OR
-// 	{
-// 		if (ret != 0)
-// 			ret = handle_ast(node->logic.right, data);
-// 	}
-// 	return (ret);
-// }
-
 void	handle_ast(t_ast *node, t_data *data, int *fd)
 {
 	if (!node)
 		return ;
-	// if (node && node->type == CMD)
-	// {
-	// 	ft_printf("┌───────── Command Info ────────┐\n");
-	// 	ft_printf("│\tCommand: %s\t\t│\n", node->command.args[0]);
-	// 	ft_printf("│\tInput FD: %d\t\t│\n", node->command.fd_in);
-	// 	ft_printf("│\tOutput FD: %d\t\t│\n", node->command.fd_out);
-	// 	ft_printf("└───────────────────────────────┘\n");
-	// }
-	// else if (node && (node->type == AND || node->type == OR))
-	// 	handle_and_or(node, data);
 	if (node->type == CMD)
 		exec_command(&node->command, data);
 	else if (node->type == PIPE)
@@ -52,22 +26,23 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 }
 
 /*
-	WIFEXITED(status) : Vrai si le processus fils s'est terminé normalement (par exemple,
-		avec exit() ou return).
 
-	WEXITSTATUS(status) : Si WIFEXITED est vrai,
-		retourne le code de sortie du processus fils (la valeur passée à exit() ou return).
+WIFEXITED(status) : Vrai si le processus fils s'est terminé normalement (par exemple,
+	avec exit() ou return).
 
-	WIFSIGNALED(status) : Vrai si le processus fils a été terminé par un signal.
+WEXITSTATUS(status) : Si WIFEXITED est vrai,
+	retourne le code de sortie du processus fils (la valeur passée à exit() ou return).
 
-	WTERMSIG(status) : Si WIFSIGNALED est vrai,
-		retourne le numéro du signal qui a tué le processus.
+WIFSIGNALED(status) : Vrai si le processus fils a été terminé par un signal.
 
-	WIFSTOPPED(status) : Vrai si le processus fils a été stoppé (par exemple,
-		par SIGSTOP).
+WTERMSIG(status) : Si WIFSIGNALED est vrai,
+	retourne le numéro du signal qui a tué le processus.
 
-	WSTOPSIG(status) : Si WIFSTOPPED est vrai,
-		retourne le numéro du signal qui a stoppé le processus.
+WIFSTOPPED(status) : Vrai si le processus fils a été stoppé (par exemple,
+	par SIGSTOP).
+
+WSTOPSIG(status) : Si WIFSTOPPED est vrai,
+	retourne le numéro du signal qui a stoppé le processus.
 
  */
 
@@ -91,11 +66,19 @@ static void	wait_process(void)
 	}
 }
 
-void	init_backup(t_fd_backup *backup)
+static void	init_backup(t_fd_backup *backup)
 {
 	backup->fd_in = -1;
 	backup->fd_out = -1;
 	backup->fd_err = -1;
+}
+
+void	exec_and_restore_fd(t_fd_backup *backup, t_command *cmd, t_data *data)
+{
+	data->err = exec_builtin(cmd, &data->env, data);
+	restore_fds(backup, data);
+	unset_redirect_fds(cmd);
+	close_inherited_fds(cmd);
 }
 
 void	exec_ast(t_ast *node, t_data *data)
@@ -115,12 +98,7 @@ void	exec_ast(t_ast *node, t_data *data)
 			exit_error(data);
 		open_files(&node->command, data);
 		if (!data->err)
-		{
-		data->err = exec_builtin(&node->command, &data->env, data);
-		restore_fds(&backup, data);
-		unset_redirect_fds(&node->command);
-		close_inherited_fds(&node->command);
-		}
+			exec_and_restore_fd(&backup, &node->command, data);
 	}
 	else
 	{
@@ -128,27 +106,3 @@ void	exec_ast(t_ast *node, t_data *data)
 		wait_process();
 	}
 }
-
-// void	exec_ast(t_ast *node, t_data *data)
-// {
-// 	int	fd[2];
-
-// 	fd[0] = -1;
-// 	fd[1] = -1;
-// 	if (!node)
-// 		exit_error(data); // TODO: CHECK ERROR
-// 	if (node->type == CMD && is_builtin(node->command.args[0]))
-// 	{
-// 		open_infile(&node->command, data);
-// 		open_outfile(&node->command, data);
-// 		ft_printf("&fd[0] = %x | &fd[1] = %x\n", &fd[0], &fd[1]);
-// 		redir_builtin_solo(&fd[0], &fd[1], data);
-// 		close_inherited_fds(&node->command);
-// 		data->err = exec_builtin(&node->command, &data->env, data);
-// 	}
-// 	else
-// 	{
-// 		handle_ast(node, data, fd);
-// 		wait_process();
-// 	}
-// }

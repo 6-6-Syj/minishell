@@ -64,11 +64,12 @@ int	main(int ac, char **av, char **env)
 			add_history(input);
 		if (!input)
 			break ;
+		data.err = 0;
 		init_token(&data.token, input);
 		parse_token_lst(&data.token);
 		init_ast(&data.ast, &data.token);
 		exec_ast(data.ast, &data);
-		// print_all(&data);
+		print_all(&data);
 		free(input);
 		free_token_lst(&data.token);
 		// free_ast(&data.ast);

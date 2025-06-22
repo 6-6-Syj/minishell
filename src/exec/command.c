@@ -61,11 +61,17 @@ void	exec_command(t_command *cmd, t_data *data)
 		{
 			if (is_builtin(cmd->args[0]))
 			{
-				data->err = exec_builtin(cmd, &data->env, data);
+				if (!data->err)
+					data->err = exec_builtin(cmd, &data->env, data);
 				exit_error(data);
 			}
 			else
-				search_cmd_and_exec(cmd, data);
+			{
+				if (!data->err)
+					search_cmd_and_exec(cmd, data);
+				else
+					data->err = 1;
+			}
 		}
 		exit(1); // TODO: CHECK ERROR
 	}

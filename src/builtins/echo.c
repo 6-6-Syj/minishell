@@ -45,12 +45,12 @@ int	ft_echo(t_command *cmd)
 		newline = parse_echo(cmd->args, &i);
 	while (cmd->args[i])
 	{
-		ft_putstr_fd(cmd->args[i], cmd->fd_out);
+		ft_putstr_fd(cmd->args[i], STDOUT_FILENO);
 		if (cmd->args[i + 1])
-			ft_putchar_fd(' ', cmd->fd_out);
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
 	}
 	if (newline)
-		ft_putchar_fd('\n', cmd->fd_out);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (0);
 }
