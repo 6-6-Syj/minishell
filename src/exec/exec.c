@@ -91,37 +91,39 @@ static void	wait_process(void)
 	}
 }
 
-// Version corrigée de exec_ast
-void exec_ast(t_ast *node, t_data *data)
+void	init_backup(t_fd_backup *backup)
 {
-    int fd[2];
-    t_fd_backup backup = {-1, -1, -1}; // Initialisation explicite
+	backup->fd_in = -1;
+	backup->fd_out = -1;
+	backup->fd_err = -1;
+}
 
-    fd[0] = -1;
-    fd[1] = -1;
-    if (!node)
-        exit_error(data);
-    if (node->type == CMD && node->command.args && node->command.args[0] &&
-        is_builtin(node->command.args[0]))
-    {
-        if (backup_fds(&backup) == -1)
-        {
-			// TODO: CHECK -> if DUP FAILS - printf smtg ?
-            exit_error(data);
-        }
-        open_infile(&node->command, data);
-        open_outfile(&node->command, data);
-        redir(&node->command, data);
-        data->err = exec_builtin(&node->command, &data->env, data);
-        restore_fds(&backup, data);
-        unset_redirect_fds(&node->command);
+void	exec_ast(t_ast *node, t_data *data)
+{
+	int			fd[2];
+	t_fd_backup	backup;
+
+	fd[0] = -1;
+	fd[1] = -1;
+	init_backup(&backup);
+	if (!node)
+		exit_error(data);
+	if (node->type == CMD && node->command.args && node->command.args[0]
+		&& is_builtin(node->command.args[0]))
+	{
+		if (backup_fds(&backup) == -1)
+			exit_error(data);
+		open_files(&node->command, data);
+		data->err = exec_builtin(&node->command, &data->env, data);
+		restore_fds(&backup, data);
+		unset_redirect_fds(&node->command);
 		close_inherited_fds(&node->command);
-    }
-    else
-    {
-        handle_ast(node, data, fd);
-        wait_process();
-    }
+	}
+	else
+	{
+		handle_ast(node, data, fd);
+		wait_process();
+	}
 }
 
 // void	exec_ast(t_ast *node, t_data *data)

@@ -31,7 +31,7 @@ ou -1 si l'accès est refusé ou si une erreur survient.
 
 */
 
-void	open_outfile(t_command *cmd, t_data *data)
+static void	open_outfile(t_command *cmd, t_data *data)
 {
 	t_redir	*file;
 	int		flags;
@@ -56,7 +56,7 @@ void	open_outfile(t_command *cmd, t_data *data)
 	}
 }
 
-void	open_infile(t_command *cmd, t_data *data)
+static void	open_infile(t_command *cmd, t_data *data)
 {
 	t_redir	*file;
 	int		new_fd_in;
@@ -74,4 +74,11 @@ void	open_infile(t_command *cmd, t_data *data)
 		}
 		file = file->next;
 	}
+}
+
+void	open_files(t_command *cmd, t_data *data)
+{
+	open_infile(cmd, data);
+	open_outfile(cmd, data);
+	redir(cmd, data);
 }

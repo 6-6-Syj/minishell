@@ -55,9 +55,7 @@ void	exec_command(t_command *cmd, t_data *data)
 	pid = w_fork(data);
 	if (pid == 0)
 	{
-		open_infile(cmd, data);
-		open_outfile(cmd, data);
-		redir(cmd, data);
+		open_files(cmd, data);
 		close_inherited_fds(cmd);
 		if (cmd && cmd->args && cmd->args[0])
 		{
@@ -71,7 +69,7 @@ void	exec_command(t_command *cmd, t_data *data)
 		}
 		exit(1); // TODO: CHECK ERROR
 	}
-	else // PARENT PROCESS
+	else
 	{
 		if (cmd->fd_in > 2)
 			w_close(cmd->fd_in, data);
