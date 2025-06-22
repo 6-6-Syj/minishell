@@ -87,7 +87,7 @@ char	*get_path(char *cmd, t_data *data)
 	while (paths[i])
 	{
 		full_path = build_full_path(paths[i], cmd);
-		if (full_path && access(full_path, F_OK) == 0)
+		if (full_path && access(full_path, F_OK) == 0) // tODO: CHECK OTHER PARAMS ?
 		{
 			free_strs(paths);
 			return (full_path);
