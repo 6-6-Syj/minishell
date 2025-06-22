@@ -42,7 +42,6 @@ typedef struct s_command	t_command;
 void						exec_command(t_command *cmd, t_data *data);
 
 /* UTILS */
-void						redir_in(t_command *cmd, t_data *data);
-void						redir_out(t_command *cmd, t_data *data);
+void						redir(t_command *cmd, t_data *data);
 
 #endif

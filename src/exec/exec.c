@@ -92,7 +92,7 @@ static void	wait_process(void)
 }
 
 void	exec_ast(t_ast *node, t_data *data)
-{
+{	
 	int	fd[2];
 
 	fd[0] = -1;

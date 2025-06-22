@@ -12,7 +12,7 @@
 
 #include "command.h"
 
-void	redir_in(t_command *cmd, t_data *data)
+static void	redir_in(t_command *cmd, t_data *data)
 {
 	if (cmd && cmd->fd_in > 0 && cmd->fd_in != STDIN_FILENO)
 	{
@@ -21,11 +21,17 @@ void	redir_in(t_command *cmd, t_data *data)
 	}
 }
 
-void	redir_out(t_command *cmd, t_data *data)
+static void	redir_out(t_command *cmd, t_data *data)
 {
 	if (cmd && cmd->fd_out > 1 && cmd->fd_out != STDOUT_FILENO)
 	{
 		w_dup2(cmd->fd_out, STDOUT_FILENO, data);
 		w_close(cmd->fd_out, data);
 	}
+}
+
+void	redir(t_command *cmd, t_data *data)
+{
+	redir_in(cmd, data);
+	redir_out(cmd, data);
 }

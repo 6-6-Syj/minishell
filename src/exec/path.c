@@ -29,14 +29,26 @@ void	*free_strs(char **strs)
 	return (NULL);
 }
 
-static char	**split_path(char *cmd, t_data *data)
+static char	*build_full_path(char *dir, char *cmd)
+{
+	char	*slash_cmd;
+	char	*full_path;
+
+	slash_cmd = ft_strjoin("/", cmd);
+	if (!slash_cmd)
+		return (NULL);
+	full_path = ft_strjoin(dir, slash_cmd);
+	free(slash_cmd);
+	return (full_path);
+}
+
+static char	**split_path(t_data *data)
 {
 	char	**paths;
 	int		i;
 
 	i = 0;
-	paths = NULL;
-	if (!cmd)
+	if (!data || !data->env_tab)
 		return (NULL);
 	while (data->env_tab[i])
 	{
@@ -52,31 +64,37 @@ static char	**split_path(char *cmd, t_data *data)
 	return (NULL);
 }
 
+static int	is_absolute_or_relative_path(char *cmd)
+{
+	return (cmd[0] == '/' || ft_strncmp(cmd, "./", 2) == 0 || ft_strncmp(cmd,
+			"../", 3) == 0);
+}
+
 char	*get_path(char *cmd, t_data *data)
 {
-	char	*buff;
-	char	*path;
 	char	**paths;
+	char	*full_path;
 	int		i;
 
-	paths = split_path(cmd, data);
-	i = -1;
-	while (paths && paths[++i])
+	if (!cmd || !data)
+		return (NULL);
+	if (is_absolute_or_relative_path(cmd))
+		return (ft_strdup(cmd));
+	paths = split_path(data);
+	if (!paths)
+		return (ft_strdup(cmd));
+	i = 0;
+	while (paths[i])
 	{
-		buff = ft_strjoin("/", cmd);
-		if (!buff)
-			return (NULL);
-		path = ft_strjoin(paths[i], buff);
-		free(buff);
-		if (!path)
-			return (NULL);
-		if (access(path, F_OK) == 0)
+		full_path = build_full_path(paths[i], cmd);
+		if (full_path && access(full_path, F_OK) == 0)
 		{
 			free_strs(paths);
-			return (path);
+			return (full_path);
 		}
-		free(path);
+		free(full_path);
+		i++;
 	}
 	free_strs(paths);
-	return (ft_strdup(cmd));
+	return (NULL);
 }

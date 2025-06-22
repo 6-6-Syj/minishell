@@ -14,6 +14,38 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
+// MAYBE USE ISATTY TOO
+static char *get_path_term(t_data *data)
+{
+	(void)data;
+	// char	cwd[PATH_MAX];
+	// char	*name;
+	// char	*tmp;
+	char	*input;
+
+	// if (getcwd(cwd, sizeof(cwd)) != NULL)
+	// {
+	// 	tmp = ft_strjoin(cwd, " ");
+	// 	if (!tmp)
+	// 		return ("minishell$ ");
+	// 	name = tmp;
+	// 	tmp = ft_strjoin(name, get_env_var(data, "USER"));
+	// 	if (!tmp)
+	// 		return ("minishell$ ");
+	// 	name = tmp;
+	// 	tmp = ft_strjoin(name, "> ");
+	// 	if (!tmp)
+	// 		return ("minishell$ ");
+	// 	name = tmp;
+	// 	input = name;
+	// 	name = NULL;
+	// 	tmp = NULL;
+	// }
+	// else
+		input = "minishell$ ";
+	return (input);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_data	data;
@@ -25,7 +57,7 @@ int	main(int ac, char **av, char **env)
 	init_env(&data, env);
 	while (1)
 	{
-		input = readline("> ");
+		input = readline(get_path_term(&data));
 		if (input[0] != '\0')
 			add_history(input);
 		if (!input)

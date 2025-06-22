@@ -27,7 +27,8 @@ void	w_execve(char *path, char **cmds, char **env, t_data *data)
 {
 	if (execve(path, cmds, env) == -1)
 	{
-		perror("execve");
+		perror(path);
+		free(path);
 		if (data)
 			data->err = errno;
 		exit_error(data);
