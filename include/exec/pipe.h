@@ -18,8 +18,8 @@
 /****************************************************************************/
 # include "ast.h"
 # include "data.h"
-# include "wrappers.h"
 # include "exec.h"
+# include "wrappers.h"
 
 /****************************************************************************/
 /*                                DEFINE									*/
@@ -32,13 +32,14 @@
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_data		t_data;
-typedef struct s_pipe		t_pipe;
-typedef struct s_ast		t_ast;
+typedef struct s_data	t_data;
+typedef struct s_pipe	t_pipe;
+typedef struct s_ast	t_ast;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void						handle_pipe(t_pipe *pipe, t_data *data, int *fd);
+void					handle_pipe(t_pipe *pipe, t_data *data, int *fd,
+							t_pid_list **pids);
 
 #endif

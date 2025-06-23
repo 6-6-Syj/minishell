@@ -40,12 +40,15 @@ typedef struct s_ast	t_ast;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void					handle_ast(t_ast *node, t_data *data, int *fd);
+void					handle_ast(t_ast *node, t_data *data, int *fd,
+							t_pid_list **pids);
+
 void					exec_ast(t_ast *node, t_data *data);
-void					exec_and_restore_fd(t_fd_backup *backup,
-							t_command *cmd, t_data *data);
+void					exec_and_restore_fd(t_fd_backup *backup, t_command *cmd,
+							t_data *data);
 
 char					*get_path(char *cmd, t_data *data);
+int						is_absolute_or_relative_path(char *cmd);
 void					*free_strs(char **strs);
 
 #endif

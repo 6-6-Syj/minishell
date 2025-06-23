@@ -39,7 +39,8 @@ typedef struct s_command	t_command;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void						exec_command(t_command *cmd, t_data *data);
+void						handle_command(t_command *cmd, t_data *data,
+								t_pid_list **pids, t_ast *root);
 void						close_inherited_fds(t_command *cmd);
 
 /* UTILS */

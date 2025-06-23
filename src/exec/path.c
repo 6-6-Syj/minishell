@@ -64,7 +64,7 @@ static char	**split_path(t_data *data)
 	return (NULL);
 }
 
-static int	is_absolute_or_relative_path(char *cmd)
+int	is_absolute_or_relative_path(char *cmd)
 {
 	return (cmd[0] == '/' || ft_strncmp(cmd, "./", 2) == 0 || ft_strncmp(cmd,
 			"../", 3) == 0);
@@ -81,19 +81,21 @@ char	*get_path(char *cmd, t_data *data)
 	if (is_absolute_or_relative_path(cmd))
 		return (ft_strdup(cmd));
 	paths = split_path(data);
-	if (!paths)
-		return (ft_strdup(cmd));
-	i = -1;
-	while (paths[++i])
+	if (paths)
 	{
-		full_path = build_full_path(paths[i], cmd);
-		if (full_path && access(full_path, F_OK) == 0) // tODO: CHECK OTHER PARAMS ?
+		i = -1;
+		while (paths[++i])
 		{
-			free_strs(paths);
-			return (full_path);
+			full_path = build_full_path(paths[i], cmd);
+			if (full_path && access(full_path, F_OK) == 0)
+			{
+				free_strs(paths);
+				return (full_path);
+			}
+			free(full_path);
 		}
-		free(full_path);
+		free_strs(paths);
+		return (NULL);
 	}
-	free_strs(paths);
-	return (NULL);
+	return (ft_strdup(cmd));
 }

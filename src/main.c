@@ -55,8 +55,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	init_data(&data);
-	init_env(&data, env);
+	init_data(&data, env);
 	while (1)
 	{
 		input = readline("> ");

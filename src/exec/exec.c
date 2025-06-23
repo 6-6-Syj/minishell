@@ -14,24 +14,20 @@
 #include "exec.h"
 #include "pipe.h"
 #include "redir.h"
+#include <errno.h>
+#include <string.h>
 
-void	handle_ast(t_ast *node, t_data *data, int *fd)
+void	handle_ast(t_ast *node, t_data *data, int *fd, t_pid_list **pids)
 {
 	if (!node)
 		return ;
 	if (node->type == CMD)
-		exec_command(&node->command, data);
+		handle_command(&node->command, data, pids, node);
 	else if (node->type == PIPE)
-		handle_pipe(&node->pipe, data, fd);
+		handle_pipe(&node->pipe, data, fd, pids);
 }
 
 /*
-
-WIFEXITED(status) : Vrai si le processus fils s'est terminé normalement (par exemple,
-	avec exit() ou return).
-
-WEXITSTATUS(status) : Si WIFEXITED est vrai,
-	retourne le code de sortie du processus fils (la valeur passée à exit() ou return).
 
 WIFSIGNALED(status) : Vrai si le processus fils a été terminé par un signal.
 
@@ -46,24 +42,52 @@ WSTOPSIG(status) : Si WIFSTOPPED est vrai,
 
  */
 
-static void	wait_process(void)
+static int	wait_processes(t_pid_list *pids, t_data *data)
 {
-	int		status;
-	pid_t	wpid;
+	int			status;
+	pid_t		wpid;
+	int			last_exit_code;
+	t_pid_list	*current;
 
+	last_exit_code = 0;
 	while ((wpid = wait(&status)) > 0)
 	{
 		ft_printf("\033[0;32m\033[1m");
 		if (WIFEXITED(status))
+		{
 			ft_printf("Child PID %d ended normally with status %d\n", wpid,
 				WEXITSTATUS(status));
+			current = pids;
+			while (current)
+			{
+				if (current->pid == wpid && current->is_last_cmd)
+				{
+					last_exit_code = WEXITSTATUS(status);
+					data->err = last_exit_code;
+				}
+				current = current->next;
+			}
+		}
 		else if (WIFSIGNALED(status))
+		{
 			ft_printf("Child PID %d was killed by signal %d\n", wpid,
 				WTERMSIG(status));
+			current = pids;
+			while (current)
+			{
+				if (current->pid == wpid && current->is_last_cmd)
+				{
+					last_exit_code = 128 + WTERMSIG(status);
+					data->err = last_exit_code;
+				}
+				current = current->next;
+			}
+		}
 		else
-			ft_printf("Child PID %d ended with status %d\n", wpid, status);
+			ft_printf("OUPS\n");
 		ft_printf("\033[0m");
 	}
+	return (last_exit_code);
 }
 
 static void	init_backup(t_fd_backup *backup)
@@ -85,7 +109,9 @@ void	exec_ast(t_ast *node, t_data *data)
 {
 	int			fd[2];
 	t_fd_backup	backup;
+	t_pid_list	*pids;
 
+	pids = NULL;
 	fd[0] = -1;
 	fd[1] = -1;
 	init_backup(&backup);
@@ -102,7 +128,8 @@ void	exec_ast(t_ast *node, t_data *data)
 	}
 	else
 	{
-		handle_ast(node, data, fd);
-		wait_process();
+		handle_ast(node, data, fd, &pids);
+		data->err = wait_processes(pids, data);
+		free_pid_list(pids);
 	}
 }

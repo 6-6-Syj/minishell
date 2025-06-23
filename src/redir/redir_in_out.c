@@ -32,25 +32,25 @@ ou -1 si l'accès est refusé ou si une erreur survient.
 */
 
 // TODO: CHECK ACCESS ?
-static void open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
+static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 {
-	int		flags;
+	int	flags;
 
 	if (file->type == REDIR_OUT || file->type == REDIR_APPEND)
+	{
+		if (file->type == REDIR_OUT)
+			flags = (O_CREAT | O_TRUNC | O_RDWR);
+		else
+			flags = (O_CREAT | O_APPEND | O_RDWR);
+		*fd = open(file->filename, flags, 0644);
+		if (*fd == -1)
 		{
-			if (file->type == REDIR_OUT)
-				flags = (O_CREAT | O_TRUNC | O_RDWR);
-			else
-				flags = (O_CREAT | O_APPEND | O_RDWR);
-			*fd = open(file->filename, flags, 0644);
-			if (*fd == -1)
-			{
-				perror(file->filename);
-				if (data)
-					data->err = 1;
-			}
-			cmd->fd_out = *fd;
+			perror(file->filename);
+			if (data)
+				data->err = 1;
 		}
+		cmd->fd_out = *fd;
+	}
 }
 
 static void	open_infile(t_redir *file, int *fd, t_command *cmd, t_data *data)
@@ -85,4 +85,35 @@ void	open_files(t_command *cmd, t_data *data)
 			break ;
 	}
 	redir(cmd, data);
+}
+
+void	free_pid_list(t_pid_list *pids)
+{
+	t_pid_list	*tmp;
+
+	while (pids)
+	{
+		tmp = pids;
+		pids = pids->next;
+		free(tmp);
+	}
+}
+
+static t_command	*find_last_cmd(t_ast *node)
+{
+	if (!node)
+		return (NULL);
+	if (node->type == CMD)
+		return (&node->command);
+	if (node->type == PIPE)
+		return (find_last_cmd(node->pipe.right));
+	return (NULL);
+}
+
+bool	is_last_command_in_ast(t_command *cmd, t_ast *root)
+{
+	t_command	*rightmost;
+
+	rightmost = find_last_cmd(root);
+	return (rightmost == cmd);
 }

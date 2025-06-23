@@ -26,18 +26,58 @@ void	close_inherited_fds(t_command *cmd)
 	}
 }
 
-/*
-TODO:
-	Search and launch the right executable (based on the PATH variable
-	or using a relative or an absolute path).
-*/
+static char	**split_path(t_data *data)
+{
+	char	**paths;
+	int		i;
+
+	i = 0;
+	if (!data || !data->env_tab)
+		return (NULL);
+	while (data->env_tab[i])
+	{
+		if (ft_strncmp("PATH=", data->env_tab[i], 5) == 0)
+		{
+			paths = ft_split(data->env_tab[i] + 5, ':');
+			if (!paths)
+				exit_error(data);
+			return (paths);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+static void	check_access(char *path, t_command *cmd, t_data *data)
+{
+	if (access(path, F_OK) == -1)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+		data->err = 127;
+		free(path);
+		exit_error(data);
+	}
+	if (access(path, X_OK) == -1)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
+		ft_putendl_fd(": Permission denied", STDERR_FILENO);
+		free(path);
+		data->err = 126;
+		exit_error(data);
+	}
+}
 
 static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 {
 	char	*path;
+	int		is_path_unset;
 
+	is_path_unset = (split_path(data) == NULL);
 	path = get_path(cmd->args[0], data);
-	if (!path)
+	if (!path && !is_path_unset)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
@@ -45,38 +85,109 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 		data->err = 127;
 		exit_error(data);
 	}
+	else if (!path)
+		exit_error(data);
+	check_access(path, cmd, data);
 	w_execve(path, cmd->args, data->env_tab, data);
 }
 
-void	exec_command(t_command *cmd, t_data *data)
+static void	add_pid(t_pid_list **pids, pid_t pid, bool is_last, t_data *data)
+{
+	t_pid_list	*new_pid;
+
+	new_pid = malloc(sizeof(t_pid_list));
+	if (!new_pid)
+		exit_error(data);
+	new_pid->pid = pid;
+	new_pid->is_last_cmd = is_last;
+	new_pid->next = *pids;
+	*pids = new_pid;
+}
+
+#include <sys/stat.h>
+#include <sys/types.h>
+
+static bool is_special_input(t_command *cmd, t_data *data)
+{
+	if (!ft_strcmp(".", cmd->args[0]))
+	{
+		ft_putstr_fd("minishell: .: filename argument required\n",
+			STDERR_FILENO);
+		ft_putstr_fd(".: usage: . filename [arguments]\n", STDERR_FILENO);
+		data->err = 2;
+		return (true);
+	}
+	if (!ft_strcmp("..", cmd->args[0]))
+	{
+		ft_putstr_fd("minishell: ..: command not found\n", STDERR_FILENO);
+		data->err = 127;
+		return (true);
+	}
+	return (false);
+}
+
+static bool	is_a_dir(t_command *cmd, t_data *data)
+{
+	struct stat	info;
+
+	if (is_special_input(cmd, data))
+		return (true);
+	if (stat(cmd->args[0], &info) == 0)
+	{
+		if (S_ISDIR(info.st_mode))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd->args[0], STDERR_FILENO);
+			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+			data->err = 126;
+			return (true);
+		}
+		return (false);
+	}
+	else
+		return (false);
+}
+
+static void	exec_command(t_command *cmd, t_data *data)
+{
+	if (cmd && cmd->args && cmd->args[0])
+	{
+		if (is_builtin(cmd->args[0]))
+		{
+			if (!data->err)
+				data->err = exec_builtin(cmd, &data->env, data);
+			exit_error(data);
+		}
+		else if (is_a_dir(cmd, data))
+			exit_error(data);
+		else
+		{
+			if (!data->err)
+				search_cmd_and_exec(cmd, data);
+			else
+				data->err = 1;
+		}
+	}
+	exit(1); // TODO: CHECK THIS
+}
+
+void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
+		t_ast *root)
 {
 	pid_t	pid;
+	bool	is_last;
 
 	pid = w_fork(data);
 	if (pid == 0)
 	{
 		open_files(cmd, data);
 		close_inherited_fds(cmd);
-		if (cmd && cmd->args && cmd->args[0])
-		{
-			if (is_builtin(cmd->args[0]))
-			{
-				if (!data->err)
-					data->err = exec_builtin(cmd, &data->env, data);
-				exit_error(data);
-			}
-			else
-			{
-				if (!data->err)
-					search_cmd_and_exec(cmd, data);
-				else
-					data->err = 1;
-			}
-		}
-		exit(1); // TODO: CHECK ERROR
+		exec_command(cmd, data);
 	}
 	else
 	{
+		is_last = is_last_command_in_ast(cmd, root);
+		add_pid(pids, pid, is_last, data);
 		if (cmd->fd_in > 2)
 			w_close(cmd->fd_in, data);
 		if (cmd->fd_out > 2)

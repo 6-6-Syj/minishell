@@ -17,6 +17,7 @@
 /*                                INCLUDE									*/
 /****************************************************************************/
 # include "ast.h"
+# include "data.h"
 # include "libft.h"
 
 /****************************************************************************/
@@ -37,5 +38,7 @@ typedef struct s_redir
 t_redir				*add_redir_node(t_redir **redir_lst);
 void				init_redir(t_token *token_node, t_redir **redir_lst);
 void				open_files(t_command *cmd, t_data *data);
+void				free_pid_list(t_pid_list *pids);
+bool				is_last_command_in_ast(t_command *cmd, t_ast *root);
 
 #endif

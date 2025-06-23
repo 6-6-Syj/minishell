@@ -116,7 +116,7 @@ t_ast	*create_command_node(t_token *token)
 		tmp = tmp->next;
 	}
 	init_redir(token, &new_node->command.redir);
-	print_redir_lst(new_node->command.redir);
+	// print_redir_lst(new_node->command.redir);
 	new_node->command.args[i] = NULL;
 	return (new_node);
 }

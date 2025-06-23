@@ -1,0 +1,10 @@
+> .
+bash: .: filename argument required
+
+> ..
+bash: ..: command not found
+
+> ../
+bash: Is a directory
+
+
