@@ -42,7 +42,7 @@ static char	*build_full_path(char *dir, char *cmd)
 	return (full_path);
 }
 
-static char	**split_path(t_data *data)
+char	**split_path(t_data *data)
 {
 	char	**paths;
 	int		i;
@@ -70,32 +70,36 @@ int	is_absolute_or_relative_path(char *cmd)
 			"../", 3) == 0);
 }
 
+static char	*find_path(char **paths, char *cmd)
+{
+	char	*full_path;
+	int		i;
+
+	i = 0;
+	while (paths[i])
+	{
+		full_path = build_full_path(paths[i], cmd);
+		if (full_path && access(full_path, F_OK) == 0)
+			return (full_path);
+		free(full_path);
+		i++;
+	}
+	return (NULL);
+}
+
 char	*get_path(char *cmd, t_data *data)
 {
 	char	**paths;
-	char	*full_path;
-	int		i;
+	char	*result;
 
 	if (!cmd || !data)
 		return (NULL);
 	if (is_absolute_or_relative_path(cmd))
 		return (ft_strdup(cmd));
 	paths = split_path(data);
-	if (paths)
-	{
-		i = -1;
-		while (paths[++i])
-		{
-			full_path = build_full_path(paths[i], cmd);
-			if (full_path && access(full_path, F_OK) == 0)
-			{
-				free_strs(paths);
-				return (full_path);
-			}
-			free(full_path);
-		}
-		free_strs(paths);
+	if (!paths)
 		return (NULL);
-	}
-	return (ft_strdup(cmd));
+	result = find_path(paths, cmd);
+	free_strs(paths);
+	return (result);
 }

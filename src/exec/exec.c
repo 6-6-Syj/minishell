@@ -64,6 +64,7 @@ static int	wait_processes(t_pid_list *pids, t_data *data)
 				{
 					last_exit_code = WEXITSTATUS(status);
 					data->err = last_exit_code;
+					data->exit_err = last_exit_code;
 				}
 				current = current->next;
 			}

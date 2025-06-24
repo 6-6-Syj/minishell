@@ -62,8 +62,9 @@ void	ft_exit(t_command *cmd, t_data *data)
 	should_exit = false;
 	if (!cmd->args[1])
 	{
-		exit_code = data->err;
-		ft_putstr_fd("exit\n", cmd->fd_out);
+		ft_printf("err = %d\n", data->exit_err);
+		exit_code = data->exit_err;
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	}
 	else
 	{

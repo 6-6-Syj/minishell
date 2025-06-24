@@ -97,7 +97,7 @@ static t_env	*copy_env_list(t_env *env_lst, t_data *data)
 	return (new);
 }
 
-int	print_export(t_command *cmd, t_env *env_lst, t_data *data)
+int	print_export(t_env *env_lst, t_data *data)
 {
 	t_env	*copy;
 	t_env	*current;

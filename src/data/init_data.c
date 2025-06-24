@@ -99,6 +99,7 @@ void	init_data(t_data *data, char **env)
 	data->token = NULL;
 	data->ast = NULL;
 	data->err = 0;
+	data->exit_err = 0;
 	data->err_msg = NULL;
 	data->pid_list = NULL;
 	init_env(data, env);

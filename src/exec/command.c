@@ -26,28 +26,6 @@ void	close_inherited_fds(t_command *cmd)
 	}
 }
 
-static char	**split_path(t_data *data)
-{
-	char	**paths;
-	int		i;
-
-	i = 0;
-	if (!data || !data->env_tab)
-		return (NULL);
-	while (data->env_tab[i])
-	{
-		if (ft_strncmp("PATH=", data->env_tab[i], 5) == 0)
-		{
-			paths = ft_split(data->env_tab[i] + 5, ':');
-			if (!paths)
-				exit_error(data);
-			return (paths);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
 static void	check_access(char *path, t_command *cmd, t_data *data)
 {
 	if (access(path, F_OK) == -1)
@@ -70,26 +48,64 @@ static void	check_access(char *path, t_command *cmd, t_data *data)
 	}
 }
 
-static void	search_cmd_and_exec(t_command *cmd, t_data *data)
+static void	cmd_not_found(t_command *cmd, t_data *data)
 {
-	char	*path;
-	int		is_path_unset;
-
-	is_path_unset = (split_path(data) == NULL);
-	path = get_path(cmd->args[0], data);
-	if (!path && !is_path_unset)
-	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 		data->err = 127;
 		exit_error(data);
+}
+
+static void	search_cmd_and_exec(t_command *cmd, t_data *data)
+{
+	char	*path;
+	bool	is_path_unset;
+	char	**tmp_paths;
+
+	path = get_path(cmd->args[0], data);
+	is_path_unset = true;
+	if (!path && !is_absolute_or_relative_path(cmd->args[0]))
+	{
+		tmp_paths = split_path(data);
+		if (tmp_paths)
+		{
+			is_path_unset = false;
+			free_strs(tmp_paths);
+		}
 	}
+	else if (path || is_absolute_or_relative_path(cmd->args[0]))
+		is_path_unset = false;
+	if (!path && !is_path_unset)
+		cmd_not_found(cmd, data);
 	else if (!path)
 		exit_error(data);
 	check_access(path, cmd, data);
 	w_execve(path, cmd->args, data->env_tab, data);
 }
+
+// static void	search_cmd_and_exec(t_command *cmd, t_data *data)
+// {
+// 	char	*path;
+// 	bool	is_path_unset;
+
+// 	is_path_unset = true;
+// 	if (split_path(data))
+// 		is_path_unset = false;
+// 	path = get_path(cmd->args[0], data);
+// 	if (!path && !is_path_unset)
+// 	{
+// 		ft_putstr_fd("minishell: ", STDERR_FILENO);
+// 		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
+// 		ft_putendl_fd(": command not found", STDERR_FILENO);
+// 		data->err = 127;
+// 		exit_error(data);
+// 	}
+// 	else if (!path)
+// 		exit_error(data);
+// 	check_access(path, cmd, data);
+// 	w_execve(path, cmd->args, data->env_tab, data);
+// }
 
 static void	add_pid(t_pid_list **pids, pid_t pid, bool is_last, t_data *data)
 {
@@ -107,7 +123,7 @@ static void	add_pid(t_pid_list **pids, pid_t pid, bool is_last, t_data *data)
 #include <sys/stat.h>
 #include <sys/types.h>
 
-static bool is_special_input(t_command *cmd, t_data *data)
+static bool	is_special_input(t_command *cmd, t_data *data)
 {
 	if (!ft_strcmp(".", cmd->args[0]))
 	{

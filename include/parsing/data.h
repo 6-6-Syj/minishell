@@ -52,6 +52,7 @@ typedef struct s_data
 	char				**env_tab;
 	char				*err_msg;
 	int					err;
+	int					exit_err;
 }	t_data;
 
 /****************************************************************************/

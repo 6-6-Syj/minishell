@@ -48,6 +48,7 @@ void					exec_and_restore_fd(t_fd_backup *backup, t_command *cmd,
 							t_data *data);
 
 char					*get_path(char *cmd, t_data *data);
+char					**split_path(t_data *data);
 int						is_absolute_or_relative_path(char *cmd);
 void					*free_strs(char **strs);
 
