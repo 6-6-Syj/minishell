@@ -40,6 +40,10 @@ typedef struct s_ast	t_ast;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
+/* handle_end_process */
+void					handle_end_process(pid_t wpid, int status,
+							t_wait_data *wait_data);
+
 void					handle_ast(t_ast *node, t_data *data, int *fd,
 							t_pid_list **pids);
 

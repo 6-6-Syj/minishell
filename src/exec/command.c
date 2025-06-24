@@ -50,11 +50,11 @@ static void	check_access(char *path, t_command *cmd, t_data *data)
 
 static void	cmd_not_found(t_command *cmd, t_data *data)
 {
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
-		ft_putendl_fd(": command not found", STDERR_FILENO);
-		data->err = 127;
-		exit_error(data);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd->args[0], STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
+	data->err = 127;
+	exit_error(data);
 }
 
 static void	search_cmd_and_exec(t_command *cmd, t_data *data)

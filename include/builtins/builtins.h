@@ -37,9 +37,16 @@ int							exec_builtin(t_command *command, t_env **env_lst,
 								t_data *data);
 
 int							ft_cd(t_command *cmd, t_data *data);
+
+/* export */
 int							handle_export(t_command *cmd, t_env **env_lst,
 								t_data *data);
+/* print_export */
 int							print_export(t_env *env_lst, t_data *data);
+/* pint_export_utils */
+void						free_copy_env_lst(t_env *copy_env_lst);
+void						sort_env_list(t_env *env_lst);
+
 int							handle_unset(t_command *cmd, t_env **env_lst,
 								t_data *data);
 int							ft_env(t_env *env_lst);

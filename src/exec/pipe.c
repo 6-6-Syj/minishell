@@ -54,35 +54,26 @@ static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 	}
 	else if (node->type == PIPE)
 	{
-		assign_pipe_fds(node->pipe.left, fd_in, -1);   // left inherits fd_in
-		assign_pipe_fds(node->pipe.right, -1, fd_out); // right inherits fd_out
+		assign_pipe_fds(node->pipe.left, fd_in, -1);
+		assign_pipe_fds(node->pipe.right, -1, fd_out);
 	}
 }
 
 void	handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
 {
 	w_pipe(fd, data);
-	// Gestion de la commande de gauche (qui écrit dans le pipe)
 	if (pipe->left && pipe->left->type == CMD)
 	{
 		if (!has_redir_out(&pipe->left->command))
 			pipe->left->command.fd_out = fd[1];
 	}
 	else if (pipe->left->type == PIPE)
-	{
 		assign_pipe_fds(pipe->left, -1, fd[1]);
-	}
-	// Gestion de la commande de droite (qui lit depuis le pipe)
 	if (pipe->right->type == CMD)
 	{
 		if (!has_redir_in(&pipe->right->command))
 			pipe->right->command.fd_in = fd[0];
 	}
-	else if (pipe->right->type == PIPE)
-	{
-		assign_pipe_fds(pipe->right, fd[0], -1);
-	}
-	// Exécuter les deux côtés du pipe EN PASSANT ROOT
 	handle_ast(pipe->left, data, fd, pids);
 	handle_ast(pipe->right, data, fd, pids);
 	close(fd[1]);

@@ -12,89 +12,54 @@
 
 #include "builtins.h"
 
-static void	free_copy_env_lst(t_env *copy_env_lst)
+static void	free_and_exit(t_env *node, t_data *data)
 {
-	t_env	*tmp;
-
-	while (copy_env_lst)
-	{
-		tmp = copy_env_lst->next;
-		if (copy_env_lst->key)
-			free(copy_env_lst->key);
-		if (copy_env_lst->value)
-			free(copy_env_lst->value);
-		free(copy_env_lst);
-		copy_env_lst = tmp;
-	}
-}
-
-static int	swap_nodes(t_env *current)
-{
-	char	*tmp_key;
-	char	*tmp_value;
-
-	tmp_key = NULL;
-	tmp_value = NULL;
-	tmp_key = current->key;
-	current->key = current->next->key;
-	current->next->key = tmp_key;
-	tmp_value = current->value;
-	current->value = current->next->value;
-	current->next->value = tmp_value;
-	return (1);
-}
-
-static void	sort_env_list(t_env *env_lst)
-{
-	t_env	*current;
-	t_env	*last;
-	int		swapped;
-
-	swapped = 1;
-	last = NULL;
-	while (swapped)
-	{
-		swapped = 0;
-		current = env_lst;
-		while (current && current->next != last)
-		{
-			if (ft_strcmp(current->key, current->next->key) > 0)
-				swapped = swap_nodes(current);
-			current = current->next;
-		}
-		last = current;
-	}
+	if (node && node->key)
+		free(node->key);
+	if (node)
+		free(node);
+	exit_error(data);
 }
 
 static t_env	*copy_env_list(t_env *env_lst, t_data *data)
 {
-	t_env	*new;
+	t_env	*node;
 
 	if (!env_lst)
 		return (NULL);
-	new = malloc(sizeof(t_env));
-	if (!new)
+	node = malloc(sizeof(t_env));
+	if (!node)
 		exit_error(data);
-	new->key = ft_strdup(env_lst->key);
-	if (!new->key)
-	{
-		free(new);
-		exit_error(data);
-	}
+	node->key = ft_strdup(env_lst->key);
+	if (!node->key)
+		free_and_exit(node, data);
 	if (env_lst->value)
 	{
-		new->value = ft_strdup(env_lst->value);
-		if (!new->value)
-		{
-			free(new->key);
-			free(new);
-			exit_error(data);
-		}
+		node->value = ft_strdup(env_lst->value);
+		if (!node->value)
+			free_and_exit(node, data);
 	}
 	else
-		new->value = NULL;
-	new->next = copy_env_list(env_lst->next, data);
-	return (new);
+		node->value = NULL;
+	node->next = copy_env_list(env_lst->next, data);
+	return (node);
+}
+
+static void	print_keys_values(t_env *current)
+{
+	if (current->value)
+	{
+		ft_putstr_fd("export ", STDOUT_FILENO);
+		ft_putstr_fd(current->key, STDOUT_FILENO);
+		ft_putstr_fd("=\"", STDOUT_FILENO);
+		ft_putstr_fd(current->value, STDOUT_FILENO);
+		ft_putendl_fd("\"", STDOUT_FILENO);
+	}
+	else
+	{
+		ft_putstr_fd("export ", STDOUT_FILENO);
+		ft_putendl_fd(current->key, STDOUT_FILENO);
+	}
 }
 
 int	print_export(t_env *env_lst, t_data *data)
@@ -109,19 +74,7 @@ int	print_export(t_env *env_lst, t_data *data)
 	current = copy;
 	while (current)
 	{
-		if (current->value)
-		{
-			ft_putstr_fd("export ", STDOUT_FILENO);
-			ft_putstr_fd(current->key, STDOUT_FILENO);
-			ft_putstr_fd("=\"", STDOUT_FILENO);
-			ft_putstr_fd(current->value, STDOUT_FILENO);
-			ft_putendl_fd("\"", STDOUT_FILENO);
-		}
-		else
-		{
-			ft_putstr_fd("export ", STDOUT_FILENO);
-			ft_putendl_fd(current->key, STDOUT_FILENO);
-		}
+		print_keys_values(current);
 		current = current->next;
 	}
 	free_copy_env_lst(copy);

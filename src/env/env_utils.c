@@ -12,17 +12,10 @@
 
 #include "env.h"
 
-// _ variable contains last arg of last command
-// example : _=usr/bin/env
 void	print_env_tab(char **env_tab)
 {
 	int	i;
 
-	if (!env_tab)
-	{
-		ft_printf("NULL.\n"); //TODO: CHECK env_tab never NULL (variable "_")
-		return ;
-	}
 	i = 0;
 	while (env_tab[i])
 	{
@@ -46,7 +39,7 @@ static int	get_size_env_lst(t_env *current)
 	return (size);
 }
 
-static void update_key_values(t_data *data, t_env *env_node, int i)
+static void	update_key_values(t_data *data, t_env *env_node, int i)
 {
 	char	*buff;
 
@@ -82,10 +75,10 @@ char	**update_env_tab(t_data *data)
 
 	i = 0;
 	if (data && data->env_tab)
-    {
-        free_strs(data->env_tab);
-        data->env_tab = NULL;
-    }
+	{
+		free_strs(data->env_tab);
+		data->env_tab = NULL;
+	}
 	size = get_size_env_lst(data->env);
 	data->env_tab = malloc(sizeof(char *) * (size + 1));
 	if (!data->env_tab)

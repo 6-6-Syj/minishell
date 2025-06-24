@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_all.c                                        :+:      :+:    :+:   */
+/*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 20:17:33 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/28 18:00:12 by dabuchhe         ###   ########lyon.fr   */
+/*   Created: 2025-06-24 20:50:18 by jmagand           #+#    #+#             */
+/*   Updated: 2025-06-24 20:50:18 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "utils.h"
 
-void	print_all(t_data *data)
+void	*free_strs(char **strs)
 {
-	ft_printf("\n");
-	// print_token_lst(data->token);
-	// print_ast_graphical(data->ast);
-	ft_printf("\033[0;34m\033[1m ECHO $?: %d\033[0m\n", data->err);
-	// print_data(data);
+	int	i;
+
+	i = 0;
+	if (!strs)
+		return (NULL);
+	while (strs[i])
+	{
+		free(strs[i]);
+		i++;
+	}
+	free(strs);
+	return (NULL);
 }

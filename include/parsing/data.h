@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 20:11:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/05 20:11:05 by dabuchhe         ###   ########lyon.fr   */
+/*   Created: 2025-06-24 20:10:26 by jmagand           #+#    #+#             */
+/*   Updated: 2025-06-24 20:10:26 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,32 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
-#include <stdlib.h>
-#include <stdbool.h>
+# include <stdlib.h>
+# include <stdbool.h>
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_token	t_token;
-typedef struct s_env	t_env;
-typedef struct s_ast	t_ast;
-typedef struct s_pipe	t_pipe;
+typedef struct s_token		t_token;
+typedef struct s_env		t_env;
+typedef struct s_ast		t_ast;
+typedef struct s_pipe		t_pipe;
+typedef struct s_wait_data	t_wait_data;
 
 typedef struct s_pid_list
 {
-    pid_t 				pid;
-    bool 				is_last_cmd;
-    struct s_pid_list 	*next;
-} 						t_pid_list;
+	pid_t				pid;
+	bool				is_last_cmd;
+	struct s_pid_list	*next;
+}						t_pid_list;
+
 
 typedef struct s_fd_backup
 {
-    int 				fd_in;
-    int 				fd_out;
-    int 				fd_err;
-} 						t_fd_backup;
+	int					fd_in;
+	int					fd_out;
+	int					fd_err;
+}						t_fd_backup;
 
 typedef struct s_data
 {
@@ -49,11 +51,19 @@ typedef struct s_data
 	t_pipe				*pipe;
 	t_fd_backup			*backup;
 	t_pid_list			*pid_list;
+	t_wait_data			*wait_data;
 	char				**env_tab;
 	char				*err_msg;
 	int					err;
 	int					exit_err;
 }	t_data;
+
+typedef struct s_wait_data
+{
+	t_pid_list			*pids;
+	t_data				*data;
+	int					*last_exit_code;
+}						t_wait_data;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/

@@ -13,22 +13,6 @@
 #include "data.h"
 #include "exec.h"
 
-void	*free_strs(char **strs)
-{
-	int	i;
-
-	i = 0;
-	if (!strs)
-		return (NULL);
-	while (strs[i])
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);
-	return (NULL);
-}
-
 static char	*build_full_path(char *dir, char *cmd)
 {
 	char	*slash_cmd;

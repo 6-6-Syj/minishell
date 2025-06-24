@@ -42,51 +42,23 @@ WSTOPSIG(status) : Si WIFSTOPPED est vrai,
 
  */
 
-static int	wait_processes(t_pid_list *pids, t_data *data)
+static int	wait_all_processes(t_pid_list *pids, t_data *data)
 {
 	int			status;
 	pid_t		wpid;
 	int			last_exit_code;
-	t_pid_list	*current;
+	t_wait_data	wait_data;
 
 	last_exit_code = 0;
-	while ((wpid = wait(&status)) > 0)
+	wait_data.pids = pids;
+	wait_data.data = data;
+	wait_data.last_exit_code = &last_exit_code;
+	while (1)
 	{
-		ft_printf("\033[0;32m\033[1m");
-		if (WIFEXITED(status))
-		{
-			ft_printf("Child PID %d ended normally with status %d\n", wpid,
-				WEXITSTATUS(status));
-			current = pids;
-			while (current)
-			{
-				if (current->pid == wpid && current->is_last_cmd)
-				{
-					last_exit_code = WEXITSTATUS(status);
-					data->err = last_exit_code;
-					data->exit_err = last_exit_code;
-				}
-				current = current->next;
-			}
-		}
-		else if (WIFSIGNALED(status))
-		{
-			ft_printf("Child PID %d was killed by signal %d\n", wpid,
-				WTERMSIG(status));
-			current = pids;
-			while (current)
-			{
-				if (current->pid == wpid && current->is_last_cmd)
-				{
-					last_exit_code = 128 + WTERMSIG(status);
-					data->err = last_exit_code;
-				}
-				current = current->next;
-			}
-		}
-		else
-			ft_printf("OUPS\n");
-		ft_printf("\033[0m");
+		wpid = wait(&status);
+		if (wpid <= 0)
+			break ;
+		handle_end_process(wpid, status, &wait_data);
 	}
 	return (last_exit_code);
 }
@@ -130,7 +102,7 @@ void	exec_ast(t_ast *node, t_data *data)
 	else
 	{
 		handle_ast(node, data, fd, &pids);
-		data->err = wait_processes(pids, data);
+		data->err = wait_all_processes(pids, data);
 		free_pid_list(pids);
 	}
 }
