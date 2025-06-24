@@ -77,5 +77,6 @@ void	ft_exit(t_command *cmd, t_data *data)
 		}
 	}
 	data->err = exit_code;
+	close_inherited_fds(cmd);
 	exit_error(data);
 }

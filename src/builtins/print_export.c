@@ -111,16 +111,16 @@ int	print_export(t_command *cmd, t_env *env_lst, t_data *data)
 	{
 		if (current->value)
 		{
-			ft_putstr_fd("export ", cmd->fd_out);
-			ft_putstr_fd(current->key, cmd->fd_out);
-			ft_putstr_fd("=\"", cmd->fd_out);
-			ft_putstr_fd(current->value, cmd->fd_out);
-			ft_putendl_fd("\"", cmd->fd_out);
+			ft_putstr_fd("export ", STDOUT_FILENO);
+			ft_putstr_fd(current->key, STDOUT_FILENO);
+			ft_putstr_fd("=\"", STDOUT_FILENO);
+			ft_putstr_fd(current->value, STDOUT_FILENO);
+			ft_putendl_fd("\"", STDOUT_FILENO);
 		}
 		else
 		{
-			ft_putstr_fd("export ", cmd->fd_out);
-			ft_putendl_fd(current->key, cmd->fd_out);
+			ft_putstr_fd("export ", STDOUT_FILENO);
+			ft_putendl_fd(current->key, STDOUT_FILENO);
 		}
 		current = current->next;
 	}
