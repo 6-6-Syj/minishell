@@ -12,50 +12,43 @@
 
 #include "exec.h"
 
-static void	handle_normal(pid_t wpid, int status, t_wait_data *wait_data)
+void	clean_all_processes(t_pid_list *pids)
 {
 	t_pid_list	*current;
+	int			status;
 
-	ft_printf("Child PID %d ended normally with status %d", wpid,
-		WEXITSTATUS(status));
-	current = wait_data->pids;
+	current = pids;
 	while (current)
 	{
-		if (current->pid == wpid && current->is_last_cmd)
+		if (!current->is_last_cmd)
 		{
-			*(wait_data->last_exit_code) = WEXITSTATUS(status);
-			wait_data->data->err = *(wait_data->last_exit_code);
-			wait_data->data->exit_err = *(wait_data->last_exit_code);
+			if (waitpid(current->pid, &status, 0) > 0)
+				log_process_end(current->pid, status);
 		}
 		current = current->next;
 	}
 }
 
-static void	handle_signal(pid_t wpid, int status, t_wait_data *wait_data)
+int	get_exit_code(int status)
 {
-	t_pid_list	*current;
-
-	ft_printf("Child PID %d was killed by signal %d", wpid, WTERMSIG(status));
-	current = wait_data->pids;
-	while (current)
-	{
-		if (current->pid == wpid && current->is_last_cmd)
-		{
-			*(wait_data->last_exit_code) = 128 + WTERMSIG(status);
-			wait_data->data->err = *(wait_data->last_exit_code);
-		}
-		current = current->next;
-	}
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	else
+		return (1);
 }
 
-void	handle_end_process(pid_t wpid, int status, t_wait_data *wait_data)
+void	log_process_end(pid_t wpid, int status)
 {
 	ft_printf("\033[0;32m\033[1m");
 	if (WIFEXITED(status))
-		handle_normal(wpid, status, wait_data);
+		ft_printf("Child PID %d ended normally with status %d", wpid,
+			WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		handle_signal(wpid, status, wait_data);
-	else /* TODO: NEED FIX ELSE */
-		ft_printf("OUPS\n");
+		ft_printf("Child PID %d was killed by signal %d", wpid,
+			WTERMSIG(status));
+	else
+		ft_printf("Child PID %d ended with unknown status", wpid);
 	ft_printf("\033[0m");
 }

@@ -41,8 +41,10 @@ typedef struct s_ast	t_ast;
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 /* handle_end_process */
-void					handle_end_process(pid_t wpid, int status,
-							t_wait_data *wait_data);
+void					log_process_end(pid_t wpid, int status);
+int						get_exit_code(int status);
+void					handle_end_process(pid_t wpid, int status);
+void					clean_all_processes(t_pid_list *pids);
 
 void					handle_ast(t_ast *node, t_data *data, int *fd,
 							t_pid_list **pids);

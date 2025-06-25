@@ -26,7 +26,6 @@ typedef struct s_token		t_token;
 typedef struct s_env		t_env;
 typedef struct s_ast		t_ast;
 typedef struct s_pipe		t_pipe;
-typedef struct s_wait_data	t_wait_data;
 
 typedef struct s_pid_list
 {
@@ -34,7 +33,6 @@ typedef struct s_pid_list
 	bool				is_last_cmd;
 	struct s_pid_list	*next;
 }						t_pid_list;
-
 
 typedef struct s_fd_backup
 {
@@ -51,19 +49,11 @@ typedef struct s_data
 	t_pipe				*pipe;
 	t_fd_backup			*backup;
 	t_pid_list			*pid_list;
-	t_wait_data			*wait_data;
 	char				**env_tab;
 	char				*err_msg;
 	int					err;
 	int					exit_err;
 }	t_data;
-
-typedef struct s_wait_data
-{
-	t_pid_list			*pids;
-	t_data				*data;
-	int					*last_exit_code;
-}						t_wait_data;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/

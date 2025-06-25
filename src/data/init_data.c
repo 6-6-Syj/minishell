@@ -101,6 +101,5 @@ void	init_data(t_data *data, char **env)
 	data->exit_err = 0;
 	data->err_msg = NULL;
 	data->pid_list = NULL;
-	data->wait_data = NULL;
 	init_env(data, env);
 }
