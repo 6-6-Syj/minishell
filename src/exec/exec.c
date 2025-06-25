@@ -42,24 +42,44 @@ WSTOPSIG(status) : Si WIFSTOPPED est vrai,
 
  */
 
+static void	clean_all_processes(t_pid_list *pids, t_wait_data *wait_data)
+{
+	t_pid_list	*current;
+	int			status;
+
+	current = pids;
+	while (current)
+	{
+		if (!current->is_last_cmd)
+			if (waitpid(current->pid, &status, 0) > 0)
+				handle_end_process(current->pid, status, wait_data);
+		current = current->next;
+	}
+}
+
 static int	wait_all_processes(t_pid_list *pids, t_data *data)
 {
 	int			status;
-	pid_t		wpid;
 	int			last_exit_code;
+	t_pid_list	*current;
 	t_wait_data	wait_data;
 
 	last_exit_code = 0;
 	wait_data.pids = pids;
 	wait_data.data = data;
 	wait_data.last_exit_code = &last_exit_code;
-	while (1)
+	current = pids;
+	while (current)
 	{
-		wpid = wait(&status);
-		if (wpid <= 0)
+		if (current->is_last_cmd)
+		{
+			if (waitpid(current->pid, &status, 0) > 0)
+				handle_end_process(current->pid, status, &wait_data);
 			break ;
-		handle_end_process(wpid, status, &wait_data);
+		}
+		current = current->next;
 	}
+	clean_all_processes(pids, &wait_data);
 	return (last_exit_code);
 }
 
