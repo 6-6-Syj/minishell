@@ -5,20 +5,6 @@
 #include "data.h"
 #include "print.h"
 
-// token = get_first_redir();
-// while (!pipe)
-// {
-// 	if (redir)
-// 	{
-// 		add_last_redir_node(token);
-// 		set_redir_node();
-// 			set_redir_type();
-// 			if (here_doc)
-// 				set_redir_delimiter();
-// 			set_redir_filename;
-// 	}
-// }
-
 t_token	*get_first_redir(t_token **root_token)
 {
 	t_token	*token_node;

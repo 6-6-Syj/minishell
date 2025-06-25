@@ -79,7 +79,6 @@ static char	*handle_readline(t_data *data)
 int	main(int ac, char **av, char **env)
 {
 	t_data	data;
-	char	*input;
 
 	(void)ac;
 	(void)av;
@@ -91,21 +90,20 @@ int	main(int ac, char **av, char **env)
 			ft_printf("CATCHED\n");
 			g_sig = 0;
 		}
-		input = handle_readline(&data);
-		if (!input)
+		data.input = handle_readline(&data);
+		if (!data.input)
 			continue ;
 		data.err = 0;
-		init_token(&data.token, input);
+		init_token(&data);
 		parse_token_lst(&data.token);
 		init_ast(&data.ast, &data.token);
 		exec_ast(data.ast, &data);
 		// print_all(&data);
-		free(input);
+		free(data.input);
 		free_token_lst(&data.token);
-		// free_ast(&data.ast);
+		free_ast(&data.ast);
 		data.token = NULL;
 	}
 	rl_clear_history();
-	exit_error(&data);
 	return (0);
 }

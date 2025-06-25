@@ -53,6 +53,7 @@ typedef struct s_data
 	char				*err_msg;
 	int					err;
 	int					exit_err;
+	char				*input;
 }	t_data;
 
 /****************************************************************************/

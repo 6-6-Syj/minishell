@@ -36,7 +36,7 @@ t_token	*get_prev_priority_token(t_token *root_token)
 	t_token	*tmp;
 
 	priority = root_token->priority;
-	while (priority <= 5)
+	while (priority <= 2)
 	{
 		tmp = root_token->prev;
 		while (tmp)
@@ -56,7 +56,7 @@ t_token	*get_next_priority_token(t_token *root_token)
 	t_token	*tmp;
 
 	priority = root_token->priority + 1;
-	while (priority <= 5)
+	while (priority <= 2)
 	{
 		tmp = root_token->next;
 		while (tmp)
@@ -76,7 +76,7 @@ t_token	*get_root_token(t_token **token_lst, int priority)
 	t_token	*root_token;
 
 	root_token = NULL;
-	while (priority <= 5)
+	while (priority <= 2)
 	{
 		tmp = *token_lst;
 		while (tmp)

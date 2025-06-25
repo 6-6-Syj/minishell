@@ -83,7 +83,7 @@ typedef struct s_token
 int		get_token_priority(t_token *token);
 t_type	get_token_type(t_token *token);
 t_type	get_token_word_type(t_token *token);
-int		init_token(t_token **token_lst, char *input);
+void	init_token(t_data *data);
 t_token	*add_token_node(t_token **token_lst);
 void	free_token_node(t_token *token_node);
 void	free_token_lst(t_token **token_lst);
@@ -95,5 +95,7 @@ bool	is_quote(char c);
 bool	is_operator(char c);
 int		parse_token_lst(t_token **token_lst);
 t_token	*get_last_token(t_token *lst);
+int	remove_node(t_token *node, t_data *data);
+int	remove_space(t_token **token_lst, t_data *data);
 
 #endif
