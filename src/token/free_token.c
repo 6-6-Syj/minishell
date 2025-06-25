@@ -16,8 +16,15 @@
 void	free_token_node(t_token *token_node)
 {
 	if (token_node->content)
+	{
 		free(token_node->content);
-	free(token_node);
+		token_node->content = NULL;
+	}
+	if (token_node)
+	{	
+		free(token_node);
+		token_node = NULL;
+	}
 }
 
 void	free_token_lst(t_token **token_lst)

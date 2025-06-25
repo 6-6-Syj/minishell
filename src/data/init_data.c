@@ -21,4 +21,5 @@ void	init_data(t_data *data)
 	data->ast = NULL;
 	data->err = 0;
 	data->err_msg = NULL;
+	data->input = NULL;
 }

@@ -25,8 +25,8 @@ bool	is_operator(char c)
 	// 	return (true);
 	if (c == '|')
 		return (true);
-	if (c == '&')
-		return (true);
+	// if (c == '&')
+	// 	return (true);
 	if (c == '<')
 		return (true);
 	if (c == '>')
@@ -138,13 +138,14 @@ t_type	get_token_type(t_token *token)
 	int	len;
 
 	len = ft_strlen(token->content);
-	if (token->content[0] == '(')
-		return (PAREN_L);
-	else if (token->content[0] == ')')
-		return (PAREN_R);
-	else if (is_operator(token->content[0]) && (is_operator(token->content[len - 1])))
+	// if (token->content[0] == '(')
+	// 	return (PAREN_L);
+	// else if (token->content[0] == ')')
+	// 	return (PAREN_R);
+	// if (is_operator(token->content[0]) && (is_operator(token->content[len - 1])))
+	if (is_operator(token->content[0]))
 		return (get_operator_type(token));
-	else if (is_quote(token->content[0]) && is_quote(token->content[len - 1]))
+	else if (is_quote(token->content[0]))
 		return (get_quote_type(token));
 	else if (token->content[0] == ' ')
 		return (SPACE);

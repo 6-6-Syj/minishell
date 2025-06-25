@@ -17,7 +17,6 @@
 int	main(int ac, char **av, char **env)
 {
 	t_data	data;
-	char	*input;
 
 	(void)ac;
 	(void)av;
@@ -25,19 +24,19 @@ int	main(int ac, char **av, char **env)
 	init_env(&data, env);
 	while (1)
 	{
-		input = readline("> ");
-		if (input[0] != '\0')
-			add_history(input);
-		if (!input)
+		data.input = readline("> ");
+		if (data.input[0] != '\0')
+			add_history(data.input);
+		if (!data.input)
 			break ;
-		init_token(&data.token, input);
+		init_token(&data);
 		parse_token_lst(&data.token);
 		init_ast(&data.ast, &data.token);
-		exec_ast(data.ast, &data);
+		// exec_ast(data.ast, &data);
 		print_all(&data);
-		free(input);
+		free(data.input);
 		free_token_lst(&data.token);
-		// free_ast(&data.ast);
+		free_ast(&data.ast);
 		data.token = NULL;
 	}
 	rl_clear_history();

@@ -32,6 +32,7 @@ typedef struct s_data
 	t_env	*env;
 	t_token	*token;
 	t_pipe	*pipe;
+	char	*input;
 	char	**env_tab;
 	char	*err_msg;
 	int		err;
