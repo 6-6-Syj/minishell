@@ -5,6 +5,16 @@ bash: .: filename argument required
 bash: ..: command not found
 
 > ../
-bash: Is a directory
 
-
+>
+bash: Is a directory>
+bash-5.1$ > t1
+bash: t1: Permission denied
+bash-5.1$ > t2
+bash-5.1$ < t1
+bash: t1: Permission denied
+bash-5.1$ < t3
+bash: t3: No such file or directory
+bash-5.1$ >
+bash: syntax error near unexpected token `newline'
+bash-5.1$ >f

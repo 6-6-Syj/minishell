@@ -27,21 +27,6 @@ void	handle_ast(t_ast *node, t_data *data, int *fd, t_pid_list **pids)
 		handle_pipe(&node->pipe, data, fd, pids);
 }
 
-/*
-
-WIFSIGNALED(status) : Vrai si le processus fils a été terminé par un signal.
-
-WTERMSIG(status) : Si WIFSIGNALED est vrai,
-	retourne le numéro du signal qui a tué le processus.
-
-WIFSTOPPED(status) : Vrai si le processus fils a été stoppé (par exemple,
-	par SIGSTOP).
-
-WSTOPSIG(status) : Si WIFSTOPPED est vrai,
-	retourne le numéro du signal qui a stoppé le processus.
-
- */
-
 static int	wait_all_processes(t_pid_list *pids, t_data *data)
 {
 	int			status;

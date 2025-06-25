@@ -13,6 +13,7 @@
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <signal.h>
 
 // MAYBE USE ISATTY TOO
 
@@ -48,6 +49,33 @@
 // 	return (input);
 // }
 
+volatile sig_atomic_t	g_sig;
+
+static char	*handle_readline(t_data *data)
+{
+	char	*line;
+	int		fd;
+
+	fd = 3;
+	line = readline("> ");
+	if (!line)
+	{
+		ft_printf("exit\n");
+		while (fd < 1024)
+			close(fd++);
+		exit_error(data);
+		return (NULL);
+	}
+	if (line[0] != '\0')
+		add_history(line);
+	else
+	{
+		free(line);
+		return (NULL);
+	}
+	return (line);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_data	data;
@@ -58,17 +86,20 @@ int	main(int ac, char **av, char **env)
 	init_data(&data, env);
 	while (1)
 	{
-		input = readline("> ");
-		if (input[0] != '\0')
-			add_history(input);
+		if (g_sig == SIGINT)
+		{
+			ft_printf("CATCHED\n");
+			g_sig = 0;
+		}
+		input = handle_readline(&data);
 		if (!input)
-			break ;
+			continue ;
 		data.err = 0;
 		init_token(&data.token, input);
 		parse_token_lst(&data.token);
 		init_ast(&data.ast, &data.token);
 		exec_ast(data.ast, &data);
-		print_all(&data);
+		// print_all(&data);
 		free(input);
 		free_token_lst(&data.token);
 		// free_ast(&data.ast);
