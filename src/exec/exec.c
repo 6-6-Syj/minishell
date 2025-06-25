@@ -52,48 +52,22 @@ static int	wait_all_processes(t_pid_list *pids, t_data *data)
 	current = pids;
 	while (current)
 	{
-		if (current->is_last_cmd)
+		if (waitpid(current->pid, &status, 0) > 0)
 		{
-			if (waitpid(current->pid, &status, 0) > 0)
+			if (current->is_last_cmd)
 			{
 				last_exit_code = get_exit_code(status);
 				data->err = last_exit_code;
 				data->exit_err = last_exit_code;
 				log_process_end(current->pid, status);
 			}
-			break ;
 		}
+		else
+			log_process_end(current->pid, status);
 		current = current->next;
 	}
-	clean_all_processes(pids);
 	return (last_exit_code);
 }
-
-// static int	wait_all_processes(t_pid_list *pids, t_data *data)
-// {
-// 	int			status;
-// 	int			last_exit_code;
-// 	t_pid_list	*current;
-// 	t_wait_data	wait_data;
-
-// 	last_exit_code = 0;
-// 	wait_data.pids = pids;
-// 	wait_data.data = data;
-// 	wait_data.last_exit_code = &last_exit_code;
-// 	current = pids;
-// 	while (current)
-// 	{
-// 		if (current->is_last_cmd)
-// 		{
-// 			if (waitpid(current->pid, &status, 0) > 0)
-// 				handle_end_process(current->pid, status, &wait_data);
-// 			break ;
-// 		}
-// 		current = current->next;
-// 	}
-// 	clean_all_processes(pids, &wait_data);
-// 	return (last_exit_code);
-// }
 
 static void	init_backup(t_fd_backup *backup)
 {
