@@ -32,14 +32,13 @@ int	main(int ac, char **av, char **env)
 		init_token(&data);
 		parse_token_lst(&data.token);
 		init_ast(&data.ast, &data.token);
-		// exec_ast(data.ast, &data);
-		print_all(&data);
+		exec_ast(data.ast, &data);
+		// print_all(&data);
 		free(data.input);
 		free_token_lst(&data.token);
 		free_ast(&data.ast);
 		data.token = NULL;
 	}
 	rl_clear_history();
-	exit_error(&data);
 	return (0);
 }

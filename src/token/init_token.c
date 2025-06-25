@@ -143,7 +143,7 @@ int	get_expand_len(char *token_content)
 		return (0);
 	while (token_content[i] && is_part_of_word(token_content[i]))
 		i++;
-	ft_printf("expand_len = %s\n", token_content);
+	// ft_printf("expand_len = %s\n", token_content);
 	return (i);
 }
 

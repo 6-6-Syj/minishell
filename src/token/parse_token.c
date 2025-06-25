@@ -80,6 +80,8 @@ void	set_token_priority(t_token **token_lst) // TODO: refacto
 			token_node->priority = 1;
 		else if (token_node->type == CMD)
 			token_node->priority = 2;
+		else
+			token_node->priority = -1;
 		token_node = token_node->next;
 	}
 }
