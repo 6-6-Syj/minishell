@@ -26,6 +26,4 @@ void	free_data(t_data *data)
 		free_ast(&data->ast);
 	if (data->env_tab)
 		free_env_tab(data);
-	if (data->token)
-		free_token_lst(&data->token);
 }
