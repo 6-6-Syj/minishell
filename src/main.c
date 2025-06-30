@@ -15,6 +15,8 @@
 #include <readline/readline.h>
 #include <signal.h>
 
+volatile int	g_sig;
+
 // MAYBE USE ISATTY TOO
 
 // input = readline(get_path_term(&data));
@@ -51,39 +53,40 @@
 
 volatile sig_atomic_t	g_sig;
 
-// static char	*handle_readline(t_data *data)
-// {
-// 	char	*line;
-// 	int		fd;
-// 	char	*str;
+static char	*handle_readline(t_data *data)
+{
+	char	*line;
+	int		fd;
 
-// 	fd = 3;
-// 	// line = readline("> ");
-// 	if (isatty(fileno(stdin)))
-// 		str = readline("> ");
-// 	else
-// 	{
-// 		line = get_next_line(fileno(stdin));
-// 		str = ft_strtrim(line, "\n");
-// 		free(line);
-// 	}
-// 	if (!str)
-// 	{
-// 		ft_printf("exit\n");
-// 		while (fd < 1024)
-// 			close(fd++);
-// 		exit_error(data);
-// 		return (NULL);
-// 	}
-// 	if (line[0] != '\0')
-// 		add_history(line);
-// 	else
-// 	{
-// 		free(line);
-// 		return (NULL);
-// 	}
-// 	return (str);
-// }
+	// char	*str;
+	fd = 3;
+	//
+	// if (isatty(fileno(stdin)))
+	// 	str = readline("[Minishell]");
+	// else
+	// {
+	// 	line = get_next_line(fileno(stdin));
+	// 	str = ft_strtrim(line, "\n");
+	// 	free(line);
+	// }
+	line = readline("> ");
+	if (!line)
+	{
+		ft_printf("exit\n");
+		while (fd < 1024)
+			close(fd++);
+		exit_error(data);
+		return (NULL);
+	}
+	if (line[0] != '\0')
+		add_history(line);
+	else
+	{
+		free(line);
+		return (NULL);
+	}
+	return (line);
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -94,16 +97,15 @@ int	main(int ac, char **av, char **env)
 	init_data(&data, env);
 	while (1)
 	{
+		data.input = handle_readline(&data);
+		if (!data.input)
+			continue ;
+		data.err = 0;
 		if (g_sig == SIGINT)
 		{
 			ft_printf("CATCHED\n");
 			g_sig = 0;
 		}
-		// data.input = handle_readline(&data);
-		data.input = readline("> ");
-		if (!data.input)
-			continue ;
-		data.err = 0;
 		init_token(&data);
 		// print_all(&data);
 		init_ast(&data.ast, &data.token, &data);

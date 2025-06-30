@@ -19,7 +19,7 @@
 
 ACCESS: int access(const char *pathname, int mode);
 
-	◆  La  fonction  vérifie  si  le  le  path  en  fonction  du/des  mode(s)  sélectionnés
+	◆  La  fonction  vérifie  si  le  path  en  fonction  du/des  mode(s)  sélectionnés
 	renseigne en paramètres est valides.
 ◆  Valeur de mode:
 	●  R_OK : Lecture.
@@ -32,7 +32,7 @@ ou -1 si l'accès est refusé ou si une erreur survient.
 */
 
 // TODO: CHECK ACCESS ?
-static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
+static void	open_outfile(t_redir *file, int *fd, t_command *cmd)
 {
 	int	flags;
 
@@ -44,26 +44,18 @@ static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 			flags = (O_CREAT | O_APPEND | O_RDWR);
 		*fd = open(file->filename, flags, 0644);
 		if (*fd == -1)
-		{
 			perror(file->filename);
-			if (data)
-				data->err = 1;
-		}
 		cmd->fd_out = *fd;
 	}
 }
 
-static void	open_infile(t_redir *file, int *fd, t_command *cmd, t_data *data)
+static void	open_infile(t_redir *file, int *fd, t_command *cmd)
 {
 	if (file->type == REDIR_IN)
 	{
 		*fd = open(file->filename, O_RDONLY, 0644);
 		if (*fd == -1)
-		{
 			perror(file->filename);
-			if (data)
-				data->err = 1;
-		}
 		cmd->fd_in = *fd;
 	}
 }
@@ -77,8 +69,8 @@ void	open_files(t_command *cmd, t_data *data)
 	file = cmd->redir;
 	while (file)
 	{
-		open_infile(file, &new_fd_in, cmd, data);
-		open_outfile(file, &new_fd_out, cmd, data);
+		open_infile(file, &new_fd_in, cmd);
+		open_outfile(file, &new_fd_out, cmd);
 		if (!data->err)
 			file = file->next;
 		else
@@ -114,6 +106,7 @@ bool	is_last_command_in_ast(t_command *cmd, t_ast *root)
 {
 	t_command	*rightmost;
 
+	(void)cmd;
 	rightmost = find_last_cmd(root);
-	return (rightmost == cmd);
+	return (rightmost);
 }

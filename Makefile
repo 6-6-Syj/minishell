@@ -38,7 +38,7 @@
 vpath %.c src src/builtins src/token src/data src/print src/env src/exec src/ast src/redir src/utils src/signal
 vpath %.i include include/builtins include/parsing include/print include/exec include/utils include/signal
 
--include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/print.mk mk_files/exec.mk mk_files/ast.mk mk_files/redir.mk mk_files/utils.mk 
+-include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/print.mk mk_files/exec.mk mk_files/ast.mk mk_files/redir.mk mk_files/utils.mk mk_files/handle_signal.mk
 
 #------------------------------------------------#
 #					NOTES						 #

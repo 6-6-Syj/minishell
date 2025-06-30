@@ -13,6 +13,7 @@
 #include "minishell.h"
 #include <unistd.h>
 #include "env.h"
+#include "handle_signal.h"
 
 bool	is_set_env(t_env *new_env, char *env_line)
 {
@@ -102,5 +103,10 @@ void	init_data(t_data *data, char **env)
 	data->err_msg = NULL;
 	data->pid_list = NULL;
 	init_env(data, env);
+	if (init_sig_handler() == false)
+	{
+		ft_printf("(init_data) FAIL to init sig handler\n");
+		exit_error(data);
+	}
 	data->input = NULL;
 }

@@ -28,7 +28,8 @@ static int	ft_unset(t_command *cmd, t_env **head)
 			else
 				*head = curr->next;
 			free(curr->key);
-			free(curr->value);
+			if (curr->value)
+				free(curr->value);
 			free(curr);
 			return (0);
 		}

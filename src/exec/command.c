@@ -12,6 +12,7 @@
 
 #include "command.h"
 #include "redir.h"
+#include <stdio.h>
 
 void	close_inherited_fds(t_command *cmd)
 {

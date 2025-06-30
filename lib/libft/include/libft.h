@@ -65,7 +65,6 @@ char				*ft_itoa(int c);
 /*                                STRINGS                                     */
 /* ************************************************************************** */
 char				*ft_strcat(char *dst, const char *src);
-int					ft_strcmp(char *s1, char *s2);
 char				*ft_strncat(char *dst, const char *src, unsigned int nb);
 char				*ft_strchr(const char *s, int c);
 int					ft_strcmp(char *s1, char *s2);
