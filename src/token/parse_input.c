@@ -1,12 +1,4 @@
-#include "data.h"
-#include "env.h"
-#include "errno.h"
-#include "libft.h"
-#include "print.h"
-#include "stdio.h"
-#include "string.h"
-#include "token.h"
-#include "unistd.h"
+#include "minishell.h"
 
 void	lexer(t_data *data)
 {
@@ -21,10 +13,9 @@ void	lexer(t_data *data)
 		if (!new_token)
 			exit_error(data); // malloc_error;
 		len = get_token_len(&data->input[i]);
-		// printf("%s\n", &data->input[i]);
-		new_token->content = ft_strndup(&data->input[i], len);
-		// if (!new_token->content)
-		// 	exit_error(data);
+		new_token->content = ft_strndup(new_token->content, len);
+		if (!new_token->content)
+			exit_error(data);
 		i += get_token_len(&data->input[i]);
 	}
 }
@@ -33,9 +24,9 @@ void	init_token(t_data *data)
 {
 	lexer(data);
 	set_token_type(&data->token, data);
-	remove_double_quote(&data->token, data);
-	expand_var(&data->token, data);
-	remove_simple_quote(&data->token, data);
+	parse_double_quote(&data->token, data);
+	parse_expand(&data->token, data);
+	parse_simple_quote(&data->token, data);
 	join_word(&data->token, data);
 	remove_space(&data->token, data);
 	set_file_type(&data->token);

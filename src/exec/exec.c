@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:36:22 by jmagand           #+#    #+#             */
-/*   Updated: 2025/06/25 21:56:03 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/06/26 23:45:18 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	exec_ast(t_ast *node, t_data *data)
 	t_pid_list	*pids;
 
 	pids = NULL;
-	fd[0] = -1;
-	fd[1] = -1;
+	fd[0] = 0;
+	fd[1] = 1;
 	init_backup(&backup);
 	if (!node)
 		exit_error(data);

@@ -92,7 +92,7 @@ t_token	*get_root_token(t_token **token_lst, int priority)
 	return (root_token);
 }
 
-t_ast	*create_command_node(t_token *token)
+t_ast	*create_command_node(t_token *token, t_data *data)
 {
 	int		i;
 	int		len;
@@ -115,13 +115,13 @@ t_ast	*create_command_node(t_token *token)
 			new_node->command.args[i++] = ft_strdup(tmp->content);
 		tmp = tmp->next;
 	}
-	init_redir(token, &new_node->command.redir);
+	init_redir(token, &new_node->command.redir, data);
 	// print_redir_lst(new_node->command.redir);
 	new_node->command.args[i] = NULL;
 	return (new_node);
 }
 
-t_ast	*create_pipe_node(t_token *token)
+t_ast	*create_pipe_node(t_token *token, t_data *data)
 {
 	t_ast	*new_node;
 	t_token	*token_left;
@@ -136,13 +136,13 @@ t_ast	*create_pipe_node(t_token *token)
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
 		return (NULL);
-	new_node->pipe.left = parse_token(token_left);   // TODO: secure
-	new_node->pipe.right = parse_token(token_right); // TODO: secure
+	new_node->pipe.left = parse_token(token_left, data);   // TODO: secure
+	new_node->pipe.right = parse_token(token_right, data); // TODO: secure
 	new_node->type = PIPE;
 	return (new_node);
 }
 
-t_ast	*create_logic_node(t_token *token)
+t_ast	*create_logic_node(t_token *token, t_data *data)
 {
 	t_ast	*new_node;
 	t_token	*token_left;
@@ -155,8 +155,8 @@ t_ast	*create_logic_node(t_token *token)
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
 		return (NULL);
-	new_node->logic.left = parse_token(token_left);
-	new_node->logic.right = parse_token(token_right);
+	new_node->logic.left = parse_token(token_left, data);
+	new_node->logic.right = parse_token(token_right, data);
 	if (ft_strcmp(token->content, "&&") == 0)
 		new_node->type = AND;
 	if (ft_strcmp(token->content, "||") == 0)
@@ -164,20 +164,20 @@ t_ast	*create_logic_node(t_token *token)
 	return (new_node);
 }
 
-t_ast	*parse_token(t_token *token)
+t_ast	*parse_token(t_token *token, t_data *data)
 {
 	if (!token)
 		return (NULL);
 	// if (token->type == AND || token->type == OR)
 	// 	return (create_logical_operator(token));
 	if (token->type == PIPE)
-		return (create_pipe_node(token));
+		return (create_pipe_node(token, data));
 	if (token->type == CMD)
-		return (create_command_node(token));
+		return (create_command_node(token, data));
 	return (NULL);
 }
 
-int	init_ast(t_ast **ast_lst, t_token **token_lst)
+int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
 {
 	t_token	*root_token;
 
@@ -186,7 +186,27 @@ int	init_ast(t_ast **ast_lst, t_token **token_lst)
 	root_token = get_root_token(token_lst, 0);
 	if (!root_token)
 		return (1);
-	*ast_lst = parse_token(root_token);
+	*ast_lst = parse_token(root_token, data);
 	return (0);
 }
 
+// int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
+// {
+// 	t_token *root_token;
+// 	t_ast *start;
+// 	t_redir	*redir;
+// 	if (!token_lst || !*token_lst)
+// 		return (1);
+// 	root_token = get_root_token(token_lst, 0);
+// 	if (!root_token)
+// 		return (1);
+// 	if (!is_command(token_lst))
+// 	{
+// 		start = ft_calloc(sizeof(t_ast), 1);
+// 		// init_redir(root_token, &start->command.redir, data);
+// 		printf("XXXXXXXXXXXXXXXXX\n");
+// 		return (0);
+// 	}
+// 	*ast_lst = parse_token(root_token, data);
+// 	return (0);
+// }

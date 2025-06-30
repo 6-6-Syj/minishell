@@ -80,22 +80,32 @@ typedef struct s_token
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-int		get_token_priority(t_token *token);
 t_type	get_token_type(t_token *token);
-t_type	get_token_word_type(t_token *token);
 void	init_token(t_data *data);
 t_token	*add_token_node(t_token **token_lst);
 void	free_token_node(t_token *token_node);
 void	free_token_lst(t_token **token_lst);
 int		get_token_len(char *token);
-bool	is_delimiter(char c);
 bool	is_part_of_word(char c);
-bool	is_parenthesis(char c);
 bool	is_quote(char c);
+bool	is_expand(char *token);
 bool	is_operator(char c);
-int		parse_token_lst(t_token **token_lst);
 t_token	*get_last_token(t_token *lst);
-int	remove_node(t_token *node, t_data *data);
-int	remove_space(t_token **token_lst, t_data *data);
-
+int		remove_node(t_token *node, t_data *data);
+int		remove_space(t_token **token_lst, t_data *data);
+void	add_next_token_node(t_token **current);
+void	add_prev_token_node(t_token **current);
+char	*handle_expand(char *token, t_data *data);
+void	set_command_type(t_token **token_lst);
+void	set_token_type(t_token **token_lst, t_data *data);
+void	set_file_type(t_token **token_lst);
+void	remove_quote(char **token_content);
+void	remove_simple_quote(t_token **token_lst, t_data *data);
+void	remove_double_quote(t_token **token_lst, t_data *data);
+void	expand_var(t_token **token_lst, t_data *data);
+void	join_word(t_token **token_lst, t_data *data);
+int		get_token_priority(t_token *token);
+void	set_token_priority(t_token **token_lst);
+int	get_expand_len(char *token_content);
+char	*get_expand(char *token, t_data *data);
 #endif

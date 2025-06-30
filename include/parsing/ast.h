@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:11:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/06/20 18:05:15 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/06/28 18:36:29 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ typedef struct s_ast
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 // void	init_ast_lst(t_ast **ast_lst); // test version
-int					init_ast(t_ast **ast_lst, t_token **token_lst);
+int					init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data);
 t_ast				*add_ast_node(t_ast **ast_lst);
-t_ast				*parse_token(t_token *token);
+t_ast				*parse_token(t_token *token, t_data *data);
 void				free_ast(t_ast **node);
 
 #endif

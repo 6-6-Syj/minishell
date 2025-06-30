@@ -85,14 +85,3 @@ void	set_token_priority(t_token **token_lst) // TODO: refacto
 		token_node = token_node->next;
 	}
 }
-
-int	parse_token_lst(t_token **token_lst)
-{
-	// set_file_type(token_lst);
-	set_command_type(token_lst);
-	set_token_priority(token_lst);
-	// concatenate command + args;
-	//
-	// parse_command(token_lst);
-	return (0);
-}

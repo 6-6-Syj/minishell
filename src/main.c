@@ -51,30 +51,39 @@
 
 volatile sig_atomic_t	g_sig;
 
-static char	*handle_readline(t_data *data)
-{
-	char	*line;
-	int		fd;
+// static char	*handle_readline(t_data *data)
+// {
+// 	char	*line;
+// 	int		fd;
+// 	char	*str;
 
-	fd = 3;
-	line = readline("> ");
-	if (!line)
-	{
-		ft_printf("exit\n");
-		while (fd < 1024)
-			close(fd++);
-		exit_error(data);
-		return (NULL);
-	}
-	if (line[0] != '\0')
-		add_history(line);
-	else
-	{
-		free(line);
-		return (NULL);
-	}
-	return (line);
-}
+// 	fd = 3;
+// 	// line = readline("> ");
+// 	if (isatty(fileno(stdin)))
+// 		str = readline("> ");
+// 	else
+// 	{
+// 		line = get_next_line(fileno(stdin));
+// 		str = ft_strtrim(line, "\n");
+// 		free(line);
+// 	}
+// 	if (!str)
+// 	{
+// 		ft_printf("exit\n");
+// 		while (fd < 1024)
+// 			close(fd++);
+// 		exit_error(data);
+// 		return (NULL);
+// 	}
+// 	if (line[0] != '\0')
+// 		add_history(line);
+// 	else
+// 	{
+// 		free(line);
+// 		return (NULL);
+// 	}
+// 	return (str);
+// }
 
 int	main(int ac, char **av, char **env)
 {
@@ -90,15 +99,15 @@ int	main(int ac, char **av, char **env)
 			ft_printf("CATCHED\n");
 			g_sig = 0;
 		}
-		data.input = handle_readline(&data);
+		// data.input = handle_readline(&data);
+		data.input = readline("> ");
 		if (!data.input)
 			continue ;
 		data.err = 0;
 		init_token(&data);
-		parse_token_lst(&data.token);
-		init_ast(&data.ast, &data.token);
-		exec_ast(data.ast, &data);
 		// print_all(&data);
+		init_ast(&data.ast, &data.token, &data);
+		exec_ast(data.ast, &data);
 		free(data.input);
 		free_token_lst(&data.token);
 		free_ast(&data.ast);

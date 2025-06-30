@@ -1,173 +1,113 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2025/05/05 17:40:07 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/05 17:40:07 by dabuchhe         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
+#include "minishell.h"
 
-#include "libft.h"
-#include "token.h"
-#include <stdio.h>
-#include <unistd.h>
-
-
-bool	is_operator(char c)
+int	get_token_len(char *token)
 {
-	// if (c == '$')
-	// 	return (true);
-	if (c == '|')
-		return (true);
-	// if (c == '&')
-	// 	return (true);
-	if (c == '<')
-		return (true);
-	if (c == '>')
-		return (true);
-	return (false);
-}
+	int	i;
 
-bool	is_quote(char c)
-{
-	if (c == '\"')
-		return (true);
-	if (c == '\'')
-		return (true);
-	return (false);
-}
-
-bool	is_parenthesis(char c)
-{
-	if (c == '(' || c == ')')
-		return (true);
-	return (false);
-}
-
-bool	is_part_of_word(char c)
-{
-	if (c == '(' || c == ')')
-		return (false);
-	if (c == '&' || c == '|')
-		return (false);
-	// else if (c == '$')
-	// 	return (false);
-	else if (c == '\"')
-		return (false);
-	else if (c == '\'')
-		return (false);
-	else if (c == '<')
-		return (false);
-	else if (c == '>')
-		return (false);
-	else if (c == ' ')
-		return (false);
-	return (true);
-}
-
-t_type	get_token_word_type(t_token *current)
-{
-	// TODO: handle expand + pipe
-	// TODO: secure if current is NULL ?
-	t_token *prev_token;
-
-	// if (ft_strlen(current->content) > 1 && )
-	prev_token = current->prev;
-	while (prev_token && prev_token->type == SPACE)
-		prev_token = prev_token->prev;
-	// if (ft_strlen(current->content) > 1 && current->content[0] == '$')
-		// return (EXPAND);
-	if (!prev_token)
-		return (CMD);
-	// if (current->prev->type == EXPAND)
-	// 	return (VAR);
-	if (prev_token->type == CMD)
-		return (ARG);
-	if (prev_token->type == REDIR_APPEND)
-		return (ARG);
-	if (prev_token->type == REDIR_IN)
-		return (ARG);
-	if (prev_token->type == HERE_DOC)
-		return (ARG);
-	if (prev_token->type == REDIR_OUT)
-		return (ARG);
-	if (prev_token->type == ARG)
-		return (ARG);
-	return (CMD);
-}
-
-t_type	get_operator_type(t_token *token)
-{
-	// if (ft_strcmp(token->content, "$") == 0)
-	// 	return (EXPAND);
-	if (ft_strcmp(token->content, "<") == 0)
-		return (REDIR_IN);
-	else if (ft_strcmp(token->content, "<<") == 0)
-		return (HERE_DOC);
-	else if (ft_strcmp(token->content, ">") == 0)
-		return (REDIR_OUT);
-	else if (ft_strcmp(token->content, ">>") == 0)
-		return (REDIR_APPEND);
-	else if (ft_strcmp(token->content, "|") == 0)
-		return (PIPE);
-	else if (ft_strcmp(token->content, "||") == 0)
-		return (OR);
-	else if (ft_strcmp(token->content, "&&") == 0)
-		return (AND);
-	return (UNKNOWN);
-}
-
-
-t_type	get_quote_type(t_token *token)
-{
-	if (token->content[0] == '\"' && ft_strchr(token->content + 1, '"'))
-		return (QUOTE_D);
-	else if (token->content[0] == '\'' && ft_strchr(token->content + 1, '\''))
-		return (QUOTE_S);
-	return (UNKNOWN);
-}
-
-t_type	get_token_type(t_token *token)
-{
-	int	len;
-
-	len = ft_strlen(token->content);
-	// if (token->content[0] == '(')
-	// 	return (PAREN_L);
-	// else if (token->content[0] == ')')
-	// 	return (PAREN_R);
-	// if (is_operator(token->content[0]) && (is_operator(token->content[len - 1])))
-	if (is_operator(token->content[0]))
-		return (get_operator_type(token));
-	else if (is_quote(token->content[0]))
-		return (get_quote_type(token));
-	else if (token->content[0] == ' ')
-		return (SPACE);
-	else if (is_part_of_word(token->content[0]))
-		return (WORD);
-	return (UNKNOWN);
+	i = 1;
+	// if (is_parenthesis(token[0]))
+	// 	return (1);
+	while (token[i])
+	{
+		if (is_operator(token[0]) && !is_operator(token[i]))
+			return (i);
+		else if (token[0] == '\'' && token[i] == '\'')
+			return (i + 1);
+		else if (token[0] == '\"' && token[i] == '\"')
+			return (i + 1);
+		else if (token[0] == ' ' && token[i] != ' ')
+			return (i);
+		else if (is_part_of_word(token[0]) && !is_part_of_word(token[i]))
+			return (i);
+		i++;
+	}
+	return (i);
 }
 
 int	get_token_priority(t_token *token)
 {
-	if (token->type == PAREN_L || token->type == PAREN_R)
-		return (5);
-	else if (token->type == OR || token->type == AND)
-		return (0);
-	else if (token->type == PIPE)
+	if (token->type == PIPE)
 		return (1);
-	// else if (token->type == HERE_DOC)
-		// return (2);
-	// else if (token->type == REDIR_IN || token->type == REDIR_OUT
-		// || token->type == REDIR_APPEND)
-		// return (3);
 	else if (token->type == CMD)
 		return (2);
 	return (-1);
+}
+
+void	set_token_priority(t_token **token_lst) // TODO: refacto
+{
+	t_token *token_node;
+
+	token_node = *token_lst;
+	while (token_node)
+	{
+		if (token_node->type == PIPE)
+			token_node->priority = 0;
+		else if (token_node->type == CMD)
+			token_node->priority = 1;
+		// else if (token_node->type & REDIR)
+		// 	token_node->priority = 2;
+		else
+			token_node->priority = -1;
+		token_node = token_node->next;
+	}
+}
+
+void	join_word(t_token **token_lst, t_data *data)
+{
+	t_token	*current;
+	char	*buff;
+
+	(void)data;
+	current = *token_lst;
+	while (current && current->next)
+	{
+		if (current->type == WORD && current->next->type == WORD)
+		{
+			buff = ft_strjoin(current->content, current->next->content);
+			free(current->content);
+			current->content = buff;
+			remove_node(current->next, data);
+		}
+		current = current->next;
+	}
+}
+
+int	remove_space(t_token **token_lst, t_data *data)
+{
+	t_token	*token_node;
+	t_token	*tmp;
+
+	token_node = *token_lst;
+	while (token_node)
+	{
+		tmp = token_node->next;
+		if (token_node->type == SPACE)
+			remove_node(token_node, data);
+		token_node = tmp;
+	}
+	return (0);
+}
+
+int	remove_node(t_token *node, t_data *data)
+{
+	t_token *prev;
+	t_token *next;
+
+	prev = node->prev;
+	next = node->next;
+	if (!node)
+		return (0);
+	if (node->content)
+		free(node->content);
+	free(node);
+	if (!prev)
+	{
+		data->token = next;
+		next->prev = data->token;
+	}
+	if (prev)
+		prev->next = next;
+	if (next)
+		next->prev = prev;
+	return (0);
 }
