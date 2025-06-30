@@ -13,16 +13,6 @@
 #include "wrappers.h"
 #include <errno.h>
 
-void	w_access(char *path, t_data *data)
-{
-	if (!path || access(path, F_OK | X_OK) == -1)
-	{
-		if (data)
-			data->err = errno;
-		exit_error(data);
-	}
-}
-
 void	w_execve(char *path, char **cmds, char **env, t_data *data)
 {
 	if (execve(path, cmds, env) == -1)

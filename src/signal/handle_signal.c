@@ -11,16 +11,16 @@
 /* ************************************************************************** */
 
 #include "handle_signal.h"
-#include <signal.h>
+#include "libft.h"
 #include <readline/readline.h>
+#include <signal.h>
 
-volatile sig_atomic_t	g_sig = 0;
+extern volatile int	g_sig;
 
 static void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		ft_printf("ET DE 1\n");
 		g_sig = SIGINT;
 		ft_printf("\n");
 		rl_on_new_line();
@@ -29,7 +29,6 @@ static void	sig_handler(int signum)
 	}
 	else if (signum == SIGQUIT)
 	{
-		ft_printf("ET DE 2\n");
 		g_sig = SIGQUIT;
 	}
 }
@@ -39,10 +38,10 @@ bool	init_sig_handler(void)
 	struct sigaction	sa;
 
 	rl_catch_signals = 1; // readline doesn't handle sig
-	sa.quit.sa_handler = SIG_IGN;
+	// sa.quit.sa_handler = SIG_IGN;
 	sa.sa_handler = sig_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0; // for readline todo: check this SA_RESTART
+	sa.sa_flags = SA_RESTART; // for readline todo: check this SA_RESTART
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		return (false);
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)

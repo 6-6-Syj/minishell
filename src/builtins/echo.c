@@ -34,6 +34,27 @@ static int	parse_echo(char **args, int *i)
 	return (newline);
 }
 
+static bool	is_special_case(char *str)
+{
+	if (str[0] == '-' && !str[1])
+		return (true);
+	else
+		return (false);
+}
+
+static bool	handle_echo_no_arg(t_command *cmd)
+{
+	if (!cmd->args[1])
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		return (true);
+	}
+	return (false);
+}
+
+// HANDLE \t, for example:
+// echo test1		test2
+// echo -n test1		test2
 int	ft_echo(t_command *cmd)
 {
 	int		i;
@@ -43,6 +64,15 @@ int	ft_echo(t_command *cmd)
 	newline = true;
 	if (cmd->args[i])
 		newline = parse_echo(cmd->args, &i);
+	if (handle_echo_no_arg(cmd))
+		return (0);
+	if (is_special_case(ft_strtrim(cmd->args[1], " ")))
+	{
+		ft_putchar_fd('-', STDOUT_FILENO);
+		if (newline)
+			ft_putchar_fd('\n', STDOUT_FILENO);
+		return (0);
+	}
 	while (cmd->args[i])
 	{
 		ft_putstr_fd(cmd->args[i], STDOUT_FILENO);

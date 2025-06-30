@@ -54,6 +54,6 @@ int							ft_pwd(t_data *data);
 int							ft_echo(t_command *cmd);
 
 long long					ft_atoll_shell(const char *str);
-void						ft_exit(t_command *cmd, t_data *data);
+int							ft_exit(t_command *cmd, t_data *data);
 
 #endif

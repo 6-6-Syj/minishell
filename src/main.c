@@ -15,6 +15,8 @@
 #include <readline/readline.h>
 #include <signal.h>
 
+volatile int	g_sig;
+
 // MAYBE USE ISATTY TOO
 
 // input = readline(get_path_term(&data));
@@ -49,14 +51,22 @@
 // 	return (input);
 // }
 
-volatile sig_atomic_t	g_sig;
-
 static char	*handle_readline(t_data *data)
 {
 	char	*line;
 	int		fd;
 
+	// char	*str;
 	fd = 3;
+	//
+	// if (isatty(fileno(stdin)))
+	// 	str = readline("[Minishell]");
+	// else
+	// {
+	// 	line = get_next_line(fileno(stdin));
+	// 	str = ft_strtrim(line, "\n");
+	// 	free(line);
+	// }
 	line = readline("> ");
 	if (!line)
 	{
@@ -85,15 +95,15 @@ int	main(int ac, char **av, char **env)
 	init_data(&data, env);
 	while (1)
 	{
+		data.input = handle_readline(&data);
+		if (!data.input)
+			continue ;
+		data.err = 0;
 		if (g_sig == SIGINT)
 		{
 			ft_printf("CATCHED\n");
 			g_sig = 0;
 		}
-		data.input = handle_readline(&data);
-		if (!data.input)
-			continue ;
-		data.err = 0;
 		init_token(&data);
 		parse_token_lst(&data.token);
 		init_ast(&data.ast, &data.token);

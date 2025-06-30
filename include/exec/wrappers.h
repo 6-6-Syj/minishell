@@ -38,7 +38,6 @@ typedef struct s_data	t_data;
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 // wrappers.c
-void					w_access(char *path, t_data *data);
 void					w_execve(char *path, char **cmds, char **env,
 							t_data *data);
 void					w_close(int fd, t_data *data);

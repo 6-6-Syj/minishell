@@ -12,28 +12,41 @@
 
 #include "builtins.h"
 
-static bool	is_valid_number(const char *str)
+static bool	is_valid_number(char *str, bool *minus)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] == ' ' || str[i] == '+' || str[i] == '-')
+	if (str[0] == '\0')
+		return (false);
+	if (str[0] == '-' || str[0] == '+')
+	{
+		if (str[0] == '-')
+			*minus = true;
 		i++;
+	}
+	else
+		*minus = false;
 	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
 			return (false);
 		i++;
 	}
-	return (true);
+	if (i > (*minus))
+		return (true);
+	else
+		return (false);
 }
 
 static bool	handle_first_arg(t_command *cmd, int *exit_code)
 {
 	long long	num;
+	bool		minus;
 
 	num = 0;
-	if (is_valid_number(cmd->args[1]))
+	minus = false;
+	if (is_valid_number(cmd->args[1], &minus))
 	{
 		num = ft_atoll_shell(cmd->args[1]);
 		*exit_code = (int)(num % 256);
@@ -44,8 +57,7 @@ static bool	handle_first_arg(t_command *cmd, int *exit_code)
 	}
 	else
 	{
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+		ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->args[1], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 		*exit_code = 2;
@@ -53,7 +65,7 @@ static bool	handle_first_arg(t_command *cmd, int *exit_code)
 	}
 }
 
-void	ft_exit(t_command *cmd, t_data *data)
+int	ft_exit(t_command *cmd, t_data *data)
 {
 	int		exit_code;
 	bool	should_exit;
@@ -62,7 +74,6 @@ void	ft_exit(t_command *cmd, t_data *data)
 	should_exit = false;
 	if (!cmd->args[1])
 	{
-		ft_printf("%d\n", data->exit_err);
 		exit_code = data->exit_err;
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	}
@@ -71,13 +82,26 @@ void	ft_exit(t_command *cmd, t_data *data)
 		should_exit = handle_first_arg(cmd, &exit_code);
 		if (!should_exit && cmd->args[2])
 		{
-			ft_putstr_fd("minishell: exit: too many arguments\n",
-				STDERR_FILENO);
+			ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
 			data->err = 1;
-			return ;
+			return (data->err);
 		}
 	}
 	data->err = exit_code;
 	close_inherited_fds(cmd);
 	exit_error(data);
+	return (-42);
 }
+
+/*
+
+exit ""										❌ [ minishell(0)  bash(2) ]
+exit -9223372036854775805					❌ [ minishell(2)  bash(3) ]
+exit "-100"									❌ [ minishell(2)  bash(156) ]
+exit "+100"									❌ [ minishell(2)  bash(100) ]
+
+exit -1										❌ [ minishell(2)  bash(255) ]
+exit -12560									❌ [ minishell(2)  bash(240) ]
+exit +1										❌ [ minishell(2)  bash(1) ]
+
+*/

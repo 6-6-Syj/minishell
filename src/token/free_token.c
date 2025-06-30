@@ -33,7 +33,7 @@ void	free_token_lst(t_token **token_lst)
 	t_token	*tmp;
 
 	if (!*token_lst)
-		return;
+		return ;
 	current = *token_lst;
 	while (current)
 	{
