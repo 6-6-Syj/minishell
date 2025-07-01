@@ -58,34 +58,39 @@ static char	*handle_readline(t_data *data)
 	char	*line;
 	int		fd;
 
-	// char	*str;
+	char	*str;
 	fd = 3;
-	//
-	// if (isatty(fileno(stdin)))
-	// 	str = readline("[Minishell]");
-	// else
-	// {
-	// 	line = get_next_line(fileno(stdin));
-	// 	str = ft_strtrim(line, "\n");
-	// 	free(line);
-	// }
-	line = readline("> ");
-	if (!line)
-	{
-		ft_printf("exit\n");
-		while (fd < 1024)
-			close(fd++);
-		exit_error(data);
-		return (NULL);
-	}
-	if (line[0] != '\0')
-		add_history(line);
+
+	if (isatty(fileno(stdin)))
+		str = readline(">");
 	else
 	{
-		free(line);
-		return (NULL);
+		str = get_next_line(fileno(stdin));
+		if (str)
+		{
+			line = ft_strtrim(str, "\n");
+			free(str);
+			str = line;
+		}
+		if (!str)
+		{
+			// ft_printf("exit\n");
+			// while (fd < 1024)
+			// 	close(fd++);
+			exit_error(data);
+			return (NULL);
+		}
 	}
-	return (line);
+	// line = readline("> ");
+	// if (str[0] != '\0')
+	// 	add_history(str);
+	// else
+	// {
+	// 	free(str);
+	// 	return (NULL);
+	// }
+	// return (str);
+	return (str);
 }
 
 int	main(int ac, char **av, char **env)
@@ -103,7 +108,7 @@ int	main(int ac, char **av, char **env)
 		data.err = 0;
 		if (g_sig == SIGINT)
 		{
-			ft_printf("CATCHED\n");
+			// ft_printf("CATCHED\n");
 			g_sig = 0;
 		}
 		init_token(&data);
