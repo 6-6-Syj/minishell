@@ -48,7 +48,7 @@ void	free_tmp_data(t_data *data)
 			// free_env_tab(data);
 		if (data->pid_list)
 			free_pid_list(&data->pid_list);
-		if (data->input)
-			free(data->input);
+		// if (data->input)
+		// 	free(data->input);
 	}
 }

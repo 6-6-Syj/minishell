@@ -17,9 +17,10 @@ char	*concatenate_expand(char *first, char *inter, char *last, t_data *data)
 	char	*dst;
 
 	buff = ft_strjoin(first, inter);
-	
+
 	dst = ft_strjoin(buff, last);
-	free(buff);
+	if (buff)
+		free(buff);
 	if (!dst)
 		exit_error(data);
 	return (dst);
@@ -34,7 +35,9 @@ char	*handle_expand(char *token, t_data *data)
 	int		i;
 
 	i = 0;
-	while (token && token[i])
+	if (!token)
+		return (NULL);
+	while (token[i])
 	{
 		if (is_expand(&token[i]))
 		{
@@ -59,7 +62,7 @@ void	expand_var(t_token **token_lst, t_data *data)
 	current_token = *token_lst;
 	while (current_token)
 	{
-		if (current_token->type != QUOTE_S)
+		if (current_token->content && current_token->type != QUOTE_S)
 			current_token->content = handle_expand(current_token->content,
 					data);
 		current_token = current_token->next;
