@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_in_out.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-21 19:27:38 by jmagand           #+#    #+#             */
-/*   Updated: 2025-06-21 19:27:38 by jmagand          ###   ########\         */
+/*   Created: 2025/06/21 19:27:38 by jmagand           #+#    #+#             */
+/*   Updated: 2025/06/30 18:59:05 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,33 @@ void	open_files(t_command *cmd, t_data *data)
 	redir(cmd, data);
 }
 
-void	free_pid_list(t_pid_list *pids)
+// void	free_pid_list(t_pid_list *pids)
+// {
+// 	t_pid_list	*tmp;
+
+// 	while (pids)
+// 	{
+// 		tmp = pids;
+// 		pids = pids->next;
+// 		free(tmp);
+// 	}
+// }
+
+void	free_pid_list(t_pid_list **pids_lst)
 {
+	t_pid_list	*current;
 	t_pid_list	*tmp;
 
-	while (pids)
+	current = *pids_lst;
+	while (current)
 	{
-		tmp = pids;
-		pids = pids->next;
-		free(tmp);
+		tmp = current->next;
+		if (current)
+		{
+			printf("pid = %d\n", current->pid);
+			free(current);
+		}
+		current = tmp;
 	}
 }
 

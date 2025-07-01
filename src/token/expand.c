@@ -1,12 +1,12 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	free_expand_buffer(char *first, char *expand, char *last)
+#
+
+void	free_expand_buffer(char *first, char *last)
 {
 	if (first)
 		free(first);
-	if (expand)
-		free(expand);
 	if (last)
 		free(last);
 }
@@ -45,7 +45,7 @@ char	*handle_expand(char *token, t_data *data)
 			last = ft_strdup(&token[i]); // secu
 			free(token);
 			token = concatenate_expand(first, expand, last, data);
-			free_expand_buffer(first, expand, last);
+			free_expand_buffer(first, last);
 		}
 		i++;
 	}

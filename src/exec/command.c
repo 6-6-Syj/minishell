@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-27 18:42:44 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-27 18:42:44 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/27 18:42:44 by jmagand           #+#    #+#             */
+/*   Updated: 2025/06/30 19:08:07 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,40 +85,54 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 	w_execve(path, cmd->args, data->env_tab, data);
 }
 
-// static void	search_cmd_and_exec(t_command *cmd, t_data *data)
+// static void	add_pid(t_pid_list **pids, pid_t pid, bool is_last, t_data *data)
 // {
-// 	char	*path;
-// 	bool	is_path_unset;
+// 	t_pid_list	*new_pid;
 
-// 	is_path_unset = true;
-// 	if (split_path(data))
-// 		is_path_unset = false;
-// 	path = get_path(cmd->args[0], data);
-// 	if (!path && !is_path_unset)
-// 	{
-// 		ft_putstr_fd("minishell: ", STDERR_FILENO);
-// 		ft_putstr_fd(cmd->args[0], STDERR_FILENO);
-// 		ft_putendl_fd(": command not found", STDERR_FILENO);
-// 		data->err = 127;
+// 	new_pid = malloc(sizeof(t_pid_list));
+// 	if (!new_pid)
 // 		exit_error(data);
-// 	}
-// 	else if (!path)
-// 		exit_error(data);
-// 	check_access(path, cmd, data);
-// 	w_execve(path, cmd->args, data->env_tab, data);
+// 	new_pid->pid = pid;
+// 	new_pid->is_last_cmd = is_last;
+// 	new_pid->next = *pids;
+// 	*pids = new_pid;
 // }
 
-static void	add_pid(t_pid_list **pids, pid_t pid, bool is_last, t_data *data)
+t_pid_list	*get_last_pid(t_pid_list *pid_lst)
 {
-	t_pid_list	*new_pid;
+	t_pid_list	*last;
 
-	new_pid = malloc(sizeof(t_pid_list));
-	if (!new_pid)
-		exit_error(data);
-	new_pid->pid = pid;
-	new_pid->is_last_cmd = is_last;
-	new_pid->next = *pids;
-	*pids = new_pid;
+	last = pid_lst;
+	if (!pid_lst)
+		return (NULL);
+	while (last->next != NULL)
+		last = last->next;
+	return (last);
+}
+
+void	add_pid(t_pid_list **pids, pid_t pid, bool is_last, t_data *data)
+{
+	t_pid_list	*new_node;
+	t_pid_list	*last_node;
+
+	(void)data;
+	new_node = ft_calloc(1, sizeof(t_pid_list));
+	if (!new_node)
+		;
+	if (!*pids)
+	{
+		*pids = new_node;
+		// new_node->prev = NULL; // NEEDED ?
+	}
+	else
+	{
+		last_node = get_last_pid(*pids);
+		last_node->next = new_node;
+		// new_node->prev = last_node; // NEEDED ?
+	}
+	new_node->next = NULL;
+	new_node->pid = pid;
+	new_node->is_last_cmd = is_last;
 }
 
 #include <sys/stat.h>
@@ -199,6 +213,8 @@ void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
 	{
 		open_files(cmd, data);
 		close_inherited_fds(cmd);
+		// if (data->pid_list)
+		// 	free_pid_list(&data->pid_list);
 		exec_command(cmd, data);
 	}
 	else

@@ -61,6 +61,7 @@ typedef struct s_data
 /****************************************************************************/
 void	init_data(t_data *data, char **env);
 void	free_data(t_data *data);
+void	free_tmp_data(t_data *data);
 void	exit_error(t_data *data);
 
 #endif

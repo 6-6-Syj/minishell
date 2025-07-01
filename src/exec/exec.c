@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:36:22 by jmagand           #+#    #+#             */
-/*   Updated: 2025/06/26 23:45:18 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/06/30 18:43:56 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ void	exec_ast(t_ast *node, t_data *data)
 	{
 		handle_ast(node, data, fd, &pids);
 		data->err = wait_all_processes(pids, data);
-		free_pid_list(pids);
+		free_pid_list(&pids);
 	}
 }
