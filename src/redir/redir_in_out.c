@@ -102,7 +102,7 @@ void	free_pid_list(t_pid_list **pids_lst)
 		tmp = current->next;
 		if (current)
 		{
-			printf("pid = %d\n", current->pid);
+			// printf("pid = %d\n", current->pid);
 			free(current);
 		}
 		current = tmp;
