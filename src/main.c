@@ -51,6 +51,53 @@ volatile int	g_sig;
 // 	return (input);
 // }
 
+// static char	*handle_readline(t_data *data)
+// {
+// 	char	*line;
+// 	char	*str;
+// 	int		fd;
+
+// 	fd = 3;
+// 	if (isatty(fileno(stdin)))
+// 	{
+// 		str = readline(">");
+// 		if (!str)
+// 		{
+// 			ft_printf("exit\n");
+// 			while (fd < 1024)
+// 				close(fd++);
+// 			exit_error(data);
+// 			return (NULL);
+// 		}
+// 		if (str[0] != '\0')
+// 			add_history(str);
+// 		else
+// 		{
+// 			free(str);
+// 			return (NULL);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		str = get_next_line(fileno(stdin));
+// 		if (str)
+// 		{
+// 			line = ft_strtrim(str, "\n");
+// 			free(str);
+// 			str = line;
+// 		}
+// 		if (!str)
+// 		{
+// 			ft_printf("exit\n");
+// 			while (fd < 1024)
+// 				close(fd++);
+// 			exit_error(data);
+// 			return (NULL);
+// 		}
+// 	}
+// 	return (str);
+// }
+
 volatile sig_atomic_t	g_sig;
 
 static char	*handle_readline(t_data *data)

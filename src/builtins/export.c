@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "libft.h"
 
 static bool	search_key_update_value(t_data *data, t_env **head, char *key,
 		char *value)
@@ -69,6 +70,55 @@ static bool	add_key(t_data *data, t_env **head, char *key, char *value)
 	return (true);
 }
 
+bool	is_special_char(char c)
+{
+	if (c >= '!' && c <= '*')
+		return (true);
+	if (c >= ':' && c <= '?' && c != '=')
+		return (true);
+	if (c >= '[' && c <= ']')
+		return (true);
+	if (c >= '{' && c <= '}')
+		return (true);
+	if (c == '|' || c == '"' || c == '$' || c == '&' || c == ';')
+		return (true);
+	if (c == '<' || c == '>' || c == '~' || c == '`' || c == '^' || c == '-')
+		return (true);
+	return (false);
+}
+
+static bool	got_special_char(char *key)
+{
+	int	i;
+
+	i = 1;
+	while (key && key[i])
+	{
+		if (is_special_char(key[i]))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
+			ft_putchar_fd(key[i], STDERR_FILENO);
+			ft_putstr_fd("'\n", STDERR_FILENO);
+			return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
+static bool	is_key_valid(char *key)
+{
+	if (!key || (key[0] != '_' && !ft_isalpha(key[0])))
+	{
+		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+		ft_putstr_fd(key, STDERR_FILENO);
+		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+		return (false);
+	}
+	return (true);
+}
+
 static int	ft_export(t_env **env_lst, t_data *data, char *args)
 {
 	char	*key;
@@ -77,6 +127,10 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 
 	key = args;
 	value = NULL;
+	if (!is_key_valid(key))
+		return (1);
+	if (got_special_char(key))
+		return (2);
 	equal = ft_strchr(key, '=');
 	if (equal)
 	{

@@ -92,16 +92,3 @@ int	ft_exit(t_command *cmd, t_data *data)
 	exit_error(data);
 	return (-42);
 }
-
-/*
-
-exit ""										❌ [ minishell(0)  bash(2) ]
-exit -9223372036854775805					❌ [ minishell(2)  bash(3) ]
-exit "-100"									❌ [ minishell(2)  bash(156) ]
-exit "+100"									❌ [ minishell(2)  bash(100) ]
-
-exit -1										❌ [ minishell(2)  bash(255) ]
-exit -12560									❌ [ minishell(2)  bash(240) ]
-exit +1										❌ [ minishell(2)  bash(1) ]
-
-*/

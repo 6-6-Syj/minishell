@@ -61,9 +61,32 @@ static void	init_backup(t_fd_backup *backup)
 	backup->fd_err = -1;
 }
 
+static bool	is_echo_exit_status(t_command *cmd)
+{
+	int	i;
+
+	if (!cmd || !cmd->args)
+		return (false);
+	if (!cmd->args[0] || ft_strcmp(cmd->args[0], "echo") != 0)
+		return (false);
+	i = 1;
+	while (cmd->args[i])
+	{
+		if (ft_strcmp(cmd->args[i], "$?") == 0)
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
 void	exec_and_restore_fd(t_fd_backup *backup, t_command *cmd, t_data *data)
 {
-	data->err = exec_builtin(cmd, &data->env, data);
+	if (is_echo_exit_status(cmd))
+		exec_builtin(cmd, &data->env, data);
+	else
+		data->err = exec_builtin(cmd, &data->env, data);
+	data->exit_err = data->err;
+	// ft_printf("%d\n", data->err);
 	restore_fds(backup, data);
 	unset_redirect_fds(cmd);
 	close_inherited_fds(cmd);

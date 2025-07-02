@@ -66,7 +66,7 @@ int	ft_echo(t_command *cmd)
 		newline = parse_echo(cmd->args, &i);
 	if (handle_echo_no_arg(cmd))
 		return (0);
-	if (is_special_case(ft_strtrim(cmd->args[1], " ")))
+	if (is_special_case(ft_strtrim(cmd->args[1], " "))) //still reachable echo ''''''''''$USER''''''''''
 	{
 		ft_putchar_fd('-', STDOUT_FILENO);
 		if (newline)
