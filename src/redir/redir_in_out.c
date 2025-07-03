@@ -32,7 +32,7 @@ ou -1 si l'accès est refusé ou si une erreur survient.
 */
 
 // TODO: CHECK ACCESS ?
-static void	open_outfile(t_redir *file, int *fd, t_command *cmd)
+static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 {
 	int	flags;
 
@@ -44,18 +44,26 @@ static void	open_outfile(t_redir *file, int *fd, t_command *cmd)
 			flags = (O_CREAT | O_APPEND | O_RDWR);
 		*fd = open(file->filename, flags, 0644);
 		if (*fd == -1)
+		{
 			perror(file->filename);
+			data->err = 1;
+			return ;
+		}
 		cmd->fd_out = *fd;
 	}
 }
 
-static void	open_infile(t_redir *file, int *fd, t_command *cmd)
+static void	open_infile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 {
 	if (file->type == REDIR_IN)
 	{
 		*fd = open(file->filename, O_RDONLY, 0644);
 		if (*fd == -1)
+		{
 			perror(file->filename);
+			data->err = 1;
+			return ;
+		}
 		cmd->fd_in = *fd;
 	}
 }
@@ -69,8 +77,8 @@ void	open_files(t_command *cmd, t_data *data)
 	file = cmd->redir;
 	while (file)
 	{
-		open_infile(file, &new_fd_in, cmd);
-		open_outfile(file, &new_fd_out, cmd);
+		open_infile(file, &new_fd_in, cmd, data);
+		open_outfile(file, &new_fd_out, cmd, data);
 		if (!data->err)
 			file = file->next;
 		else

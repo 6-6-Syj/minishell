@@ -49,16 +49,22 @@ static void	print_keys_values(t_env *current)
 {
 	if (current->value)
 	{
-		ft_putstr_fd("export ", STDOUT_FILENO);
-		ft_putstr_fd(current->key, STDOUT_FILENO);
-		ft_putstr_fd("=\"", STDOUT_FILENO);
-		ft_putstr_fd(current->value, STDOUT_FILENO);
-		ft_putendl_fd("\"", STDOUT_FILENO);
+		if (ft_strcmp(current->key, "_"))
+		{
+			ft_putstr_fd("export ", STDOUT_FILENO);
+			ft_putstr_fd(current->key, STDOUT_FILENO);
+			ft_putstr_fd("=\"", STDOUT_FILENO);
+			ft_putstr_fd(current->value, STDOUT_FILENO);
+			ft_putendl_fd("\"", STDOUT_FILENO);
+		}
 	}
 	else
 	{
-		ft_putstr_fd("export ", STDOUT_FILENO);
-		ft_putendl_fd(current->key, STDOUT_FILENO);
+		if (ft_strcmp(current->key, "_"))
+		{
+			ft_putstr_fd("export ", STDOUT_FILENO);
+			ft_putendl_fd(current->key, STDOUT_FILENO);
+		}
 	}
 }
 

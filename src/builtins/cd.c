@@ -103,7 +103,7 @@ static int	cd_oldpwd(t_data *data)
 
 	// printf("DEBUG: cd_oldpwd appelé\n");
 	oldpwd = get_env_var(data, "OLDPWD");
-	printf("\n\nOLDPWD = %s\n\n", oldpwd);
+	// printf("\n\nOLDPWD = %s\n\n", oldpwd);
 	if (!oldpwd)
 	{
 		// printf("DEBUG: OLDPWD pas défini\n");

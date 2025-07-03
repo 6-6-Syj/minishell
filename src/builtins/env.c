@@ -27,7 +27,7 @@ int	ft_env(t_env *env_lst)
 		current = current->prev;
 	while (current)
 	{
-		if (current->key && current->value)
+		if (current->key && current->value && current->print_env)
 		{
 			ft_putstr_fd(current->key, STDOUT_FILENO);
 			ft_putchar_fd('=', STDOUT_FILENO);

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 20:17:27 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/05/05 20:17:27 by dabuchhe         ###   ########lyon.fr   */
+/*   Created: 2025-07-03 21:39:20 by jmagand           #+#    #+#             */
+/*   Updated: 2025-07-03 21:39:20 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <unistd.h>
 #include "env.h"
 #include "handle_signal.h"
+#include "minishell.h"
+#include <unistd.h>
 
 bool	is_set_env(t_env *new_env, char *env_line)
 {
@@ -72,22 +72,59 @@ t_env	*add_env_node(t_env **env_lst)
 	return (new_node);
 }
 
+static void	init_env_i(t_data *data) // TODO: CONTINUE THIS
+{
+	t_env	*new_env;
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		pwd = ft_strdup("/");
+	new_env = add_env_node(&data->env);
+	if (!new_env)
+		exit_error(data);
+	new_env->key = ft_strdup("PWD");
+	new_env->value = ft_strdup(pwd);
+	new_env->print_env = true;
+	new_env->print_exp = true;
+	new_env = add_env_node(&data->env);
+	if (!new_env)
+		exit_error(data);
+	new_env->key = ft_strdup("SHLVL");
+	new_env->value = ft_strdup("1");
+	new_env->print_env = true;
+	new_env->print_exp = true;
+	new_env = add_env_node(&data->env);
+	if (!new_env)
+		exit_error(data);
+	new_env->key = ft_strdup("_");
+	new_env->value = ft_strdup("minishell");
+	new_env->print_env = false;
+	new_env->print_exp = false;
+	free(pwd);
+}
+
 void	init_env(t_data *data, char **env)
 {
 	t_env	*new_env;
 	int		i;
 
 	i = 0;
-	while (env[i])
+	if (!env[0])
+		init_env_i(data);
+	else
 	{
-		new_env = add_env_node(&data->env);
-		if (!new_env)
-			exit_error(data);
-		if (!is_set_env(new_env, env[i]))
-			exit_error(data);
-		if (!data->env)
-			data->env = new_env;
-		i++;
+		while (env[i])
+		{
+			new_env = add_env_node(&data->env);
+			if (!new_env)
+				exit_error(data);
+			if (!is_set_env(new_env, env[i]))
+				exit_error(data);
+			if (!data->env)
+				data->env = new_env;
+			i++;
+		}
 	}
 	update_env_tab(data);
 }

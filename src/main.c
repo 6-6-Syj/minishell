@@ -15,7 +15,7 @@
 #include <readline/readline.h>
 #include <signal.h>
 
-volatile int	g_sig;
+volatile int			g_sig;
 
 // MAYBE USE ISATTY TOO
 
@@ -104,10 +104,9 @@ static char	*handle_readline(t_data *data)
 {
 	char	*line;
 	int		fd;
-
 	char	*str;
-	fd = 3;
 
+	fd = 3;
 	if (isatty(fileno(stdin)))
 		str = readline(">");
 	else
@@ -152,7 +151,6 @@ int	main(int ac, char **av, char **env)
 		data.input = handle_readline(&data);
 		if (!data.input)
 			continue ;
-		data.err = 0;
 		if (g_sig == SIGINT)
 		{
 			// ft_printf("CATCHED\n");
@@ -161,6 +159,7 @@ int	main(int ac, char **av, char **env)
 		init_token(&data);
 		// print_all(&data);
 		init_ast(&data.ast, &data.token, &data);
+		data.err = 0;
 		exec_ast(data.ast, &data);
 		free_tmp_data(&data);
 		data.token = NULL;

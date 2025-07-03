@@ -72,17 +72,17 @@ static bool	add_key(t_data *data, t_env **head, char *key, char *value)
 
 bool	is_special_char(char c)
 {
-	if (c >= '!' && c <= '*')
+	if (c > '!' && c < '*')
 		return (true);
-	if (c >= ':' && c <= '?' && c != '=')
+	if (c >= ':' && c <= '?' && c != '=' && c != '@' && c != '#' && c != '^')
 		return (true);
 	if (c >= '[' && c <= ']')
 		return (true);
-	if (c >= '{' && c <= '}')
+	if (c > '{' && c < '}')
 		return (true);
 	if (c == '|' || c == '"' || c == '$' || c == '&' || c == ';')
 		return (true);
-	if (c == '<' || c == '>' || c == '~' || c == '`' || c == '^' || c == '-')
+	if (c == '<' || c == '>' || c == '~' || c == '`')
 		return (true);
 	return (false);
 }
@@ -109,12 +109,28 @@ static bool	got_special_char(char *key)
 
 static bool	is_key_valid(char *key)
 {
+	int	i;
+
 	if (!key || (key[0] != '_' && !ft_isalpha(key[0])))
 	{
 		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
 		ft_putstr_fd(key, STDERR_FILENO);
 		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 		return (false);
+	}
+	i = 0;
+	while (key[i])
+	{
+		if (key[i] == '-' || key[i] == '!' || key[i] == '@' || key[i] == '#'
+			|| key[i] == '*' || key[i] == '^' || key[i] == '{' || key[i] == '}'
+			|| (key[i] == '+' && key[i + 1] != '=' ) || key[i] == '.') // builtins bash
+		{
+			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+			ft_putstr_fd(key, STDERR_FILENO);
+			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			return (false);
+		}
+		i++;
 	}
 	return (true);
 }
@@ -145,8 +161,6 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 	}
 	return (1);
 }
-// 1 failure: Some rare cases.	ex:
-// not enough memory or fd is full
 
 // TODO: if variable got a value "with spaces",
 // there are problems. (PARSING EXPORT)
