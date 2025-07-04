@@ -72,38 +72,6 @@ t_env	*add_env_node(t_env **env_lst)
 	return (new_node);
 }
 
-static void	init_env_i(t_data *data) // TODO: CONTINUE THIS
-{
-	t_env	*new_env;
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		pwd = ft_strdup("/");
-	new_env = add_env_node(&data->env);
-	if (!new_env)
-		exit_error(data);
-	new_env->key = ft_strdup("PWD");
-	new_env->value = ft_strdup(pwd);
-	new_env->print_env = true;
-	new_env->print_exp = true;
-	new_env = add_env_node(&data->env);
-	if (!new_env)
-		exit_error(data);
-	new_env->key = ft_strdup("SHLVL");
-	new_env->value = ft_strdup("1");
-	new_env->print_env = true;
-	new_env->print_exp = true;
-	new_env = add_env_node(&data->env);
-	if (!new_env)
-		exit_error(data);
-	new_env->key = ft_strdup("_");
-	new_env->value = ft_strdup("minishell");
-	new_env->print_env = false;
-	new_env->print_exp = false;
-	free(pwd);
-}
-
 void	init_env(t_data *data, char **env)
 {
 	t_env	*new_env;

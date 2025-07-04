@@ -79,7 +79,16 @@ char	*get_path(char *cmd, t_data *data)
 	if (!cmd || !data)
 		return (NULL);
 	if (is_absolute_or_relative_path(cmd))
-		return (ft_strdup(cmd));
+	{
+		result = ft_strdup(cmd);
+		if (!result)
+		{
+			data->err = 1; // TODO: Check this
+			data->err_msg = "Malloc failed";
+			exit_error(data);
+		}
+		return (result);
+	}
 	paths = split_path(data);
 	if (!paths)
 		return (NULL);
