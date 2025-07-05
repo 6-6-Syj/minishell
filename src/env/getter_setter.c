@@ -11,17 +11,16 @@
 /* ************************************************************************** */
 
 #include "env.h"
+#include "print.h"
 
 char	*get_env_var(t_data *data, char *key)
 {
 	t_env	*current;
-	size_t	key_len;
 
 	current = data->env;
-	key_len = ft_strlen(key);
 	while (current)
 	{
-		if (current->key && ft_strncmp(current->key, key, key_len + 1) == 0)
+		if (!ft_strcmp(current->key, key))
 			return (current->value);
 		current = current->next;
 	}
@@ -42,7 +41,7 @@ static int	update_value(t_data *data, char *key, char *value)
 			free(current->value);
 			current->value = ft_strdup(value);
 			if (!current->value)
-				exit_error(data);
+				malloc_fail(data);
 			update_env_tab(data);
 			return (1);
 		}
@@ -59,19 +58,19 @@ int	set_env_var(t_data *data, char *key, char *value)
 	{
 		new_node = add_env_node(&data->env);
 		if (!new_node)
-			exit_error(data);
+			malloc_fail(data);
 		new_node->key = ft_strdup(key);
 		if (!new_node->key)
 		{
 			free(new_node);
-			exit_error(data);
+			malloc_fail(data);
 		}
 		new_node->value = ft_strdup(value);
 		if (!new_node->value)
 		{
 			free(new_node->key);
 			free(new_node);
-			exit_error(data);
+			malloc_fail(data);
 		}
 		new_node->print_env = 1;
 		new_node->print_exp = 1;
