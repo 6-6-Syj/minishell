@@ -23,8 +23,6 @@ int	ft_env(t_env *env_lst)
 	t_env	*current;
 
 	current = env_lst;
-	while (current && current->prev)
-		current = current->prev;
 	while (current)
 	{
 		if (current->key && current->value && current->print_env)

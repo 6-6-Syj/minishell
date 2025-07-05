@@ -148,6 +148,3 @@ void	init_env_i(t_data *data)
 	init_underscore_i(data);
 	init_path_i(data);
 }
-
-// TODO: Conitnue this: When env -i ./minishell, if unset PATH, ls no error ?
-// if export PATH=, temp PATH is updated, and error

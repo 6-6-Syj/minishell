@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "env.h"
+#include "print.h"
 
 void	print_env_tab(char **env_tab)
 {
@@ -45,23 +46,24 @@ static void	update_key_values(t_data *data, t_env *env_node, int i)
 
 	while (env_node)
 	{
+		env_node->print_exp = true;
 		buff = ft_strjoin(env_node->key, "=");
 		if (!buff)
 		{
 			free_strs(data->env_tab);
-			exit_error(data);
+			malloc_fail(data);
 		}
 		if (env_node->value)
-			data->env_tab[i] = ft_strjoin(buff, env_node->value);
+			data->env_tab[i++] = ft_strjoin(buff, env_node->value);
 		else
-			data->env_tab[i] = ft_strdup(buff);
+			data->env_tab[i++] = ft_strdup(buff);
 		free(buff);
 		if (!data->env_tab[i])
 		{
 			free_strs(data->env_tab);
-			exit_error(data);
+			malloc_fail(data);
 		}
-		i++;
+		env_node->print_env = true;
 		env_node = env_node->next;
 	}
 	data->env_tab[i] = NULL;
@@ -82,7 +84,7 @@ char	**update_env_tab(t_data *data)
 	size = get_size_env_lst(data->env);
 	data->env_tab = malloc(sizeof(char *) * (size + 1));
 	if (!data->env_tab)
-		exit_error(data);
+		malloc_fail(data);
 	env_node = data->env;
 	update_key_values(data, env_node, i);
 	return (data->env_tab);

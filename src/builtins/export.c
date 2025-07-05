@@ -12,6 +12,7 @@
 
 #include "builtins.h"
 #include "libft.h"
+#include "print.h"
 
 static bool	search_key_update_value(t_data *data, t_env **head, char *key,
 		char *value)
@@ -28,8 +29,10 @@ static bool	search_key_update_value(t_data *data, t_env **head, char *key,
 				free(curr->value);
 				curr->value = ft_strdup(value);
 				if (!curr->value)
-					exit_error(data);
+					malloc_fail(data);
 			}
+			curr->print_env = true;
+			curr->print_exp = true;
 			return (true);
 		}
 		curr = curr->next;
@@ -41,7 +44,7 @@ static void	free_and_exit(t_data *data, t_env *new)
 {
 	free(new->key);
 	free(new);
-	exit_error(data);
+	malloc_fail(data);
 }
 
 static bool	add_key(t_data *data, t_env **head, char *key, char *value)
@@ -50,12 +53,12 @@ static bool	add_key(t_data *data, t_env **head, char *key, char *value)
 
 	new = malloc(sizeof(t_env));
 	if (!new)
-		exit_error(data);
+		malloc_fail(data);
 	new->key = ft_strdup(key);
 	if (!new->key)
 	{
 		free(new);
-		exit_error(data);
+		malloc_fail(data);
 	}
 	if (value)
 	{
