@@ -12,6 +12,8 @@
 
 #include "data.h"
 #include "exec.h"
+#include "command.h"
+#include "print.h"
 
 static char	*build_full_path(char *dir, char *cmd)
 {
@@ -40,7 +42,7 @@ char	**split_path(t_data *data)
 		{
 			paths = ft_split(data->env_tab[i] + 5, ':');
 			if (!paths)
-				exit_error(data);
+				malloc_fail(data);
 			return (paths);
 		}
 		i++;
@@ -54,7 +56,7 @@ int	is_absolute_or_relative_path(char *cmd)
 			"../", 3) == 0);
 }
 
-static char	*find_path(char **paths, char *cmd)
+char	*find_path(char **paths, char *cmd)
 {
 	char	*full_path;
 	int		i;
@@ -71,28 +73,35 @@ static char	*find_path(char **paths, char *cmd)
 	return (NULL);
 }
 
-char	*get_path(char *cmd, t_data *data)
+char	*resolve_command_path(char *cmd, t_data *data, t_path_status *status)
 {
 	char	**paths;
 	char	*result;
 
 	if (!cmd || !data)
+	{
+		*status = PATH_NOT_FOUND;
 		return (NULL);
+	}
 	if (is_absolute_or_relative_path(cmd))
 	{
 		result = ft_strdup(cmd);
 		if (!result)
-		{
-			data->err = 1; // TODO: Check this
-			data->err_msg = "Malloc failed";
-			exit_error(data);
-		}
+			malloc_fail(data);
+		*status = PATH_OK;
 		return (result);
 	}
 	paths = split_path(data);
 	if (!paths)
+	{
+		*status = PATH_UNSET;
 		return (NULL);
+	}
 	result = find_path(paths, cmd);
 	free_strs(paths);
+	if (result)
+		*status = PATH_OK;
+	else
+		*status = PATH_NOT_FOUND;
 	return (result);
 }

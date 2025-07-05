@@ -30,30 +30,36 @@
 /****************************************************************************/
 /*                                ENUM										*/
 /****************************************************************************/
+typedef enum e_path_status	t_path_status;
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
-typedef struct s_data	t_data;
-typedef struct s_ast	t_ast;
+typedef struct s_data		t_data;
+typedef struct s_ast		t_ast;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 /* handle_end_process */
-void					log_process_end(pid_t wpid, int status);
-int						get_exit_code(int status);
+void						log_process_end(pid_t wpid, int status);
+int							get_exit_code(int status);
 
-void					handle_ast(t_ast *node, t_data *data, int *fd,
-							t_pid_list **pids);
+void						handle_ast(t_ast *node, t_data *data, int *fd,
+								t_pid_list **pids);
 
-void					exec_ast(t_ast *node, t_data *data);
-void					exec_and_restore_fd(t_fd_backup *backup, t_command *cmd,
-							t_data *data);
+void						exec_ast(t_ast *node, t_data *data);
+void						exec_and_restore_fd(t_fd_backup *backup,
+								t_command *cmd, t_data *data);
 
-char					*get_path(char *cmd, t_data *data);
-char					**split_path(t_data *data);
-int						is_absolute_or_relative_path(char *cmd);
-void					*free_strs(char **strs);
+/* path */
+int							is_absolute_or_relative_path(char *cmd);
+char						*resolve_command_path(char *cmd, t_data *data,
+								t_path_status *status);
+
+// char						*get_path(char *cmd, t_data *data);
+char						**split_path(t_data *data);
+void						*free_strs(char **strs);
+char						*find_path(char **paths, char *cmd);
 
 #endif

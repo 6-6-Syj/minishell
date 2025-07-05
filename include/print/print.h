@@ -34,4 +34,9 @@ void	print_ast_lst(t_ast *ast_lst);
 void	print_all(t_data *data);
 void	print_redir_lst(t_redir *redir);
 void 	print_ast_graphical(t_ast *root);
+
+void	cmd_not_found(t_command *cmd, t_data *data);
+void	no_file_or_directory(t_command *cmd, t_data *data);
+void	malloc_fail(t_data *data);
+
 #endif
