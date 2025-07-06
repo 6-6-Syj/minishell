@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "print.h"
 
 static void	free_and_exit(t_env *node, t_data *data)
 {
@@ -18,7 +19,7 @@ static void	free_and_exit(t_env *node, t_data *data)
 		free(node->key);
 	if (node)
 		free(node);
-	exit_error(data);
+	malloc_fail(data);
 }
 
 static t_env	*copy_env_list(t_env *env_lst, t_data *data)
@@ -29,7 +30,7 @@ static t_env	*copy_env_list(t_env *env_lst, t_data *data)
 		return (NULL);
 	node = malloc(sizeof(t_env));
 	if (!node)
-		exit_error(data);
+		malloc_fail(data);
 	node->key = ft_strdup(env_lst->key);
 	if (!node->key)
 		free_and_exit(node, data);
@@ -41,29 +42,34 @@ static t_env	*copy_env_list(t_env *env_lst, t_data *data)
 	}
 	else
 		node->value = NULL;
+	node->print_env = env_lst->print_env;
+	node->print_exp = env_lst->print_exp;
 	node->next = copy_env_list(env_lst->next, data);
 	return (node);
 }
 
 static void	print_keys_values(t_env *current)
 {
-	if (current->value)
+	if (current->print_exp)
 	{
-		if (ft_strcmp(current->key, "_"))
+		if (current->value)
 		{
-			ft_putstr_fd("export ", STDOUT_FILENO);
-			ft_putstr_fd(current->key, STDOUT_FILENO);
-			ft_putstr_fd("=\"", STDOUT_FILENO);
-			ft_putstr_fd(current->value, STDOUT_FILENO);
-			ft_putendl_fd("\"", STDOUT_FILENO);
+			if (ft_strcmp(current->key, "_"))
+			{
+				ft_putstr_fd("export ", STDOUT_FILENO);
+				ft_putstr_fd(current->key, STDOUT_FILENO);
+				ft_putstr_fd("=\"", STDOUT_FILENO);
+				ft_putstr_fd(current->value, STDOUT_FILENO);
+				ft_putendl_fd("\"", STDOUT_FILENO);
+			}
 		}
-	}
-	else
-	{
-		if (ft_strcmp(current->key, "_"))
+		else
 		{
-			ft_putstr_fd("export ", STDOUT_FILENO);
-			ft_putendl_fd(current->key, STDOUT_FILENO);
+			if (ft_strcmp(current->key, "_"))
+			{
+				ft_putstr_fd("export ", STDOUT_FILENO);
+				ft_putendl_fd(current->key, STDOUT_FILENO);
+			}
 		}
 	}
 }

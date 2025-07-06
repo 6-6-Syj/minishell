@@ -14,12 +14,12 @@
 #include "libft.h"
 #include "print.h"
 
-static bool	search_key_update_value(t_data *data, t_env **head, char *key,
+static bool	search_key_update_value(t_data *data, char *key,
 		char *value)
 {
 	t_env	*curr;
 
-	curr = *head;
+	curr = data->env;
 	while (curr)
 	{
 		if (!ft_strcmp(curr->key, key))
@@ -156,7 +156,7 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 		*equal = '\0';
 		value = equal + 1;
 	}
-	if (search_key_update_value(data, env_lst, key, value) || add_key(data,
+	if (search_key_update_value(data, key, value) || add_key(data,
 			env_lst, key, value))
 	{
 		update_env_tab(data);

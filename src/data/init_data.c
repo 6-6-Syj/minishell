@@ -13,14 +13,15 @@
 #include "env.h"
 #include "handle_signal.h"
 #include "minishell.h"
+#include "print.h"
 #include <unistd.h>
 
 bool	is_set_env(t_env *new_env, char *env_line)
 {
 	char	*equal;
 
-	new_env->print_env = 0;
-	new_env->print_exp = 1;
+	new_env->print_env = false;
+	new_env->print_exp = true;
 	new_env->key = NULL;
 	new_env->value = NULL;
 	equal = ft_strchr(env_line, '=');
@@ -86,9 +87,9 @@ void	init_env(t_data *data, char **env)
 		{
 			new_env = add_env_node(&data->env);
 			if (!new_env)
-				exit_error(data);
+				malloc_fail(data);
 			if (!is_set_env(new_env, env[i]))
-				exit_error(data);
+				malloc_fail(data);
 			if (!data->env)
 				data->env = new_env;
 			i++;

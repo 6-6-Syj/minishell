@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 #include "command.h"
+#include "print.h"
 #include "redir.h"
 #include <stdio.h>
-#include "print.h"
 
 void	close_inherited_fds(t_command *cmd)
 {
@@ -54,6 +54,7 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 {
 	char			*path;
 	t_path_status	status;
+	char			*cwd_path;
 
 	path = resolve_command_path(cmd->args[0], data, &status);
 	if (status == PATH_UNSET)
@@ -67,7 +68,18 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 			w_execve(path, cmd->args, data->env_tab, data);
 		}
 		else
+		{
+			cwd_path = ft_strjoin("./", cmd->args[0]);
+			if (!cwd_path)
+				malloc_fail(data);
+			if (access(cwd_path, F_OK) == 0)
+			{
+				check_access(cwd_path, cmd, data);
+				w_execve(cwd_path, cmd->args, data->env_tab, data);
+			}
+			free(cwd_path);
 			no_file_or_directory(cmd, data);
+		}
 		return ;
 	}
 	if (status == PATH_NOT_FOUND)
@@ -77,7 +89,7 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 }
 
 // static void	add_pid(t_pid_list **pids, pid_t pid, bool is_last,
-		// t_data *data)
+// t_data *data)
 // {
 // 	t_pid_list	*new_pid;
 
