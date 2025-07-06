@@ -50,11 +50,26 @@ static void	check_access(char *path, t_command *cmd, t_data *data)
 	}
 }
 
+static void	exec_in_current_dir(t_command *cmd, t_data *data)
+{
+	char			*cwd_path;
+
+	cwd_path = ft_strjoin("./", cmd->args[0]);
+	if (!cwd_path)
+		malloc_fail(data);
+	if (access(cwd_path, F_OK) == 0)
+	{
+		check_access(cwd_path, cmd, data);
+		w_execve(cwd_path, cmd->args, data->env_tab, data);
+	}
+	free(cwd_path);
+	no_file_or_directory(cmd, data);
+}
+
 static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 {
 	char			*path;
 	t_path_status	status;
-	char			*cwd_path;
 
 	path = resolve_command_path(cmd->args[0], data, &status);
 	if (status == PATH_UNSET)
@@ -68,18 +83,7 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 			w_execve(path, cmd->args, data->env_tab, data);
 		}
 		else
-		{
-			cwd_path = ft_strjoin("./", cmd->args[0]);
-			if (!cwd_path)
-				malloc_fail(data);
-			if (access(cwd_path, F_OK) == 0)
-			{
-				check_access(cwd_path, cmd, data);
-				w_execve(cwd_path, cmd->args, data->env_tab, data);
-			}
-			free(cwd_path);
-			no_file_or_directory(cmd, data);
-		}
+			exec_in_current_dir(cmd, data);
 		return ;
 	}
 	if (status == PATH_NOT_FOUND)

@@ -10,3 +10,27 @@
 	...
 	fun:add_history
 }
+{
+   ls_leak_libc
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/bin/ls
+}
+{
+   grep_leak_libc
+   Memcheck:Leak
+   fun:malloc
+   obj:/usr/bin/grep
+}
+{
+   grep_leak_regcomp
+   Memcheck:Leak
+   fun:regcomp
+   obj:/usr/bin/grep
+}
+{
+   ls_leak_getopt
+   Memcheck:Leak
+   fun:getopt_long
+   obj:/usr/bin/ls
+}
