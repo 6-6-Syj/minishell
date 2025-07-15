@@ -16,11 +16,14 @@
 #include <string.h>
 #include <sys/stat.h>
 
-int	is_symlink(const char *path)
+bool	is_symlink(const char *path)
 {
 	struct stat	sb;
 
-	return (lstat(path, &sb) == 0 && S_ISLNK(sb.st_mode));
+	if (lstat(path, &sb) == 0 && S_ISLNK(sb.st_mode))
+		return (true);
+	else
+		return (false);
 }
 
 static int	w_cd(char *target, t_data *data)

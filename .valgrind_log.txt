@@ -1,98 +1,38 @@
-==575097== Memcheck, a memory error detector
-==575097== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==575097== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==575097== Command: /usr/bin/w
-==575097== Parent PID: 574943
-==575097== ==574943== 
-==574943== FILE DESCRIPTORS: 3 open (3 std) at exit.
-==574943== 
-==574943== HEAP SUMMARY:
-==574943==     in use at exit: 204,165 bytes in 226 blocks
-==574943==   total heap usage: 1,415 allocs, 1,189 frees, 262,375 bytes allocated
-==574943== 
-==574943== LEAK SUMMARY:
-==574943==    definitely lost: 0 bytes in 0 blocks
-==574943==    indirectly lost: 0 bytes in 0 blocks
-==574943==      possibly lost: 0 bytes in 0 blocks
-==574943==    still reachable: 0 bytes in 0 blocks
-==574943==         suppressed: 204,165 bytes in 226 blocks
-==574943== 
-==574943== For lists of detected and suppressed errors, rerun with: -s
-==574943== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
-b/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x48817F9: sprint_uptime (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x4881A8C: print_uptime (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x10A8C2: ??? (in /usr/bin/w)
-==575097==    by 0x48D5D8F: (below main) (libc_start_call_main.h:58)
-==575097== 
-==575097== Open file descriptor 3: /home/jmagand/Documents/wip/3./minishell/.valgrind_log.txt
-==575097==    <inherited from parent>
-==575097== 
-==575097== 
-==575097== HEAP SUMMARY:
-==575097==     in use at exit: 830,848 bytes in 722 blocks
-==575097==   total heap usage: 1,616 allocs, 894 frees, 1,966,739 bytes allocated
-==575097== 
-==575097== 768 bytes in 16 blocks are still reachable in loss record 1 of 7
-==575097==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==575097==    by 0x487D134: pwcache_get_user (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487D48C: ??? (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487E058: readproc (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487EC52: readproctab (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x10A7E9: ??? (in /usr/bin/w)
-==575097==    by 0x48D5D8F: (below main) (libc_start_call_main.h:58)
-==575097== 
-==575097== 1,024 bytes in 1 blocks are still reachable in loss record 2 of 7
-==575097==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==575097==    by 0x487AF1A: ??? (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487D3D5: ??? (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487E058: readproc (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487EC52: readproctab (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x10A7E9: ??? (in /usr/bin/w)
-==575097==    by 0x48D5D8F: (below main) (libc_start_call_main.h:58)
-==575097== 
-==575097== 4,056 bytes in 1 blocks are still reachable in loss record 3 of 7
-==575097==    at 0x484DCD3: realloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==575097==    by 0x487EC37: readproctab (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x10A7E9: ??? (in /usr/bin/w)
-==575097==    by 0x48D5D8F: (below main) (libc_start_call_main.h:58)
-==575097== 
-==575097== 36,616 bytes in 196 blocks are possibly lost in loss record 4 of 7
-==575097==    at 0x484DCD3: realloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==575097==    by 0x487A778: ??? (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487D58E: ??? (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487E058: readproc (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487EC52: readproctab (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x10A7E9: ??? (in /usr/bin/w)
-==575097==    by 0x48D5D8F: (below main) (libc_start_call_main.h:58)
-==575097== 
-==575097== 131,072 bytes in 1 blocks are still reachable in loss record 5 of 7
-==575097==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==575097==    by 0x487E8AC: openproc (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487EBFB: readproctab (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x10A7E9: ??? (in /usr/bin/w)
-==575097==    by 0x48D5D8F: (below main) (libc_start_call_main.h:58)
-==575097== 
-==575097== 131,072 bytes in 1 blocks are still reachable in loss record 6 of 7
-==575097==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==575097==    by 0x487E8C2: openproc (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487EBFB: readproctab (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x10A7E9: ??? (in /usr/bin/w)
-==575097==    by 0x48D5D8F: (below main) (libc_start_call_main.h:58)
-==575097== 
-==575097== 526,240 bytes in 506 blocks are still reachable in loss record 7 of 7
-==575097==    at 0x484DA83: calloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==575097==    by 0x487E08E: readproc (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x487EC52: readproctab (in /usr/lib/x86_64-linux-gnu/libprocps.so.8.0.3)
-==575097==    by 0x10A7E9: ??? (in /usr/bin/w)
-==575097==    by 0x48D5D8F: (below main) (libc_start_call_main.h:58)
-==575097== 
-==575097== LEAK SUMMARY:
-==575097==    definitely lost: 0 bytes in 0 blocks
-==575097==    indirectly lost: 0 bytes in 0 blocks
-==575097==      possibly lost: 36,616 bytes in 196 blocks
-==575097==    still reachable: 794,232 bytes in 526 blocks
-==575097==         suppressed: 0 bytes in 0 blocks
-==575097== 
-==575097== For lists of detected and suppressed errors, rerun with: -s
-==575097== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==142513== Memcheck, a memory error detector
+==142513== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==142513== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==142513== Command: ./minishell
+==142513== Parent PID: 61326
+==142513== 
+==142559== 
+==142559== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==142559== 
+==142559== HEAP SUMMARY:
+==142559==     in use at exit: 204,156 bytes in 225 blocks
+==142559==   total heap usage: 1,120 allocs, 895 frees, 250,221 bytes allocated
+==142559== 
+==142559== LEAK SUMMARY:
+==142559==    definitely lost: 0 bytes in 0 blocks
+==142559==    indirectly lost: 0 bytes in 0 blocks
+==142559==      possibly lost: 0 bytes in 0 blocks
+==142559==    still reachable: 0 bytes in 0 blocks
+==142559==         suppressed: 204,156 bytes in 225 blocks
+==142559== 
+==142559== For lists of detected and suppressed errors, rerun with: -s
+==142559== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)
+==142513== 
+==142513== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==142513== 
+==142513== HEAP SUMMARY:
+==142513==     in use at exit: 204,162 bytes in 226 blocks
+==142513==   total heap usage: 1,094 allocs, 868 frees, 249,806 bytes allocated
+==142513== 
+==142513== LEAK SUMMARY:
+==142513==    definitely lost: 0 bytes in 0 blocks
+==142513==    indirectly lost: 0 bytes in 0 blocks
+==142513==      possibly lost: 0 bytes in 0 blocks
+==142513==    still reachable: 0 bytes in 0 blocks
+==142513==         suppressed: 204,162 bytes in 226 blocks
+==142513== 
+==142513== For lists of detected and suppressed errors, rerun with: -s
+==142513== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)

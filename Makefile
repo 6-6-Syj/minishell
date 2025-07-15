@@ -146,7 +146,7 @@ re-all: fclean fclean-libft libft all
 valgrind: all
 	@echo "$(BOLD)Running with Valgrind:$(RESET)"
 	@valgrind --leak-check=full --track-origins=yes --track-fds=yes --show-leak-kinds=all ./$(NAME) $(ARGS)
-# make && valgrind --leak-check=full --track-origins=yes --track-fds=yes --show-leak-kinds=all --trace-children=yes  --suppressions=readline.supp --log-file=.valgrind_log.txt ./minishell
+# make && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --log-file=.valgrind_log.txt --suppressions=readline.supp ./minishell
 # --log-file=.valgrind_log.txt to write valgrind's output in a file
 
 run: all
