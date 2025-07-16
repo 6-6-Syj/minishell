@@ -1,0 +1,34 @@
+$HOME$USER
+
+N'expand pas alors qu'il devrait
+
+
+# simple_auote font un space
+/bin/echo ''$?''"42"
+
+minishell > 1 42
+bash > 142
+
+/bin/echo "exit_code ->$? user ->$USER home -> $HOME"
+$? n'expand pas
+
+
+"" doit etre traite comme un arg (null)
+exit ""
+
+
+limiter du heredoc
+
+
+
+/!\ A voir
+echo $"HOME"
+echo $'HOME'
+
+
+/!\ A FAIRE ?
+	/bin/echo $PWD/random_folder
+
+
+
+SYNTAX ERROR
