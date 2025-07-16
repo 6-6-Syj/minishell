@@ -125,7 +125,7 @@ static char	*handle_readline(t_data *data)
 			// 	close(fd++);
 			exit_error(data);
 			return (NULL);
-		}	
+		}
 	}
 	// line = readline("> ");
 	// if (str[0] != '\0')

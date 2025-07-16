@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "wrappers.h"
+#include "redir.h"
 #include <errno.h>
 
 void	w_execve(char *path, char **cmds, char **env, t_data *data)

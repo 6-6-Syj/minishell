@@ -104,17 +104,18 @@ void	free_pid_list(t_pid_list **pids_lst)
 	t_pid_list	*current;
 	t_pid_list	*tmp;
 
+	if (!pids_lst || !*pids_lst)
+		return ;
 	current = *pids_lst;
+	while (current && current->prev)
+		current = current->prev;
 	while (current)
 	{
 		tmp = current->next;
-		if (current)
-		{
-			// printf("pid = %d\n", current->pid);
-			free(current);
-		}
+		free(current);
 		current = tmp;
 	}
+	*pids_lst = NULL;
 }
 
 static t_command	*find_last_cmd(t_ast *node)

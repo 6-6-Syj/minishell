@@ -86,7 +86,6 @@ void	exec_and_restore_fd(t_fd_backup *backup, t_command *cmd, t_data *data)
 	else
 		data->err = exec_builtin(cmd, &data->env, data);
 	data->exit_err = data->err;
-	// ft_printf("%d\n", data->err);
 	restore_fds(backup, data);
 	unset_redirect_fds(cmd);
 	close_inherited_fds(cmd);
@@ -117,6 +116,6 @@ void	exec_ast(t_ast *node, t_data *data)
 	{
 		handle_ast(node, data, fd, &pids);
 		data->err = wait_all_processes(pids, data);
-		free_pid_list(&pids);
+		// free_pid_list(&pids);
 	}
 }

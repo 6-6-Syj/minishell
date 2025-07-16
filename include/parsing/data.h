@@ -33,6 +33,7 @@ typedef struct s_pid_list
 	pid_t				pid;
 	bool				is_last_cmd;
 	struct s_pid_list	*next;
+	struct s_pid_list	*prev;
 }						t_pid_list;
 
 typedef struct s_fd_backup

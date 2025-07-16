@@ -52,7 +52,7 @@ static void	check_access(char *path, t_command *cmd, t_data *data)
 
 static void	exec_in_current_dir(t_command *cmd, t_data *data)
 {
-	char			*cwd_path;
+	char	*cwd_path;
 
 	cwd_path = ft_strjoin("./", cmd->args[0]);
 	if (!cwd_path)
@@ -127,16 +127,16 @@ void	add_pid(t_pid_list **pids, pid_t pid, bool is_last, t_data *data)
 	new_node = ft_calloc(1, sizeof(t_pid_list));
 	if (!new_node)
 		;
-	if (!*pids)
+	if (!(*pids))
 	{
 		*pids = new_node;
-		// new_node->prev = NULL; // NEEDED ?
+		new_node->prev = NULL;
 	}
 	else
 	{
 		last_node = get_last_pid(*pids);
 		last_node->next = new_node;
-		// new_node->prev = last_node; // NEEDED ?
+		new_node->prev = last_node;
 	}
 	new_node->next = NULL;
 	new_node->pid = pid;
@@ -219,16 +219,21 @@ void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
 	pid = w_fork(data);
 	if (pid == 0)
 	{
+		data->pid_list = NULL;
+		if (pids && *pids)
+		{
+			free_pid_list(pids);
+			*pids = NULL;
+		}
 		open_files(cmd, data);
 		close_inherited_fds(cmd);
-		// if (data->pid_list)
-		// 	free_pid_list(&data->pid_list);
 		exec_command(cmd, data);
 	}
 	else
 	{
 		is_last = is_last_command_in_ast(cmd, root);
 		add_pid(pids, pid, is_last, data);
+		data->pid_list = *pids;
 		if (cmd->fd_in > 2)
 			w_close(cmd->fd_in, data);
 		if (cmd->fd_out > 2)
