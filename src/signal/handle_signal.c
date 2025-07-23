@@ -22,14 +22,9 @@ static void	sig_handler(int signum)
 	if (signum == SIGINT)
 	{
 		g_sig = SIGINT;
-		ft_printf("\n");
-		rl_on_new_line();
+		write(1, "\n", 1);
 		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (signum == SIGQUIT)
-	{
-		g_sig = SIGQUIT;
+        // rl_done = 1;
 	}
 }
 
@@ -37,14 +32,13 @@ bool	init_sig_handler(void)
 {
 	struct sigaction	sa;
 
-	rl_catch_signals = 1; // readline doesn't handle sig
-	// sa.quit.sa_handler = SIG_IGN;
+	rl_catch_signals = 1;
 	sa.sa_handler = sig_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART; // for readline todo: check this SA_RESTART
+	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		return (false);
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		return (false);
+	// Pour SIGQUIT, ignorer quand pas dans un processus fils
+	signal(SIGQUIT, SIG_IGN);
 	return (true);
 }

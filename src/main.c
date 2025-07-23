@@ -51,32 +51,33 @@ volatile int			g_sig;
 // 	return (input);
 // }
 
+volatile sig_atomic_t	g_sig;
+
 // static char	*handle_readline(t_data *data)
 // {
 // 	char	*line;
-// 	char	*str;
+
+// 	(void)data;
+// 	line = readline("> ");
+// 	if (line[0] != '\0')
+// 		add_history(line);
+// 	else
+// 	{
+// 		free(line);
+// 		return (NULL);
+// 	}
+// 	return (line);
+// }
+
+// static char	*handle_readline(t_data *data)
+// {
+// 	char	*line;
 // 	int		fd;
+// 	char	*str;
 
 // 	fd = 3;
 // 	if (isatty(fileno(stdin)))
-// 	{
 // 		str = readline(">");
-// 		if (!str)
-// 		{
-// 			ft_printf("exit\n");
-// 			while (fd < 1024)
-// 				close(fd++);
-// 			exit_error(data);
-// 			return (NULL);
-// 		}
-// 		if (str[0] != '\0')
-// 			add_history(str);
-// 		else
-// 		{
-// 			free(str);
-// 			return (NULL);
-// 		}
-// 	}
 // 	else
 // 	{
 // 		str = get_next_line(fileno(stdin));
@@ -88,55 +89,44 @@ volatile int			g_sig;
 // 		}
 // 		if (!str)
 // 		{
-// 			ft_printf("exit\n");
-// 			while (fd < 1024)
-// 				close(fd++);
+// 			// ft_printf("exit\n");
+// 			// while (fd < 1024)
+// 			// 	close(fd++);
 // 			exit_error(data);
 // 			return (NULL);
 // 		}
 // 	}
+// 	// line = readline("> ");
+// 	// if (str[0] != '\0')
+// 	// 	add_history(str);
+// 	// else
+// 	// {
+// 	// 	free(str);
+// 	// 	return (NULL);
+// 	// }
+// 	// return (str);
 // 	return (str);
 // }
 
-volatile sig_atomic_t	g_sig;
-
-static char	*handle_readline(t_data *data)
+char	*handle_readline(t_data *data)
 {
-	char	*line;
-	int		fd;
-	char	*str;
+	char	*input;
 
-	fd = 3;
-	if (isatty(fileno(stdin)))
-		str = readline(">");
-	else
+	rl_done = 0;
+	g_sig = 0;
+	input = readline("> ");
+	if (!input)
 	{
-		str = get_next_line(fileno(stdin));
-		if (str)
-		{
-			line = ft_strtrim(str, "\n");
-			free(str);
-			str = line;
-		}
-		if (!str)
-		{
-			// ft_printf("exit\n");
-			// while (fd < 1024)
-			// 	close(fd++);
-			exit_error(data);
-			return (NULL);
-		}
+		ft_printf("exit\n");
+		exit_error(data);
 	}
-	// line = readline("> ");
-	// if (str[0] != '\0')
-	// 	add_history(str);
-	// else
-	// {
-	// 	free(str);
-	// 	return (NULL);
-	// }
-	// return (str);
-	return (str);
+	if (input[0] == '\0')
+	{
+		free(input);
+		return (NULL);
+	}
+	add_history(input);
+	return (input);
 }
 
 int	main(int ac, char **av, char **env)
@@ -149,15 +139,13 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		data.input = handle_readline(&data);
-		if (!data.input)
-			continue ;
 		if (g_sig == SIGINT)
 		{
-			// ft_printf("CATCHED\n");
+			free_tmp_data(&data);
 			g_sig = 0;
+			continue ;
 		}
 		init_token(&data);
-		// print_all(&data);
 		init_ast(&data.ast, &data.token, &data);
 		data.err = 0;
 		exec_ast(data.ast, &data);
