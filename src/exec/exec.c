@@ -44,11 +44,8 @@ static int	wait_all_processes(t_pid_list *pids, t_data *data)
 				last_exit_code = get_exit_code(status, data);
 				data->err = last_exit_code;
 				data->exit_err = last_exit_code;
-				log_process_end(current->pid, status);
 			}
 		}
-		else
-			log_process_end(current->pid, status);
 		current = current->next;
 	}
 	return (last_exit_code);
