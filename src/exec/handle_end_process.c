@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "handle_signal.h"
+#include "signal.h"
 
 /*
 
@@ -27,14 +29,34 @@ WSTOPSIG(status) : Si WIFSTOPPED est vrai,
 
 */
 
-int	get_exit_code(int status)
+int	get_exit_code(int status, t_data *data)
 {
-	if (WIFEXITED(status))
+	int	sig;
+
+	signal(SIGINT, SIG_IGN);
+	if (WIFSIGNALED(status))
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGINT && !data->is_nl)
+		{
+			data->is_nl = true;
+			write(STDOUT_FILENO, "\n", 1);
+		}
+		else if (sig == SIGQUIT && !data->is_nl)
+		{
+			data->is_nl = true;
+			write(STDERR_FILENO, "Quit minishell(core dumped)\n", 28);
+		}
+		signal(SIGINT, sig_handler);
+		return (128 + sig);
+	}
+	else if (WIFEXITED(status))
+	{
+		signal(SIGINT, sig_handler);
 		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status) && status != 13)
-		return (128 + WTERMSIG(status));
-	else
-		return (1);
+	}
+	signal(SIGINT, sig_handler);
+	return (1);
 }
 
 void	log_process_end(pid_t wpid, int status)

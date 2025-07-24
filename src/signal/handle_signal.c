@@ -17,14 +17,15 @@
 
 extern volatile int	g_sig;
 
-static void	sig_handler(int signum)
+void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
 		g_sig = SIGINT;
 		write(1, "\n", 1);
+		rl_on_new_line();
 		rl_replace_line("", 0);
-        // rl_done = 1;
+		rl_redisplay();
 	}
 }
 
@@ -32,13 +33,11 @@ bool	init_sig_handler(void)
 {
 	struct sigaction	sa;
 
-	rl_catch_signals = 1;
 	sa.sa_handler = sig_handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		return (false);
-	// Pour SIGQUIT, ignorer quand pas dans un processus fils
 	signal(SIGQUIT, SIG_IGN);
 	return (true);
 }

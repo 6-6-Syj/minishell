@@ -13,9 +13,12 @@
 #include "wrappers.h"
 #include "redir.h"
 #include <errno.h>
+#include <signal.h>
 
 void	w_execve(char *path, char **cmds, char **env, t_data *data)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (execve(path, cmds, env) == -1)
 	{
 		perror(path);
