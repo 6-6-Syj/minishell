@@ -56,6 +56,7 @@ typedef struct s_data
 	int					err;
 	int					exit_err;
 	char				*input;
+	bool				is_nl;
 }	t_data;
 
 /****************************************************************************/

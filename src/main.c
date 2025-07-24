@@ -14,6 +14,7 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
+#include "handle_signal.h"
 
 volatile int			g_sig;
 
@@ -114,7 +115,9 @@ char	*handle_readline(t_data *data)
 
 	rl_done = 0;
 	g_sig = 0;
+	signal(SIGINT, sig_handler);
 	input = readline("> ");
+	signal(SIGINT, SIG_IGN);
 	if (!input)
 	{
 		ft_printf("exit\n");
@@ -138,13 +141,9 @@ int	main(int ac, char **av, char **env)
 	init_data(&data, env);
 	while (1)
 	{
+		data.is_nl = false;
+		g_sig = 0;
 		data.input = handle_readline(&data);
-		if (g_sig == SIGINT)
-		{
-			free_tmp_data(&data);
-			g_sig = 0;
-			continue ;
-		}
 		init_token(&data);
 		init_ast(&data.ast, &data.token, &data);
 		data.err = 0;
