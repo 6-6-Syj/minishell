@@ -92,20 +92,6 @@ static void	search_cmd_and_exec(t_command *cmd, t_data *data)
 	w_execve(path, cmd->args, data->env_tab, data);
 }
 
-// static void	add_pid(t_pid_list **pids, pid_t pid, bool is_last,
-// t_data *data)
-// {
-// 	t_pid_list	*new_pid;
-
-// 	new_pid = malloc(sizeof(t_pid_list));
-// 	if (!new_pid)
-// 		exit_error(data);
-// 	new_pid->pid = pid;
-// 	new_pid->is_last_cmd = is_last;
-// 	new_pid->next = *pids;
-// 	*pids = new_pid;
-// }
-
 t_pid_list	*get_last_pid(t_pid_list *pid_lst)
 {
 	t_pid_list	*last;
