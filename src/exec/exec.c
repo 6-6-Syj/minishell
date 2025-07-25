@@ -14,8 +14,7 @@
 #include "exec.h"
 #include "pipe.h"
 #include "redir.h"
-#include <errno.h>
-#include <string.h>
+#include "handle_signal.h"
 
 void	handle_ast(t_ast *node, t_data *data, int *fd, t_pid_list **pids)
 {
@@ -25,30 +24,6 @@ void	handle_ast(t_ast *node, t_data *data, int *fd, t_pid_list **pids)
 		handle_command(&node->command, data, pids, node);
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd, pids);
-}
-
-static int	wait_all_processes(t_pid_list *pids, t_data *data)
-{
-	int			status;
-	int			last_exit_code;
-	t_pid_list	*current;
-
-	last_exit_code = 0;
-	current = pids;
-	while (current)
-	{
-		if (waitpid(current->pid, &status, 0) > 0)
-		{
-			if (current->is_last_cmd)
-			{
-				last_exit_code = get_exit_code(status, data);
-				data->err = last_exit_code;
-				data->exit_err = last_exit_code;
-			}
-		}
-		current = current->next;
-	}
-	return (last_exit_code);
 }
 
 static void	init_backup(t_fd_backup *backup)

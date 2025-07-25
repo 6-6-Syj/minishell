@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-07-03 21:39:20 by jmagand           #+#    #+#             */
-/*   Updated: 2025-07-03 21:39:20 by jmagand          ###   ########.fr       */
+/*   Created: 2025-07-24 20:30:52 by jmagand           #+#    #+#             */
+/*   Updated: 2025-07-24 20:30:52 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "handle_signal.h"
 #include "minishell.h"
 #include "print.h"
-#include <unistd.h>
 
 bool	is_set_env(t_env *new_env, char *env_line)
 {
@@ -61,13 +60,13 @@ t_env	*add_env_node(t_env **env_lst)
 	if (!*env_lst)
 	{
 		*env_lst = new_node;
-		new_node->prev = NULL; // NEEDED ?
+		new_node->prev = NULL;
 	}
 	else
 	{
 		last_node = get_last_env(*env_lst);
 		last_node->next = new_node;
-		new_node->prev = last_node; // NEEDED ?
+		new_node->prev = last_node;
 	}
 	new_node->next = NULL;
 	return (new_node);
@@ -95,6 +94,7 @@ void	init_env(t_data *data, char **env)
 			i++;
 		}
 	}
+	update_shlvl(data);
 	update_env_tab(data);
 }
 

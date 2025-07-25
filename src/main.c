@@ -10,65 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "handle_signal.h"
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
-#include "handle_signal.h"
 
 volatile int			g_sig;
-
-// MAYBE USE ISATTY TOO
-
-// input = readline(get_path_term(&data));
-
-// static char *get_path_term(t_data *data)
-// {
-// 	char	cwd[PATH_MAX];
-// 	char	*name;
-// 	char	*tmp;
-// 	char	*input;
-
-// 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-// 	{
-// 		tmp = ft_strjoin(cwd, " ");
-// 		if (!tmp)
-// 			return ("minishell$ ");
-// 		name = tmp;
-// 		tmp = ft_strjoin(name, get_env_var(data, "USER"));
-// 		if (!tmp)
-// 			return ("minishell$ ");
-// 		name = tmp;
-// 		tmp = ft_strjoin(name, "> ");
-// 		if (!tmp)
-// 			return ("minishell$ ");
-// 		name = tmp;
-// 		input = name;
-// 		name = NULL;
-// 		tmp = NULL;
-// 	}
-// 	else
-// 		input = "minishell$ ";
-// 	return (input);
-// }
-
 volatile sig_atomic_t	g_sig;
-
-// static char	*handle_readline(t_data *data)
-// {
-// 	char	*line;
-
-// 	(void)data;
-// 	line = readline("> ");
-// 	if (line[0] != '\0')
-// 		add_history(line);
-// 	else
-// 	{
-// 		free(line);
-// 		return (NULL);
-// 	}
-// 	return (line);
-// }
 
 // static char	*handle_readline(t_data *data)
 // {
@@ -109,20 +58,35 @@ volatile sig_atomic_t	g_sig;
 // 	return (str);
 // }
 
+static void	clean_exit(t_data *data)
+{
+	int	fd;
+
+	fd = 3;
+	while (fd < 1024)
+	{
+		close(fd);
+		fd++;
+	}
+	if (data->env)
+		free_env_lst(&data->env);
+	if (data->env_tab)
+		free_env_tab(data);
+	ft_printf("exit\n");
+	rl_clear_history();
+	exit(data->err);
+}
+
 char	*handle_readline(t_data *data)
 {
 	char	*input;
 
-	rl_done = 0;
 	g_sig = 0;
 	signal(SIGINT, sig_handler);
-	input = readline("> ");
+	input = readline("minishell$ ");
 	signal(SIGINT, SIG_IGN);
 	if (!input)
-	{
-		ft_printf("exit\n");
-		exit_error(data);
-	}
+		clean_exit(data);
 	if (input[0] == '\0')
 	{
 		free(input);
