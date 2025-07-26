@@ -44,5 +44,5 @@ void	init_token(t_data *data)
 	join_word(&data->token, data);
 	set_command_type(&data->token);
 	set_token_priority(&data->token);
-	print_all(data);
+	// print_all(data);
 }
