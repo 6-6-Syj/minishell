@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_signal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-25 20:36:34 by jmagand           #+#    #+#             */
-/*   Updated: 2025-06-25 20:36:34 by jmagand          ###   ########.fr       */
+/*   Created: 2025/06/25 20:36:34 by jmagand           #+#    #+#             */
+/*   Updated: 2025/07/26 20:52:59 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+// TODO: CHECK IF BOOL OR VOID (EXIT OR NOT)
+void	setup_heredoc_signal_handlers(struct sigaction *oldint)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = sig_handler_heredoc;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, oldint);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 bool	init_sig_handler(void)

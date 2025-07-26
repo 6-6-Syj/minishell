@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_signal.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-25 16:32:51 by jmagand           #+#    #+#             */
-/*   Updated: 2025-06-25 16:32:51 by jmagand          ###   ########.fr       */
+/*   Created: 2025/06/25 16:32:51 by jmagand           #+#    #+#             */
+/*   Updated: 2025/07/26 20:54:14 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 /****************************************************************************/
 void	sig_handler(int signum);
 void	sig_handler_heredoc(int signum);
+void	setup_heredoc_signal_handlers(struct sigaction *oldint);
 bool	init_sig_handler(void);
 
 #endif
