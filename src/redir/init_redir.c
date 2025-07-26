@@ -41,16 +41,16 @@ t_token	*get_next_redir(t_token **root_token)
 
 int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 {
+	(void)data;
 	if (!token_node || !token_node->next)
 		return (-1);
 	redir_node->type = token_node->type;
 	if (token_node->type == HERE_DOC)
 	{
 		redir_node->delimiter = ft_strjoin(token_node->next->content, "\n");
-			// TODO: open here_doc
 		if (!redir_node->delimiter)
 			return (-1);
-		set_here_doc(&redir_node, data);
+		set_here_doc(&redir_node);
 	}
 	else if (token_node->type & REDIR)
 	{

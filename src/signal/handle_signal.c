@@ -22,7 +22,7 @@ void	sig_handler_heredoc(int signum)
 	if (signum == SIGINT)
 	{
 		g_sig = 1;
-		write(1, "\n", 1);
+		write(1, "^C\n", 3);
 	}
 }
 
@@ -30,24 +30,13 @@ void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		g_sig = SIGINT;
+		g_sig = 1;
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-}
-
-// TODO: CHECK IF BOOL OR VOID (EXIT OR NOT)
-void	setup_heredoc_signal_handlers(struct sigaction *oldint)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = sig_handler_heredoc;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, oldint);
-	signal(SIGQUIT, SIG_IGN);
+	g_sig = 0;
 }
 
 bool	init_sig_handler(void)

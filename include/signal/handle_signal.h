@@ -28,7 +28,6 @@
 /****************************************************************************/
 void	sig_handler(int signum);
 void	sig_handler_heredoc(int signum);
-void	setup_heredoc_signal_handlers(struct sigaction *oldint);
 bool	init_sig_handler(void);
 
 #endif
