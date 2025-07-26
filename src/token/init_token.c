@@ -29,16 +29,20 @@ void	lexer(t_data *data)
 	}
 }
 
+// TODO: concatenate useless space
+
 void	init_token(t_data *data)
 {
 	lexer(data);
 	set_token_type(&data->token, data);
 	remove_double_quote(&data->token, data);
+	// print_all(data);
 	expand_var(&data->token, data);
 	remove_simple_quote(&data->token, data);
-	join_word(&data->token, data);
-	remove_space(&data->token, data);
+	// remove_space(&data->token, data);
 	set_file_type(&data->token);
+	join_word(&data->token, data);
 	set_command_type(&data->token);
 	set_token_priority(&data->token);
+	print_all(data);
 }

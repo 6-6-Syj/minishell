@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include "libft.h"
+
 void	set_command_type(t_token **token_lst)
 {
 	t_token	*token_node;

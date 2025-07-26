@@ -1,0 +1,14 @@
+fe
+wf
+fwe
+f
+stop
+dw
+stop1
+dw
+stop2
+e
+wf
+stop3
+/bin/rm -f out
+/bin/rm -f out0

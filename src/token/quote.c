@@ -1,5 +1,5 @@
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 bool	is_in_quote(char *token, int pos)
 {
@@ -25,7 +25,12 @@ void	remove_quote(char **token_content)
 	int		len;
 
 	len = ft_strlen(*token_content);
-	buff = ft_substr(*token_content, 1, len - 2);
+	if (len == 2) /////////////////////////////
+		buff = ft_calloc(1, 1);
+	// else if (len == 3)
+	// 	buff = ft_substr(*token_content, 1, 2);
+	else
+		buff = ft_substr(*token_content, 1, len - 2);
 	free(*token_content);
 	*token_content = buff;
 }
@@ -40,33 +45,34 @@ void	remove_simple_quote(t_token **token_lst, t_data *data)
 		if (current->type == QUOTE_S)
 		{
 			remove_quote(&current->content);
+			if (current->content[0] == '\0')
+				remove_node(current, data);
 			current->type = WORD;
 		}
 		if (!current->content)
-			exit_error(data);
+			remove_node(current, data);
 		current = current->next;
 	}
 }
 
 void	remove_double_quote(t_token **token_lst, t_data *data)
 {
-	t_token	*current_token;
+	t_token *current;
+	t_token	*tmp;
 
-	current_token = *token_lst;
-	while (current_token)
+	current = *token_lst;
+	while (current)
 	{
-		if (current_token->type == QUOTE_D)
+		tmp = current->next;
+		if (current->type == QUOTE_D)
 		{
-			remove_quote(&current_token->content);
-			if (current_token->content[0] == '\0')
-			{
-				remove_node(current_token, data);
-				return ;
-			}
-			current_token->type = WORD;
+			remove_quote(&current->content);
+			current->type = WORD;
+			if (current->content[0] == '\0')
+				remove_node(current, data);
 		}
-		if (!current_token->content)
-			exit_error(data);
-		current_token = current_token->next;
+		if (!current->content)
+			remove_node(current, data);
+		current = tmp;
 	}
 }

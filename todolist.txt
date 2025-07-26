@@ -1,5 +1,9 @@
 $HOME$USER
 
+
+echo "" "" "" -n -n -n -n
+
+
 N'expand pas alors qu'il devrait
 
 
@@ -29,6 +33,7 @@ echo $'HOME'
 /!\ A FAIRE ?
 	/bin/echo $PWD/random_folder
 
+/bin/echo '' "" | cat -e
 
 
 SYNTAX ERROR

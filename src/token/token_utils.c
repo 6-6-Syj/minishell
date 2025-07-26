@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+bool	is_space(char c)
+{
+	if (c == ' ' || (c >= 9 && c <= 13))
+		return (true);
+	return (false);
+}
+
 int	get_token_len(char *token)
 {
 	int	i;
@@ -15,8 +22,10 @@ int	get_token_len(char *token)
 			return (i + 1);
 		else if (token[0] == '\"' && token[i] == '\"')
 			return (i + 1);
-		else if (token[0] == ' ' && token[i] != ' ')
+		else if (is_space(token[0]) && !is_space(token[i]))
 			return (i);
+		// else if (token[0] == ' ' && token[i] != ' ')
+			// return (i);
 		else if (is_part_of_word(token[0]) && !is_part_of_word(token[i]))
 			return (i);
 		i++;
@@ -24,14 +33,14 @@ int	get_token_len(char *token)
 	return (i);
 }
 
-int	get_token_priority(t_token *token)
-{
-	if (token->type == PIPE)
-		return (1);
-	else if (token->type == CMD)
-		return (2);
-	return (-1);
-}
+// int	get_token_priority(t_token *token)
+// {
+// 	if (token->type == PIPE)
+// 		return (1);
+// 	else if (token->type == CMD)
+// 		return (2);
+// 	return (-1);
+// }
 
 void	set_token_priority(t_token **token_lst) // TODO: refacto
 {
@@ -44,8 +53,8 @@ void	set_token_priority(t_token **token_lst) // TODO: refacto
 			token_node->priority = 0;
 		else if (token_node->type == CMD)
 			token_node->priority = 1;
-		// else if (token_node->type & REDIR)
-		// 	token_node->priority = 2;
+		else if (token_node->type & REDIR) ////////// TEST !!!!!!!!!!!
+			token_node->priority = 2;
 		else
 			token_node->priority = -1;
 		token_node = token_node->next;
@@ -61,14 +70,15 @@ void	join_word(t_token **token_lst, t_data *data)
 	current = *token_lst;
 	while (current && current->next)
 	{
-		if (current->type == WORD && current->next->type == WORD)
+		if (current->type == current->next->type)
 		{
 			buff = ft_strjoin(current->content, current->next->content);
 			free(current->content);
 			current->content = buff;
 			remove_node(current->next, data);
 		}
-		current = current->next;
+		else
+			current = current->next;
 	}
 }
 
@@ -103,7 +113,8 @@ int	remove_node(t_token *node, t_data *data)
 	if (!prev)
 	{
 		data->token = next;
-		next->prev = data->token;
+		if (next)
+			next->prev = data->token;
 	}
 	if (prev)
 		prev->next = next;

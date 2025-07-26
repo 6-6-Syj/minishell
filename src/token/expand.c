@@ -1,8 +1,6 @@
 #include "minishell.h"
 #include "libft.h"
 
-#
-
 void	free_expand_buffer(char *first, char *last)
 {
 	if (first)
@@ -31,7 +29,6 @@ char	*handle_expand(char *token, t_data *data)
 	char	*first;
 	char	*expand;
 	char	*last;
-	int		len;
 	int		i;
 
 	i = 0;
@@ -39,33 +36,45 @@ char	*handle_expand(char *token, t_data *data)
 		return (NULL);
 	while (token[i])
 	{
-		if (is_expand(&token[i]))
+		if (is_expand(&token[i])) //TODO: handle special char
 		{
-			expand = get_expand(&token[i], data);
-			len = get_expand_len(&token[i]);
 			first = ft_substr(token, 0, i); // secu
-			i += len;
+			expand = get_expand(&token[i], data);
+			i += (get_expand_key_len(&token[i]) + 1);
 			last = ft_strdup(&token[i]); // secu
+			// i += (len + 1);
+			// ft_printf("first = %s\n", first);
+			// ft_printf("expand = %s\n", expand);
+			// ft_printf("last = %s\n", last);
 			free(token);
 			token = concatenate_expand(first, expand, last, data);
 			free_expand_buffer(first, last);
+			i = 0;
 		}
 		i++;
 	}
+	// print_all(data);
 	return (token);
 }
 
 void	expand_var(t_token **token_lst, t_data *data)
 {
-	t_token	*current_token;
+	t_token	*current;
 
-	current_token = *token_lst;
-	while (current_token)
+	current = *token_lst;
+	while (current)
 	{
-		if (current_token->content && current_token->type != QUOTE_S)
-			current_token->content = handle_expand(current_token->content,
-					data);
-		current_token = current_token->next;
+		// if (current->content && current->type != QUOTE_S && ft_strcmp(current->content, "$?") == 0)
+		// {
+		// 	free(current->content);
+		// 	current->content = ft_itoa(data->err);
+		// }
+		if (current->content && current->type != QUOTE_S)
+		{
+			current->content = handle_expand(current->content,
+				data);
+		}
+		current = current->next;
 	}
 }
 

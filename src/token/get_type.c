@@ -35,8 +35,10 @@ t_type	get_token_type(t_token *token)
 		return (get_operator_type(token));
 	else if (is_quote(token->content[0]) && is_quote(token->content[len - 1]))
 		return (get_quote_type(token));
-	else if (token->content[0] == ' ')
+	else if (is_space(token->content[0]))
 		return (SPACE);
+	// else if (token->content[0] == ' ')
+		// return (SPACE);
 	else if (is_part_of_word(token->content[0]))
 		return (WORD);
 	return (UNKNOWN);

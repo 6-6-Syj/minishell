@@ -107,6 +107,7 @@ t_ast	*create_command_node(t_token *token, t_data *data)
 	new_node->command.fd_out = -1;
 	new_node->type = CMD;
 	len = get_args_len(tmp);
+	// new_node->command.args = malloc(sizeof(char *) * (len + 2));
 	new_node->command.args = ft_calloc(len + 2, sizeof(char *));
 	i = 0;
 	while (tmp && tmp->type != PIPE)
@@ -114,10 +115,11 @@ t_ast	*create_command_node(t_token *token, t_data *data)
 		if (tmp->type == CMD || tmp->type == ARG)
 			new_node->command.args[i++] = ft_strdup(tmp->content);
 		tmp = tmp->next;
+		if (!tmp)
+			new_node->command.args[i] = NULL;
 	}
 	init_redir(token, &new_node->command.redir, data);
 	// print_redir_lst(new_node->command.redir);
-	new_node->command.args[i] = NULL;
 	return (new_node);
 }
 
@@ -182,9 +184,12 @@ int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
 	t_token	*root_token;
 
 	if (!token_lst || !*token_lst)
-		return (1);
+	{
+		*ast_lst = create_command_node(NULL, data);
+		return (0);
+	}
 	root_token = get_root_token(token_lst, 0);
-	if (!root_token)
+	if (!root_token) // handle special case here ? (no command)
 		return (1);
 	*ast_lst = parse_token(root_token, data);
 	return (0);
