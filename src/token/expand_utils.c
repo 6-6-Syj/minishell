@@ -29,10 +29,7 @@ char	*get_expand(char *token, t_data *data)
 	int		len;
 
 	if (ft_strcmp(token, "$?") == 0)
-	{
-		ft_printf("%d", data->exit_err);
-		return (NULL);
-	};
+		return (ft_itoa(data->err));
 	len = get_expand_len(token);
 	expand_key = ft_substr(token, 1, len - 1);
 	if (!expand_key)
