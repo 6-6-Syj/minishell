@@ -47,7 +47,7 @@ void				free_pid_list(t_pid_list **pids_lst);
 bool				is_last_command_in_ast(t_command *cmd, t_ast *root);
 
 /* here_doc.c */
-void				set_here_doc(t_redir **redir_node, t_data *data);
+void				set_here_doc(t_redir **redir_node);
 
 /* utils_here_doc.c */
 int					disable_ctrl_backslash(struct termios *saved_termios);

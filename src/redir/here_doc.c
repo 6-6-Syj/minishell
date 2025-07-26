@@ -73,14 +73,13 @@ static int	read_heredoc_loop(t_redir *redir)
 	fd = open_heredoc_file(redir->filename);
 	if (fd < 0)
 		return (-1);
-	g_sig = 0;
-	while (1)
+	while (g_sig != 1)
 	{
 		if (g_sig)
 		{
 			close(fd); // close ALL heredoc not one / ctrl c
 			unlink(redir->filename);
-			return (-42);
+			return (-2);
 		}
 		write(1, "> ", 2);
 		line = get_next_line(0);
@@ -95,8 +94,9 @@ static int	read_heredoc_loop(t_redir *redir)
 		if (!line)
 		{
 			close(fd);
-			ft_putstr_fd("minishell: warning: here-document ", STDERR_FILENO);
-			ft_putstr_fd("delimited by end-of-file\n", STDERR_FILENO);
+			ft_putstr_fd("\nminishell: warning: here-document ", STDERR_FILENO);
+			ft_putstr_fd("delimited by end-of-file: ", STDERR_FILENO);
+			ft_putstr_fd(redir->delimiter, STDERR_FILENO);
 			return (0);
 		}
 		if (ft_strcmp(line, redir->delimiter) == 0)
@@ -109,26 +109,31 @@ static int	read_heredoc_loop(t_redir *redir)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	return (-2);
 }
 
-void	set_here_doc(t_redir **redir_node, t_data *data)
+void	set_here_doc(t_redir **redir_node)
 {
 	struct sigaction	oldint;
 	struct termios		saved_termios;
 	int					ret;
 
-	(void)data;
-	(*redir_node)->filename = ft_strdup("/tmp/here_doc_test");
-	if (!(*redir_node)->filename)
-		return ;
-	if (disable_ctrl_backslash(&saved_termios) == -1)
-		return ;
-	setup_heredoc_signal_handlers(&oldint);
-	ret = read_heredoc_loop(*redir_node);
-	sigaction(SIGINT, &oldint, NULL);
-	signal(SIGQUIT, SIG_DFL);
-	tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios);
-	g_sig = 0;
-	if (ret == -42)
-		ft_printf("here_doc.c, L154 - Need to stop the exec of the cmd\n");
+	if (g_sig == 0)
+	{
+		(*redir_node)->filename = ft_strdup("/tmp/here_doc_test");
+		if (!(*redir_node)->filename)
+			return ;
+		if (disable_ctrl_backslash(&saved_termios) == -1)
+			return ;
+		setup_heredoc_signal_handlers(&oldint);
+		ret = read_heredoc_loop(*redir_node);
+		if (ret < 0)
+		{
+			g_sig = 1;
+			return ;
+		}
+		sigaction(SIGINT, &oldint, NULL);
+		signal(SIGQUIT, SIG_DFL);
+		tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios);
+	}
 }

@@ -22,7 +22,7 @@ void	sig_handler_heredoc(int signum)
 	if (signum == SIGINT)
 	{
 		g_sig = 1;
-		write(1, "\n", 1);
+		write(1, "^C\n", 3);
 	}
 }
 
@@ -30,7 +30,7 @@ void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		g_sig = SIGINT;
+		g_sig = 1;
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);

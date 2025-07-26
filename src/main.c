@@ -110,10 +110,19 @@ int	main(int ac, char **av, char **env)
 		data.input = handle_readline(&data);
 		init_token(&data);
 		init_ast(&data.ast, &data.token, &data);
-		data.err = 0;
-		exec_ast(data.ast, &data);
-		free_tmp_data(&data);
-		data.token = NULL;
+		if (g_sig)
+		{
+			data.err = 130; // TODO: Check this
+			free_tmp_data(&data);
+			data.token = NULL;
+		}
+		else
+		{
+			data.err = 0;
+			exec_ast(data.ast, &data);
+			free_tmp_data(&data);
+			data.token = NULL;
+		}
 	}
 	rl_clear_history();
 	return (0);
