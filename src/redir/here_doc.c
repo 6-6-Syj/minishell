@@ -122,7 +122,6 @@ static int	read_heredoc_loop(t_redir *redir)
 			close(fd);
 			ft_putstr_fd("\nminishell: warning: here-document ", STDERR_FILENO);
 			ft_putstr_fd("delimited by end-of-file: ", STDERR_FILENO);
-			ft_printf("\nlim = %s\n", redir->delimiter);
 			ft_putstr_fd(redir->delimiter, STDERR_FILENO);
 			return (0);
 		}
@@ -157,10 +156,13 @@ void	set_here_doc(t_redir **redir_node)
 		if (ret < 0)
 		{
 			g_sig = 1;
+			sigaction(SIGINT, &oldint, NULL);
+			signal(SIGQUIT, SIG_IGN);
+			tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios);
 			return ;
 		}
 		sigaction(SIGINT, &oldint, NULL);
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
 		tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios);
 	}
 }

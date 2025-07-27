@@ -1,22 +1,150 @@
-==526048== Memcheck, a memory error detector
-==526048== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==526048== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==526048== Command: ./minishell
-==526048== Parent PID: 482707
-==526048== 
-==526048== 
-==526048== FILE DESCRIPTORS: 3 open (3 std) at exit.
-==526048== 
-==526048== HEAP SUMMARY:
-==526048==     in use at exit: 208,076 bytes in 223 blocks
-==526048==   total heap usage: 945 allocs, 722 frees, 248,238 bytes allocated
-==526048== 
-==526048== LEAK SUMMARY:
-==526048==    definitely lost: 0 bytes in 0 blocks
-==526048==    indirectly lost: 0 bytes in 0 blocks
-==526048==      possibly lost: 0 bytes in 0 blocks
-==526048==    still reachable: 0 bytes in 0 blocks
-==526048==         suppressed: 208,076 bytes in 223 blocks
-==526048== 
-==526048== For lists of detected and suppressed errors, rerun with: -s
-==526048== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==604507== Memcheck, a memory error detector
+==604507== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==604507== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==604507== Command: ./minishell
+==604507== Parent PID: 582595
+==604507== 
+==604901== 
+==604901== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==604901== 
+==604901== HEAP SUMMARY:
+==604901==     in use at exit: 208,671 bytes in 255 blocks
+==604901==   total heap usage: 1,245 allocs, 990 frees, 304,021 bytes allocated
+==604901== 
+==604901== 6 bytes in 2 blocks are definitely lost in loss record 3 of 74
+==604901==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==604901==    by 0x40A99B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==604901==    by 0x40AA97: ft_itoa (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==604901==    by 0x402A4C: get_expand (expand_utils.c:53)
+==604901==    by 0x402789: handle_expand (expand.c:42)
+==604901==    by 0x402876: expand_var (expand.c:74)
+==604901==    by 0x401CF7: init_token (init_token.c:40)
+==604901==    by 0x40155D: main (main.c:141)
+==604901== 
+==604901== 6 bytes in 2 blocks are definitely lost in loss record 4 of 74
+==604901==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==604901==    by 0x40B71B: ft_substr (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==604901==    by 0x40B665: ft_strtrim (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==604901==    by 0x403D16: ft_echo (echo.c:69)
+==604901==    by 0x404669: exec_builtin (builtins.c:30)
+==604901==    by 0x4080F8: exec_and_restore_fd (exec.c:59)
+==604901==    by 0x4082FB: exec_ast (exec.c:86)
+==604901==    by 0x4015BE: main (main.c:154)
+==604901== 
+==604901== LEAK SUMMARY:
+==604901==    definitely lost: 12 bytes in 4 blocks
+==604901==    indirectly lost: 0 bytes in 0 blocks
+==604901==      possibly lost: 0 bytes in 0 blocks
+==604901==    still reachable: 0 bytes in 0 blocks
+==604901==         suppressed: 208,659 bytes in 251 blocks
+==604901== 
+==604901== For lists of detected and suppressed errors, rerun with: -s
+==604901== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 1 from 1)
+==604902== 
+==604902== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==604902== 
+==604902== HEAP SUMMARY:
+==604902==     in use at exit: 208,671 bytes in 255 blocks
+==604902==   total heap usage: 1,246 allocs, 991 frees, 304,045 bytes allocated
+==604902== 
+==604902== 6 bytes in 2 blocks are definitely lost in loss record 3 of 74
+==604902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==604902==    by 0x40A99B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==604902==    by 0x40AA97: ft_itoa (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==604902==    by 0x402A4C: get_expand (expand_utils.c:53)
+==604902==    by 0x402789: handle_expand (expand.c:42)
+==604902==    by 0x402876: expand_var (expand.c:74)
+==604902==    by 0x401CF7: init_token (init_token.c:40)
+==604902==    by 0x40155D: main (main.c:141)
+==604902== 
+==604902== 6 bytes in 2 blocks are definitely lost in loss record 4 of 74
+==604902==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==604902==    by 0x40B71B: ft_substr (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==604902==    by 0x40B665: ft_strtrim (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==604902==    by 0x403D16: ft_echo (echo.c:69)
+==604902==    by 0x404669: exec_builtin (builtins.c:30)
+==604902==    by 0x4080F8: exec_and_restore_fd (exec.c:59)
+==604902==    by 0x4082FB: exec_ast (exec.c:86)
+==604902==    by 0x4015BE: main (main.c:154)
+==604902== 
+==604902== LEAK SUMMARY:
+==604902==    definitely lost: 12 bytes in 4 blocks
+==604902==    indirectly lost: 0 bytes in 0 blocks
+==604902==      possibly lost: 0 bytes in 0 blocks
+==604902==    still reachable: 0 bytes in 0 blocks
+==604902==         suppressed: 208,659 bytes in 251 blocks
+==604902== 
+==604902== For lists of detected and suppressed errors, rerun with: -s
+==604902== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 1 from 1)
+==605011== 
+==605011== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==605011== 
+==605011== HEAP SUMMARY:
+==605011==     in use at exit: 208,907 bytes in 263 blocks
+==605011==   total heap usage: 1,423 allocs, 1,160 frees, 367,673 bytes allocated
+==605011== 
+==605011== 6 bytes in 2 blocks are definitely lost in loss record 3 of 74
+==605011==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==605011==    by 0x40A99B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==605011==    by 0x40AA97: ft_itoa (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==605011==    by 0x402A4C: get_expand (expand_utils.c:53)
+==605011==    by 0x402789: handle_expand (expand.c:42)
+==605011==    by 0x402876: expand_var (expand.c:74)
+==605011==    by 0x401CF7: init_token (init_token.c:40)
+==605011==    by 0x40155D: main (main.c:141)
+==605011== 
+==605011== 6 bytes in 2 blocks are definitely lost in loss record 4 of 74
+==605011==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==605011==    by 0x40B71B: ft_substr (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==605011==    by 0x40B665: ft_strtrim (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==605011==    by 0x403D16: ft_echo (echo.c:69)
+==605011==    by 0x404669: exec_builtin (builtins.c:30)
+==605011==    by 0x4080F8: exec_and_restore_fd (exec.c:59)
+==605011==    by 0x4082FB: exec_ast (exec.c:86)
+==605011==    by 0x4015BE: main (main.c:154)
+==605011== 
+==605011== LEAK SUMMARY:
+==605011==    definitely lost: 12 bytes in 4 blocks
+==605011==    indirectly lost: 0 bytes in 0 blocks
+==605011==      possibly lost: 0 bytes in 0 blocks
+==605011==    still reachable: 0 bytes in 0 blocks
+==605011==         suppressed: 208,895 bytes in 259 blocks
+==605011== 
+==605011== For lists of detected and suppressed errors, rerun with: -s
+==605011== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 1 from 1)
+==605012== 
+==605012== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==605012== 
+==605012== HEAP SUMMARY:
+==605012==     in use at exit: 208,907 bytes in 263 blocks
+==605012==   total heap usage: 1,424 allocs, 1,161 frees, 367,697 bytes allocated
+==605012== 
+==605012== 6 bytes in 2 blocks are definitely lost in loss record 3 of 74
+==605012==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==605012==    by 0x40A99B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==605012==    by 0x40AA97: ft_itoa (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==605012==    by 0x402A4C: get_expand (expand_utils.c:53)
+==605012==    by 0x402789: handle_expand (expand.c:42)
+==605012==    by 0x402876: expand_var (expand.c:74)
+==605012==    by 0x401CF7: init_token (init_token.c:40)
+==605012==    by 0x40155D: main (main.c:141)
+==605012== 
+==605012== 6 bytes in 2 blocks are definitely lost in loss record 4 of 74
+==605012==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==605012==    by 0x40B71B: ft_substr (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==605012==    by 0x40B665: ft_strtrim (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==605012==    by 0x403D16: ft_echo (echo.c:69)
+==605012==    by 0x404669: exec_builtin (builtins.c:30)
+==605012==    by 0x4080F8: exec_and_restore_fd (exec.c:59)
+==605012==    by 0x4082FB: exec_ast (exec.c:86)
+==605012==    by 0x4015BE: main (main.c:154)
+==605012== 
+==605012== LEAK SUMMARY:
+==605012==    definitely lost: 12 bytes in 4 blocks
+==605012==    indirectly lost: 0 bytes in 0 blocks
+==605012==      possibly lost: 0 bytes in 0 blocks
+==605012==    still reachable: 0 bytes in 0 blocks
+==605012==         suppressed: 208,895 bytes in 259 blocks
+==605012== 
+==605012== For lists of detected and suppressed errors, rerun with: -s
+==605012== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 1 from 1)

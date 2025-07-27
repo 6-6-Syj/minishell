@@ -21,10 +21,6 @@ $? n'expand pas
 exit ""
 
 
-limiter du heredoc
-
-
-
 /!\ A voir
 echo $"HOME"
 echo $'HOME'
@@ -39,14 +35,7 @@ echo $'HOME'
 SYNTAX ERROR
 
 
-
-
-
-
-
-
 __________________________________________________________________
 
-- Si ctrl+\ dans prompt vide puis enter: Segfault
-
-- Si enter apres un ctrl C : Segfault
+- Dans un heredoc ctrl \ ajoute des caracteres invisibles
+- le ctrl c ne rend pas le prompt correctement (pas heredoc)

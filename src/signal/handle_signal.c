@@ -36,7 +36,6 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	g_sig = 0;
 }
 
 bool	init_sig_handler(void)

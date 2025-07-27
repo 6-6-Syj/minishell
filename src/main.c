@@ -87,14 +87,43 @@ char	*handle_readline(t_data *data)
 	signal(SIGINT, SIG_IGN);
 	if (!input)
 		clean_exit(data);
-	if (input[0] == '\0')
+	if (g_sig || input[0] == '\0')
 	{
-		free(input);
+		if (input)
+			free(input);
+		g_sig = 0;
 		return (NULL);
 	}
 	add_history(input);
 	return (input);
 }
+
+// int	main(int ac, char **av, char **env)
+// {
+// 	t_data	data;
+
+// 	(void)ac;
+// 	(void)av;
+// 	init_data(&data, env);
+// 	while (1)
+// 	{
+// 		while (1)
+// 		{
+// 			data.is_nl = false;
+// 			data.input = handle_readline(&data);
+// 			if (!data.input)
+// 				continue ;
+// 			init_token(&data);
+// 			init_ast(&data.ast, &data.token, &data);
+// 			data.err = 0;
+// 			exec_ast(data.ast, &data);
+// 			free_tmp_data(&data);
+// 			data.token = NULL;
+// 		}
+// 	}
+// 	rl_clear_history();
+// 	return (0);
+// }
 
 int	main(int ac, char **av, char **env)
 {
@@ -106,19 +135,18 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		data.is_nl = false;
-		data.input = handle_readline_fixed(&data);
-		// Si pas d'input (ligne vide), continuer
-		if (!data.input)
+		data.input = handle_readline(&data);
+		if (!data.input || !data.input[0])
 			continue ;
 		init_token(&data);
-		print_all(&data);
+		// print_all(&data);
 		init_ast(&data.ast, &data.token, &data);
-		if (g_sig) // Signal reçu
+		if (g_sig)
 		{
-			data.exit_err = 130;
+			data.err = 130;
 			free_tmp_data(&data);
 			data.token = NULL;
-			g_sig = 0; // Reset ici après traitement
+			g_sig = 0;
 		}
 		else
 		{
@@ -132,35 +160,3 @@ int	main(int ac, char **av, char **env)
 	return (0);
 }
 
-// int	main(int ac, char **av, char **env)
-// {
-// 	t_data	data;
-
-// 	(void)ac;
-// 	(void)av;
-// 	init_data(&data, env);
-// 	while (1)
-// 	{
-// 		data.is_nl = false;
-// 		g_sig = 0;
-// 		data.input = handle_readline(&data);
-// 		init_token(&data);
-// 		print_all(&data);
-// 		init_ast(&data.ast, &data.token, &data);
-// 		if (g_sig)
-// 		{
-// 			data.exit_err = 130; // TODO: Check this
-// 			free_tmp_data(&data);
-// 			data.token = NULL;
-// 		}
-// 		else
-// 		{
-// 			data.err = 0;
-// 			exec_ast(data.ast, &data);
-// 			free_tmp_data(&data);
-// 			data.token = NULL;
-// 		}
-// 	}
-// 	rl_clear_history();
-// 	return (0);
-// }
