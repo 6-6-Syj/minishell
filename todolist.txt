@@ -37,3 +37,16 @@ echo $'HOME'
 
 
 SYNTAX ERROR
+
+
+
+
+
+
+
+
+__________________________________________________________________
+
+- Si ctrl+\ dans prompt vide puis enter: Segfault
+
+- Si enter apres un ctrl C : Segfault
