@@ -90,9 +90,10 @@ static int	open_heredoc_file(char *filename)
 	return (fd);
 }
 
-static int	read_heredoc_loop(t_redir *redir)
+static int	read_heredoc_loop(t_redir *redir, t_data *data)
 {
 	char	*line;
+	char	*cleaned;
 	int		fd;
 
 	line = NULL;
@@ -101,12 +102,12 @@ static int	read_heredoc_loop(t_redir *redir)
 		return (-1);
 	while (g_sig != 1)
 	{
-		if (g_sig)
-		{
-			close(fd); // close ALL heredoc not one / ctrl c
-			unlink(redir->filename);
-			return (-2);
-		}
+		//if (g_sig)
+		//{
+		//	close(fd); // close ALL heredoc not one / ctrl c
+		//	unlink(redir->filename);
+		//	return (-2);
+		//}
 		write(1, "> ", 2);
 		line = get_next_line(0);
 		if (g_sig)
@@ -125,20 +126,23 @@ static int	read_heredoc_loop(t_redir *redir)
 			ft_putstr_fd(redir->delimiter, STDERR_FILENO);
 			return (0);
 		}
-		if (ft_strcmp(line, redir->delimiter) == 0)
+		cleaned = clean_ctrl_char(line, data);
+		if (ft_strcmp(cleaned, redir->delimiter) == 0)
 		{
 			free(line);
+			free(cleaned);
 			close(fd);
 			return (0);
 		}
-		ft_putstr_fd(line, fd);
+		ft_putstr_fd(cleaned, fd);
 		write(fd, "\n", 1);
 		free(line);
+		free(cleaned);
 	}
 	return (-2);
 }
 
-void	set_here_doc(t_redir **redir_node)
+void	set_here_doc(t_redir **redir_node, t_data *data)
 {
 	struct sigaction	oldint;
 	struct termios		saved_termios;
@@ -152,7 +156,7 @@ void	set_here_doc(t_redir **redir_node)
 		if (disable_ctrl_backslash(&saved_termios) == -1)
 			return ;
 		setup_heredoc_signal_handlers(&oldint);
-		ret = read_heredoc_loop(*redir_node);
+		ret = read_heredoc_loop(*redir_node, data);
 		if (ret < 0)
 		{
 			g_sig = 1;

@@ -112,7 +112,7 @@ void	add_pid(t_pid_list **pids, pid_t pid, bool is_last, t_data *data)
 	(void)data;
 	new_node = ft_calloc(1, sizeof(t_pid_list));
 	if (!new_node)
-		;
+		malloc_fail(data);
 	if (!(*pids))
 	{
 		*pids = new_node;

@@ -11,6 +11,30 @@
 /* ************************************************************************** */
 
 #include "redir.h"
+#include "print.h"
+
+char	*clean_ctrl_char(char *line, t_data *data)
+{
+    size_t  i;
+	size_t	j;
+    char    *clean;
+
+	i = 0;
+	j = 0;
+    if (!line)
+        return (NULL);
+    clean = malloc(ft_strlen(line) + 1);
+    if (!clean)
+        malloc_fail(data);
+    while (line[i])
+    {
+        if ((unsigned char)line[i] >= ' ' || line[i] == '\n' || line[i] == '\t')
+            clean[j++] = line[i];
+        i++;
+    }
+    clean[j] = '\0';
+    return (clean);
+}
 
 int	disable_ctrl_backslash(struct termios *saved_termios)
 {

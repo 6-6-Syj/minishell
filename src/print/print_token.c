@@ -62,7 +62,7 @@ void	print_token(t_token *token, int i)
 			ft_printf(B " |\n |\n V\n" RST, i);
 		ft_printf(G "[%s]" RST, token->content);
 		print_token_type(token->type);
-		ft_printf(R"  (%d)"RST, token->priority);
+		ft_printf(R "  (%d)" RST, token->priority);
 		ft_printf("\n");
 	}
 }

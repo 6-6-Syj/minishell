@@ -62,7 +62,7 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 				"\n");
 		if (!redir_node->delimiter)
 			return (-1);
-		set_here_doc(&redir_node);
+		set_here_doc(&redir_node, data);
 	}
 	else if (token_node->type & REDIR)
 	{

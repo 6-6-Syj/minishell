@@ -44,7 +44,7 @@ static int	get_exit_code(int status, t_data *data)
 		else if (sig == SIGQUIT && !data->is_nl)
 		{
 			data->is_nl = true;
-			write(STDERR_FILENO, "Quit (core dumped)\n", 28);
+			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
 		}
 		return (128 + sig);
 	}
