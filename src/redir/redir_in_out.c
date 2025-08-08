@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 19:27:38 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/08 19:03:03 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/08 19:57:32 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void	open_files(t_command *cmd, t_data *data)
 	}
 	if (ft_strcmp(cmd->args[0], "(null)") != 0)
 		redir(cmd, data);
-	ft_putstr_fd("XXXXXXXXXXXXxxxx\n", STDOUT_FILENO);
 }
 
 // void	free_pid_list(t_pid_list *pids)

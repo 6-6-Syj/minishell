@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:36:22 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/08 18:50:09 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/08 19:57:16 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	exec_ast(t_ast *node, t_data *data)
 	fd[0] = 0;
 	fd[1] = 1;
 	init_backup(&backup);
-	// ft_printf("XXXXXXXXXXXX\n");
 	if (!node)
 		exit_error(data);
 	if (node->type == CMD && node->command.args && node->command.args[0]
