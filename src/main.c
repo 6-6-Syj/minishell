@@ -27,7 +27,7 @@ volatile sig_atomic_t	g_sig;
 
 // 	fd = 3;
 // 	if (isatty(fileno(stdin)))
-// 		str = readline("minishell$ ");
+// 		str = readline(">");
 // 	else
 // 	{
 // 		str = get_next_line(fileno(stdin));
@@ -87,43 +87,14 @@ char	*handle_readline(t_data *data)
 	signal(SIGINT, SIG_IGN);
 	if (!input)
 		clean_exit(data);
-	if (g_sig || input[0] == '\0')
+	if (input[0] == '\0')
 	{
-		if (input)
-			free(input);
-		g_sig = 0;
+		free(input);
 		return (NULL);
 	}
 	add_history(input);
 	return (input);
 }
-
-// int	main(int ac, char **av, char **env)
-// {
-// 	t_data	data;
-
-// 	(void)ac;
-// 	(void)av;
-// 	init_data(&data, env);
-// 	while (1)
-// 	{
-// 		while (1)
-// 		{
-// 			data.is_nl = false;
-// 			data.input = handle_readline(&data);
-// 			if (!data.input)
-// 				continue ;
-// 			init_token(&data);
-// 			init_ast(&data.ast, &data.token, &data);
-// 			data.err = 0;
-// 			exec_ast(data.ast, &data);
-// 			free_tmp_data(&data);
-// 			data.token = NULL;
-// 		}
-// 	}
-// 	rl_clear_history();
-// 	return (0);
-// }
 
 int	main(int ac, char **av, char **env)
 {
@@ -135,28 +106,16 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		data.is_nl = false;
+		g_sig = 0;
 		data.input = handle_readline(&data);
-		if (!data.input || !data.input[0])
-			continue ;
 		init_token(&data);
-		// print_all(&data);
 		init_ast(&data.ast, &data.token, &data);
-		if (g_sig)
-		{
-			data.err = 130;
-			free_tmp_data(&data);
-			data.token = NULL;
-			g_sig = 0;
-		}
-		else
-		{
-			data.err = 0;
-			exec_ast(data.ast, &data);
-			free_tmp_data(&data);
-			data.token = NULL;
-		}
+		print_all(&data);
+		data.err = 0;
+		exec_ast(data.ast, &data);
+		free_tmp_data(&data);
+		data.token = NULL;
 	}
 	rl_clear_history();
 	return (0);
 }
-

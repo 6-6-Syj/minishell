@@ -183,7 +183,7 @@ int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
 {
 	t_token	*root_token;
 
-	if (!token_lst || !*token_lst)
+	if (!token_lst || !*token_lst) // TODO: is_no_command();
 	{
 		*ast_lst = create_command_node(NULL, data);
 		return (0);

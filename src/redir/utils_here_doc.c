@@ -28,7 +28,7 @@ char	*clean_ctrl_char(char *line, t_data *data)
         malloc_fail(data);
     while (line[i])
     {
-        if ((unsigned char)line[i] >= ' ' || line[i] == '\n' || line[i] == '\t')
+        if (line[i] >= ' ' || line[i] == '\n' || line[i] == '\t')
             clean[j++] = line[i];
         i++;
     }
