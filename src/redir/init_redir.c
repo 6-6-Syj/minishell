@@ -50,6 +50,26 @@ char	*get_redir_delimiter(t_token *token_node)
 	return (NULL);
 }
 
+char	*get_redir_target(t_token **root_token)
+{
+	t_token	*token_node;
+	char	*redir_target;
+
+	if (!*root_token || !(*root_token)->next)
+		return (NULL);
+	token_node = (*root_token)->next;
+	while (token_node && token_node->type != PIPE)
+	{
+		if (token_node->type == REDIR_TARGET)
+		{
+			redir_target = ft_strdup(token_node->content);
+			return (redir_target);
+		}
+		token_node = token_node->next;
+	}
+	return (NULL);
+}
+
 int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 {
 	(void)data;
@@ -66,7 +86,8 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 	}
 	else if (token_node->type & REDIR)
 	{
-		redir_node->filename = ft_strdup(token_node->next->content);
+		redir_node->filename = get_redir_target(&token_node);
+		// redir_node->filename = ft_strdup(token_node->next->content);
 		if (!redir_node->filename)
 			return (-1);
 	}

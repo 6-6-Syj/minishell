@@ -176,18 +176,26 @@ t_ast	*parse_token(t_token *token, t_data *data)
 		return (create_pipe_node(token, data));
 	if (token->type == CMD)
 		return (create_command_node(token, data));
+	else if (token->type & REDIR)
+		return (create_command_node(token, data));
 	return (NULL);
+}
+
+bool	is_command(t_token *token_node)
+{
+	while (token_node)
+	{
+		if (token_node->type == CMD)
+			return (false);
+		token_node = token_node->next;
+	}
+	return (true);
 }
 
 int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
 {
 	t_token	*root_token;
 
-	if (!token_lst || !*token_lst) // TODO: is_no_command();
-	{
-		*ast_lst = create_command_node(NULL, data);
-		return (0);
-	}
 	root_token = get_root_token(token_lst, 0);
 	if (!root_token) // handle special case here ? (no command)
 		return (1);

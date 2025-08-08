@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:42:44 by jmagand           #+#    #+#             */
-/*   Updated: 2025/06/30 19:08:07 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/08 18:59:00 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
 {
 	pid_t	pid;
 	bool	is_last;
-
+			
 	pid = w_fork(data);
 	if (pid == 0)
 	{

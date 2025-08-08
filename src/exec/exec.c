@@ -6,24 +6,26 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:36:22 by jmagand           #+#    #+#             */
-/*   Updated: 2025/07/17 22:13:36 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/08 18:50:09 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
 #include "exec.h"
+#include "handle_signal.h"
 #include "pipe.h"
 #include "redir.h"
-#include "handle_signal.h"
 
 void	handle_ast(t_ast *node, t_data *data, int *fd, t_pid_list **pids)
 {
 	if (!node)
 		return ;
-	if (node->type == CMD)
+	if (node->type == CMD && node->command.args[0])
 		handle_command(&node->command, data, pids, node);
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd, pids);
+	else
+		open_files(&node->command, data);
 }
 
 static void	init_backup(t_fd_backup *backup)
