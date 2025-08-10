@@ -1,5 +1,5 @@
-#include "minishell.h"
 #include "libft.h"
+#include "minishell.h"
 
 void	set_command_type(t_token **token_lst)
 {
@@ -49,7 +49,8 @@ void	set_file_type(t_token **token_lst)
 		{
 			if (token_node->next->type == SPACE)
 				token_node = token_node->next;
-			token_node->next->type = REDIR_TARGET;
+			if (token_node->next->type == WORD)
+				token_node->next->type = REDIR_TARGET;
 		}
 		token_node = token_node->next;
 	}

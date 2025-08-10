@@ -6,11 +6,12 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 18:04:05 by jmagand           #+#    #+#             */
-/*   Updated: 2025/07/17 22:08:25 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/10 01:09:17 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "print.h"
 
 static int	parse_echo(char **args, int *i)
 {

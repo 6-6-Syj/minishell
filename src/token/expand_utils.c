@@ -1,11 +1,17 @@
 #include "libft.h"
 #include "minishell.h"
 
+static bool	is_special_char(char c)
+{
+	if (c == ',' || c == ' ')
+		return (true);
+	return (false);
+}
 bool	is_expand(char *token_content)
 {
-	if (!token_content[0] || !token_content[1])
+	if (ft_strlen(token_content) < 2)
 		return (false);
-	if (token_content[0] == '$')
+	if (token_content[0] == '$' && !is_special_char(token_content[1]))
 		return (true);
 	return (false);
 }
@@ -21,7 +27,8 @@ int	get_expand_key_len(char *token_content)
 		return (1);
 	// while (token_content[i] && is_part_of_word(token_content[i]))
 	while (token_content[i] && token_content[i] != '$'
-		&& token_content[i] != '/' && token_content[i] != ' ' && token_content[i] != '\'')
+		&& token_content[i] != '/' && token_content[i] != ' '
+		&& token_content[i] != '\'')
 		i++;
 	return (i - 1);
 }
@@ -37,7 +44,8 @@ int	get_expand_key_len(char *token_content)
 // 		return (2);
 // 	// while (token_content[i] && is_part_of_word(token_content[i]))
 // 	while (token_content[i] && token_content[i] != '$'
-// 		&& token_content[i] != '/' && token_content[i] != ' ' && token_content[i] != '\'')
+// 		&& token_content[i] != '/' && token_content[i] != ' '
+			// && token_content[i] != '\'')
 // 		i++;
 // 	return (i);
 // 	// return (i - 1);
@@ -45,9 +53,9 @@ int	get_expand_key_len(char *token_content)
 
 char	*get_expand(char *token, t_data *data)
 {
-	char *expand_key;
-	char *expand_value;
-	int len;
+	char	*expand_key;
+	char	*expand_value;
+	int		len;
 
 	if (ft_strncmp(token, "$?", 2) == 0)
 		return (ft_itoa(data->err));

@@ -80,6 +80,7 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 	{
 		redir_node->delimiter = ft_strjoin(get_redir_delimiter(token_node),
 				"\n");
+		// replace with get_redir_target ?
 		if (!redir_node->delimiter)
 			return (-1);
 		set_here_doc(&redir_node, data);
@@ -87,7 +88,6 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 	else if (token_node->type & REDIR)
 	{
 		redir_node->filename = get_redir_target(&token_node);
-		// redir_node->filename = ft_strdup(token_node->next->content);
 		if (!redir_node->filename)
 			return (-1);
 	}

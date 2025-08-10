@@ -32,7 +32,7 @@ bool	is_part_of_word(char c)
 		return (false);
 	else if (c == '>')
 		return (false);
-	else if (c == ' ')
+	else if (c == ' ' || (c >= 9 && c <= 13))
 		return (false);
 	return (true);
 }
