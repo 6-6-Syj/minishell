@@ -78,8 +78,7 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 	redir_node->type = token_node->type;
 	if (token_node->type == HERE_DOC)
 	{
-		redir_node->delimiter = ft_strjoin(get_redir_delimiter(token_node),
-				"\n");
+		redir_node->delimiter = get_redir_delimiter(token_node);
 		// replace with get_redir_target ?
 		if (!redir_node->delimiter)
 			return (-1);

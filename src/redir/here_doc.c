@@ -11,72 +11,18 @@
 
 extern volatile int	g_sig;
 
-// char *get_here_doc_id(void)
-// {
-// 	int	i;
-// 	int	fd;
-// 	char	*id;
-// 	char	c_buff;
-
-// 	i = 0;
-// 	id = ft_calloc(4, sizeof(char));
-// 	fd = open("/dev/urandom", O_RDONLY); // TODO: secu
-// 	while (i < 4)
-// 	{
-// 		read(fd, &c_buff, 1); // TODO: secu
-// 		if (ft_isdigit(c_buff))
-// 			id[i++] = c_buff;
-// 	}
-// 	close(fd);
-// 	return (id);
-// }
-
-// char *get_here_doc_filename(void)
-// {
-// 	// char	*id;
-// 	char	*filename;
-
-// 	filename = ft_strjoin("tmp/here_doc", get_here_doc_id());
-// 	ft_printf("filename = %s\n", filename);
-// 	while (access(filename, F_OK) == 0)
-// 	{
-// 		free(filename);
-// 		filename = ft_strjoin("tmp/here_doc", get_here_doc_id());
-// 	}
-// 	return (filename);
-// }
-// char	*get_filename_here_doc(char *path, char *key)
-// {
-// 	char	*filename;
-
-// 	while (1)
-// 	{
-// 		filename = ft_strjoin(path, key);
-// 		if (access(filename, F_OK) == -1)
-// 			return (filename);
-// 		// key = get_new_key();
-// 	}
-// 	return (filemame);
-// }
-
-// static bool	sig_handler_heredoc(char *line, int fd, t_redir **redir_node)
-// {
-// 	if (g_sig == SIGINT || !line)
-// 	{
-// 		close(fd);
-// 		unlink((*redir_node)->filename);
-// 		return (true);
-// 	}
-// }
-
-static void	setup_heredoc_signal_handlers(struct sigaction *oldint)
+static void	init_heredoc_sig_handler(void)
 {
 	struct sigaction	sa;
 
 	sa.sa_handler = sig_handler_heredoc;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, oldint);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		ft_putstr_fd("sigaction failed\n", STDERR_FILENO);
+		return ;
+	}
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -90,83 +36,100 @@ static int	open_heredoc_file(char *filename)
 	return (fd);
 }
 
+static bool	ctrl_c_catched(char *line, int fd, char *filename)
+{
+	if (g_sig == 1)
+	{
+		if (line)
+			free(line);
+		close(fd);
+		unlink(filename);
+		return (true);
+	}
+	return (false);
+}
+
+static bool	eof_catched(char *line, int fd, t_redir *redir, t_data *data)
+{
+	if (!line || !ft_strcmp(handle_expand(line, data), redir->delimiter))
+	{
+		if (!line)
+		{
+			ft_putstr_fd("minishell: warning: here-document ", STDERR_FILENO);
+			ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
+			ft_putstr_fd(redir->delimiter, STDERR_FILENO);
+			ft_putstr_fd("')\n", STDERR_FILENO);
+		}
+		close(fd);
+		signal(SIGINT, SIG_IGN);
+		return (true);
+	}
+	return (false);
+}
+
 static int	read_heredoc_loop(t_redir *redir, t_data *data)
 {
 	char	*line;
-	char	*cleaned;
 	int		fd;
 
-	line = NULL;
 	fd = open_heredoc_file(redir->filename);
 	if (fd < 0)
 		return (-1);
-	while (g_sig != 1)
+	init_heredoc_sig_handler();
+	while (g_sig == 0)
 	{
-		//if (g_sig)
-		//{
-		//	close(fd); // close ALL heredoc not one / ctrl c
-		//	unlink(redir->filename);
-		//	return (-2);
-		//}
-		write(1, "> ", 2);
-		line = get_next_line(0);
-		if (g_sig)
-		{
-			if (line)
-				free(line);
-			close(fd);
-			unlink(redir->filename);
+		signal(SIGINT, sig_handler_heredoc);
+		line = readline("> ");
+		if (ctrl_c_catched(line, fd, redir->filename))
 			return (-1);
-		}
-		if (!line)
-		{
-			close(fd);
-			ft_putstr_fd("\nminishell: warning: here-document ", STDERR_FILENO);
-			ft_putstr_fd("delimited by end-of-file: ", STDERR_FILENO);
-			ft_putstr_fd(redir->delimiter, STDERR_FILENO);
+		if (eof_catched(line, fd, redir, data))
 			return (0);
-		}
-		cleaned = clean_ctrl_char(line, data);
-		if (ft_strcmp(cleaned, redir->delimiter) == 0)
-		{
-			free(line);
-			free(cleaned);
-			close(fd);
-			return (0);
-		}
-		ft_putstr_fd(cleaned, fd);
+		ft_putstr_fd(line, fd);
 		write(fd, "\n", 1);
 		free(line);
-		free(cleaned);
 	}
-	return (-2);
+	close(fd);
+	unlink(redir->filename);
+	signal(SIGINT, SIG_IGN);
+	return (-1);
+}
+
+static char	*get_filename(t_data *data)
+{
+	char		*counter_str;
+	char		*filename;
+	static int	count;
+
+	count = 0;
+	counter_str = ft_itoa(count++);
+	filename = ft_strjoin("/tmp/here_doc_", counter_str);
+	free(counter_str);
+	while (access(filename, F_OK) == 0)
+	{
+		free(filename);
+		counter_str = ft_itoa(count++);
+		filename = ft_strjoin("/tmp/here_doc_", counter_str);
+		free(counter_str);
+		if (!filename)
+			malloc_fail(data);
+	}
+	return (filename);
 }
 
 void	set_here_doc(t_redir **redir_node, t_data *data)
 {
-	struct sigaction	oldint;
-	struct termios		saved_termios;
-	int					ret;
+	int		ret;
+	char	*filename;
 
-	if (g_sig == 0)
-	{
-		(*redir_node)->filename = ft_strdup("/tmp/here_doc_test");
-		if (!(*redir_node)->filename)
-			return ;
-		if (disable_ctrl_backslash(&saved_termios) == -1)
-			return ;
-		setup_heredoc_signal_handlers(&oldint);
-		ret = read_heredoc_loop(*redir_node, data);
-		if (ret < 0)
-		{
-			g_sig = 1;
-			sigaction(SIGINT, &oldint, NULL);
-			signal(SIGQUIT, SIG_IGN);
-			tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios);
-			return ;
-		}
-		sigaction(SIGINT, &oldint, NULL);
-		signal(SIGQUIT, SIG_IGN);
-		tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios);
-	}
+	if (g_sig != 0)
+		return ;
+	filename = get_filename(data);
+	(*redir_node)->filename = filename;
+	if (!(*redir_node)->filename)
+		return ;
+	ret = read_heredoc_loop(*redir_node, data);
+	if (ret < 0)
+		return ;
+	if (ret == 0)
+		g_sig = 0;
 }

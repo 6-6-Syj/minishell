@@ -19,15 +19,45 @@
 volatile int			g_sig;
 volatile sig_atomic_t	g_sig;
 
+static void	clean_exit(t_data *data)
+{
+	int	fd;
+
+	fd = 3;
+	while (fd < 1024)
+	{
+		close(fd);
+		fd++;
+	}
+	if (data->env)
+		free_env_lst(&data->env);
+	if (data->env_tab)
+		free_env_tab(data);
+	ft_printf("exit\n");
+	rl_clear_history();
+	exit(data->err);
+}
+
 static char	*handle_readline(t_data *data)
 {
 	char	*line;
-	// int		fd;
 	char	*str;
 
-	// fd = 3;
 	if (isatty(fileno(stdin)))
-		str = readline(">");
+	{
+		signal(SIGINT, sig_handler);
+		str = readline("minishell$ ");
+		signal(SIGINT, SIG_IGN);
+		if (!str)
+			clean_exit(data);
+		if (str[0] == '\0')
+		{
+			free(str);
+			return (NULL);
+		}
+		add_history(str);
+		return (str);
+	}
 	else
 	{
 		str = get_next_line(fileno(stdin));
@@ -39,43 +69,12 @@ static char	*handle_readline(t_data *data)
 		}
 		if (!str)
 		{
-			// ft_printf("exit\n");
-			// while (fd < 1024)
-			// 	close(fd++);
 			exit_error(data);
 			return (NULL);
 		}
 	}
-	// line = readline("> ");
-	// if (str[0] != '\0')
-	// 	add_history(str);
-	// else
-	// {
-	// 	free(str);
-	// 	return (NULL);
-	// }
-	// return (str);
 	return (str);
 }
-
-// static void	clean_exit(t_data *data)
-// {
-// 	int	fd;
-
-// 	fd = 3;
-// 	while (fd < 1024)
-// 	{
-// 		close(fd);
-// 		fd++;
-// 	}
-// 	if (data->env)
-// 		free_env_lst(&data->env);
-// 	if (data->env_tab)
-// 		free_env_tab(data);
-// 	ft_printf("exit\n");
-// 	rl_clear_history();
-// 	exit(data->err);
-// }
 
 // char	*handle_readline(t_data *data)
 // {
@@ -96,6 +95,18 @@ static char	*handle_readline(t_data *data)
 // 	return (input);
 // }
 
+// static void	check_tty(int ac, char **av, t_data *data)
+// {
+// 	(void)ac;
+// 	(void)av;
+// 	if(!isatty(STDOUT_FILENO))
+// 	{
+// 		ft_putstr_fd("Error: stdout is not a tty\n", STDERR_FILENO);
+// 		data->err = 130;
+// 		exit_error(data);
+// 	}
+// }
+
 int	main(int ac, char **av, char **env)
 {
 	t_data	data;
@@ -108,10 +119,13 @@ int	main(int ac, char **av, char **env)
 		data.is_nl = false;
 		g_sig = 0;
 		data.input = handle_readline(&data);
+		if (!data.input)
+			continue ;
 		init_token(&data);
 		init_ast(&data.ast, &data.token, &data);
 		data.err = 0;
-		exec_ast(data.ast, &data);
+		if (g_sig == 0)
+			exec_ast(data.ast, &data);
 		free_tmp_data(&data);
 		data.token = NULL;
 	}

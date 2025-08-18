@@ -89,7 +89,8 @@ void	exec_ast(t_ast *node, t_data *data)
 	else
 	{
 		handle_ast(node, data, fd, &pids);
-		data->err = wait_all_processes(pids, data);
+		if (!data->err)
+			data->err = wait_all_processes(pids, data);
 		// free_pid_list(&pids);
 	}
 }

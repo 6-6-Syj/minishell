@@ -66,6 +66,17 @@ static void	open_infile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 		}
 		cmd->fd_in = *fd;
 	}
+	else if (file->type == HERE_DOC)
+	{
+		*fd = open(file->filename, O_RDONLY, 0644);
+		if (*fd == -1)
+		{
+			perror(file->filename);
+			data->err = 1;
+			return ;
+		}
+		cmd->fd_in = *fd;
+	}
 }
 
 void	open_files(t_command *cmd, t_data *data)
