@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_data.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-07-24 20:29:40 by jmagand           #+#    #+#             */
-/*   Updated: 2025-07-24 20:29:40 by jmagand          ###   ########.fr       */
+/*   Created: 2025/07/24 20:29:40 by jmagand           #+#    #+#             */
+/*   Updated: 2025/08/18 22:37:00 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	update_shlvl(t_data *data)
 	{
 		shlvl_int = ft_atoi(shlvl_str);
 		shlvl_int++;
+		free(shlvl_str);
 		shlvl_str = ft_itoa(shlvl_int);
 		set_env_var(data, "SHLVL", shlvl_str);
 		free(shlvl_str); // LEAKS

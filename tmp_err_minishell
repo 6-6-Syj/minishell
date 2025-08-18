@@ -1,0 +1,14 @@
+tcgetattr: Inappropriate ioctl for device
+tcgetattr: Inappropriate ioctl for device
+tcgetattr: Inappropriate ioctl for device
+tcgetattr: Inappropriate ioctl for device
+minishell: dabuchhe: command not found
+minishell: ad: command not found
+minishell: stop: command not found
+minishell: dsa: command not found
+minishell: stop1: command not found
+minishell: sad: command not found
+minishell: stop2: command not found
+Assembler messages:
+Error: can't read from /home/dabuchhe: Is a directory
+minishell: stop3: command not found

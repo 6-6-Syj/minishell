@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getter_setter.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-10 16:11:59 by jmagand           #+#    #+#             */
-/*   Updated: 2025-06-10 16:11:59 by jmagand          ###   ########.fr       */
+/*   Created: 2025/06/10 16:11:59 by jmagand           #+#    #+#             */
+/*   Updated: 2025/08/18 22:33:24 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@
 char	*get_env_var(t_data *data, char *key)
 {
 	t_env	*current;
-
 	current = data->env;
 	while (current)
 	{
 		if (!ft_strcmp(current->key, key))
-			return (current->value);
+			return (ft_strdup(current->value));
 		current = current->next;
 	}
 	return (NULL);
