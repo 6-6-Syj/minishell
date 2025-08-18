@@ -19,7 +19,7 @@ bool	is_in_quote(char *token, int pos)
 	return (in_quote);
 }
 
-void	remove_quote(char **token_content)
+void	remove_quote(char **token_content, t_data *data)
 {
 	char	*buff;
 	int		len;
@@ -31,6 +31,8 @@ void	remove_quote(char **token_content)
 	// 	buff = ft_substr(*token_content, 1, 2);
 	else
 		buff = ft_substr(*token_content, 1, len - 2);
+	if (!buff)
+		exit_error(data); // TODO: secure;
 	free(*token_content);
 	*token_content = buff;
 }
@@ -44,13 +46,14 @@ void	remove_simple_quote(t_token **token_lst, t_data *data)
 	{
 		if (current->type == QUOTE_S)
 		{
-			remove_quote(&current->content);
-			if (current->content[0] == '\0')
-				remove_node(current, data);
+			remove_quote(&current->content, data);
+			// if (current->content[0] == '\0')
+			// {
+			// 	free(current->content);
+			// 	current->content = NULL;
+			// }
 			current->type = WORD;
 		}
-		if (!current->content)
-			remove_node(current, data);
 		current = current->next;
 	}
 }
@@ -66,13 +69,14 @@ void	remove_double_quote(t_token **token_lst, t_data *data)
 		tmp = current->next;
 		if (current->type == QUOTE_D)
 		{
-			remove_quote(&current->content);
+			remove_quote(&current->content, data);
 			current->type = WORD;
-			if (current->content[0] == '\0')
-				remove_node(current, data);
+			// if (current->content[0] == '\0')
+			// {
+			// 	free(current->content);
+			// 	current->content = NULL;
+			// }
 		}
-		if (!current->content)
-			remove_node(current, data);
 		current = tmp;
 	}
 }

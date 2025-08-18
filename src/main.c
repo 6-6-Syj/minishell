@@ -22,10 +22,10 @@ volatile sig_atomic_t	g_sig;
 static char	*handle_readline(t_data *data)
 {
 	char	*line;
-	int		fd;
+	// int		fd;
 	char	*str;
 
-	fd = 3;
+	// fd = 3;
 	if (isatty(fileno(stdin)))
 		str = readline(">");
 	else

@@ -99,7 +99,7 @@ char	*handle_expand(char *token, t_data *data);
 void	set_command_type(t_token **token_lst);
 void	set_token_type(t_token **token_lst, t_data *data);
 void	set_file_type(t_token **token_lst);
-void	remove_quote(char **token_content);
+void	remove_quote(char **token_content, t_data *data);
 void	remove_simple_quote(t_token **token_lst, t_data *data);
 void	remove_double_quote(t_token **token_lst, t_data *data);
 void	expand_var(t_token **token_lst, t_data *data);
