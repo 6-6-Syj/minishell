@@ -52,7 +52,7 @@ static bool	handle_first_arg(t_command *cmd, int *exit_code)
 		*exit_code = (int)(num % 256);
 		if (*exit_code < 0)
 			*exit_code += 256;
-		ft_putstr_fd("exit\n", STDIN_FILENO); // TODO: UNDERSTAND WHY STDIN
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 		return (false);
 	}
 	else
@@ -75,7 +75,7 @@ int	ft_exit(t_command *cmd, t_data *data)
 	if (!cmd->args[1])
 	{
 		exit_code = data->exit_err;
-		ft_putstr_fd("exit\n", STDIN_FILENO); // TODO: UNDERSTAND WHY STDIN
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	}
 	else
 	{

@@ -16,6 +16,7 @@
 char	*get_env_var(t_data *data, char *key)
 {
 	t_env	*current;
+
 	current = data->env;
 	while (current)
 	{

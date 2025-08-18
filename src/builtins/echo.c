@@ -35,14 +35,6 @@ static int	parse_echo(char **args, int *i)
 	return (newline);
 }
 
-// static bool	is_special_case(char *str)
-// {
-// 	if (str[0] == '-' && !str[1])
-// 		return (true);
-// 	else
-// 		return (false);
-// }
-
 static bool	handle_echo_no_arg(t_command *cmd)
 {
 	if (!cmd->args[1])
@@ -53,6 +45,16 @@ static bool	handle_echo_no_arg(t_command *cmd)
 	return (false);
 }
 
+/*
+if (is_special_case(ft_strtrim(cmd->args[1], " ")))
+	still reachable echo ''''''''''$USER''''''''''
+	{
+		ft_putchar_fd('-', STDOUT_FILENO);
+		if (newline)
+			ft_putchar_fd('\n', STDOUT_FILENO);
+		return (0);
+		}
+*/
 static bool	handle_echo_special_case(t_command *cmd)
 {
 	int	i;
@@ -79,9 +81,6 @@ static bool	handle_echo_special_case(t_command *cmd)
 	}
 	return (false);
 }
-// HANDLE \t, for example:
-// echo test1		test2
-// echo -n test1		test2
 
 int	ft_echo(t_command *cmd)
 {
@@ -96,14 +95,6 @@ int	ft_echo(t_command *cmd)
 		return (0);
 	if (handle_echo_special_case(cmd))
 		return (0);
-	// if (is_special_case(ft_strtrim(cmd->args[1], " ")))
-	// still reachable echo ''''''''''$USER''''''''''
-	// {
-	// 	ft_putchar_fd('-', STDOUT_FILENO);
-	// 	if (newline)
-	// 		ft_putchar_fd('\n', STDOUT_FILENO);
-	// 	return (0);
-	// }
 	while (cmd->args[i])
 	{
 		ft_putstr_fd(cmd->args[i], STDOUT_FILENO);

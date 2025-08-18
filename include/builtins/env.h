@@ -48,6 +48,10 @@ typedef struct s_env
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
+/* env_i_utils.c */
+void				malloc_failed(t_data *data, char *pwd);
+void				init_underscore_i(t_data *data);
+
 bool				is_set_env(t_env *new_env, char *env_line);
 t_env				*get_last_env(t_env *lst);
 t_env				*add_env_node(t_env **env_lst);

@@ -12,12 +12,6 @@
 
 #include "builtins.h"
 
-/*
-	NO ERROR CODE
-		If no env, no path, so command cant be executed
-			else env got PATH="smtg/ok/", so NO error.
-*/
-
 int	ft_env(t_env *env_lst)
 {
 	t_env	*current;

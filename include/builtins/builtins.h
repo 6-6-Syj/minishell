@@ -36,24 +36,45 @@ int							is_builtin(char *cmd);
 int							exec_builtin(t_command *command, t_env **env_lst,
 								t_data *data);
 
+/* cd */
 int							ft_cd(t_command *cmd, t_data *data);
+
+/* cd_utils */
+bool						is_symlink(const char *path);
 
 /* export */
 int							handle_export(t_command *cmd, t_env **env_lst,
 								t_data *data);
+
+/* export_utils */
+bool						got_special_char(char *key);
+bool						is_key_valid(char *key);
+
 /* print_export */
 int							print_export(t_env *env_lst, t_data *data);
+
 /* pint_export_utils */
 void						free_copy_env_lst(t_env *copy_env_lst);
 void						sort_env_list(t_env *env_lst);
 
+/* unset */
 int							handle_unset(t_command *cmd, t_env **env_lst,
 								t_data *data);
+
+/* env */
 int							ft_env(t_env *env_lst);
+
+/* pwd */
 int							ft_pwd(t_data *data);
+
+/* echo */
 int							ft_echo(t_command *cmd);
 
-long long					ft_atoll_shell(const char *str);
+
+/* exit */
 int							ft_exit(t_command *cmd, t_data *data);
+
+/* exit_utils */
+long long					ft_atoll_shell(const char *str);
 
 #endif

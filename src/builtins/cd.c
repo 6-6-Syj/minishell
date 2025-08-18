@@ -16,16 +16,6 @@
 #include <string.h>
 #include <sys/stat.h>
 
-bool	is_symlink(const char *path)
-{
-	struct stat	sb;
-
-	if (lstat(path, &sb) == 0 && S_ISLNK(sb.st_mode))
-		return (true);
-	else
-		return (false);
-}
-
 static int	w_cd(char *target, t_data *data)
 {
 	char	oldpwd[PATH_MAX];
