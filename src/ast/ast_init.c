@@ -182,6 +182,7 @@ int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
 {
 	t_token	*root_token;
 
+	
 	root_token = get_root_token(token_lst, 0);
 	if (!root_token) // handle special case here ? (no command)
 		return (1);

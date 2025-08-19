@@ -61,10 +61,7 @@ void	remove_double_quote(t_token **token_lst, t_data *data)
 	{
 		tmp = current->next;
 		if (current->type == QUOTE_D)
-		{
 			remove_quote(&current->content, data);
-			current->type = WORD;
-		}
 		current = tmp;
 	}
 }

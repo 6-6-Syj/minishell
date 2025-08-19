@@ -49,7 +49,7 @@ char	*handle_expand(char *token, int i, t_data *data)
 	char	*expand;
 	char	*last;
 
-	while (token && token[i])
+	while (token && token[++i])
 	{
 		if (is_expand(&token[i]))
 		{
@@ -66,9 +66,8 @@ char	*handle_expand(char *token, int i, t_data *data)
 			}
 			free(token);
 			token = concatenate_expand(first, expand, last, data);
-			i = 0;
+			i = -1;
 		}
-		i++;
 	}
 	return (token);
 }
@@ -76,14 +75,20 @@ char	*handle_expand(char *token, int i, t_data *data)
 void	expand_var(t_token **token_lst, t_data *data)
 {
 	t_token	*current;
+	t_token	*next;
 
 	current = *token_lst;
 	while (current)
 	{
+		next = current->next;
 		if (current->content && current->type != QUOTE_S)
 		{
-			current->content = handle_expand(current->content, 0, data);
+			current->content = handle_expand(current->content, -1, data);
+			if (!current->content[0] && current->type != QUOTE_D)
+				remove_node(current, data);
+			if (current->type == QUOTE_D)
+				current->type = WORD;
 		}
-		current = current->next;
+		current = next;
 	}
 }
