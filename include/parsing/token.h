@@ -95,7 +95,7 @@ int		remove_node(t_token *node, t_data *data);
 int		remove_space(t_token **token_lst, t_data *data);
 void	add_next_token_node(t_token **current);
 void	add_prev_token_node(t_token **current);
-char	*handle_expand(char *token, t_data *data);
+char	*handle_expand(char *token, int i, t_data *data);
 void	set_command_type(t_token **token_lst);
 void	set_token_type(t_token **token_lst, t_data *data);
 void	set_file_type(t_token **token_lst);

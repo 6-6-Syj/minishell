@@ -12,6 +12,7 @@
 
 #include "libft.h"
 #include "minishell.h"
+#include "print.h"
 
 void	set_command_type(t_token **token_lst)
 {
@@ -45,7 +46,11 @@ void	set_token_type(t_token **token_lst, t_data *data)
 	{
 		token_node->type = get_token_type(token_node);
 		if (token_node->type == UNKNOWN)
+		{
+			data->err = 2;
+			printf("Error\n");
 			exit_error(data); // syntax_error;
+		}
 		token_node = token_node->next;
 	}
 }

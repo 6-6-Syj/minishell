@@ -34,24 +34,10 @@ void	lexer(t_data *data)
 			malloc_fail(data);
 		len = get_token_len(&data->input[i]);
 		new_token->content = ft_strndup(&data->input[i], len);
-		// if (!new_token->content)
-		// 	exit_error(data);
+		if (!new_token->content)
+			malloc_fail(data);
 		i += get_token_len(&data->input[i]);
 	}
-}
-
-int	get_cmd_count(t_token *token)
-{
-	int	count;
-
-	count = 0;
-	while (token)
-	{
-		if (token->type == CMD)
-			count++;
-		token = token->next;
-	}
-	return (count);
 }
 
 bool	redir_is_valid(t_token *token)
@@ -77,9 +63,10 @@ bool	syntax_is_valid(t_token *token)
 {
 	if (!redir_is_valid(token))
 		return (false);
+	if (token->type == PIPE)
+		return (false);
 	return (true);
 }
-// TODO: concatenate useless space
 
 void	handle_space(t_token **token_lst, t_data *data)
 {
@@ -106,7 +93,6 @@ void	init_token(t_data *data)
 	remove_double_quote(&data->token, data);
 	expand_var(&data->token, data);
 	remove_simple_quote(&data->token, data);
-	// remove_space(&data->token, data);
 	handle_space(&data->token, data);
 	set_file_type(&data->token);
 	join_word(&data->token, data);
@@ -115,12 +101,7 @@ void	init_token(t_data *data)
 	if (!syntax_is_valid(data->token))
 	{
 		ft_putstr_fd("Error\n", 2);
+		data->err = 2;
 		exit_error(data);
 	}
 }
-
-// syntax_error:
-// -redir without target
-// -pipe without command or redir
-// -convert tab in space
-// -echo "" '' : must keep the space

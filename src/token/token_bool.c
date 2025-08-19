@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+bool	is_space(char c)
+{
+	if (c == ' ' || (c >= 9 && c <= 13))
+		return (true);
+	return (false);
+}
+
 bool	is_operator(char c)
 {
 	if (c == '|')

@@ -51,7 +51,7 @@ static bool	ctrl_c_catched(char *line, int fd, char *filename)
 
 static bool	eof_catched(char *line, int fd, t_redir *redir, t_data *data)
 {
-	if (!line || !ft_strcmp(handle_expand(line, data), redir->delimiter))
+	if (!line || !ft_strcmp(handle_expand(line, 0, data), redir->delimiter))
 	{
 		if (!line)
 		{
