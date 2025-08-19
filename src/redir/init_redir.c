@@ -81,7 +81,10 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 		redir_node->delimiter = get_redir_delimiter(token_node);
 		// replace with get_redir_target ?
 		if (!redir_node->delimiter)
-			return (-1);
+		{
+			data->err = 2;
+			exit_error(data);
+		}
 		set_here_doc(&redir_node, data);
 	}
 	else if (token_node->type & REDIR)

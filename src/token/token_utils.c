@@ -1,19 +1,10 @@
 #include "minishell.h"
 
-bool	is_space(char c)
-{
-	if (c == ' ' || (c >= 9 && c <= 13))
-		return (true);
-	return (false);
-}
-
 int	get_token_len(char *token)
 {
 	int	i;
 
 	i = 1;
-	// if (is_parenthesis(token[0]))
-	// 	return (1);
 	while (token[i])
 	{
 		if (is_operator(token[0]) && !is_operator(token[i]))
@@ -24,23 +15,12 @@ int	get_token_len(char *token)
 			return (i + 1);
 		else if (is_space(token[0]) && !is_space(token[i]))
 			return (i);
-		// else if (token[0] == ' ' && token[i] != ' ')
-			// return (i);
 		else if (is_part_of_word(token[0]) && !is_part_of_word(token[i]))
 			return (i);
 		i++;
 	}
 	return (i);
 }
-
-// int	get_token_priority(t_token *token)
-// {
-// 	if (token->type == PIPE)
-// 		return (1);
-// 	else if (token->type == CMD)
-// 		return (2);
-// 	return (-1);
-// }
 
 void	set_token_priority(t_token **token_lst) // TODO: refacto
 {
@@ -53,7 +33,7 @@ void	set_token_priority(t_token **token_lst) // TODO: refacto
 			token_node->priority = 0;
 		else if (token_node->type == CMD)
 			token_node->priority = 1;
-		else if (token_node->type & REDIR) ////////// TEST !!!!!!!!!!!
+		else if (token_node->type & REDIR)
 			token_node->priority = 2;
 		else
 			token_node->priority = -1;

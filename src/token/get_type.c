@@ -37,8 +37,6 @@ t_type	get_token_type(t_token *token)
 		return (get_quote_type(token));
 	else if (is_space(token->content[0]))
 		return (SPACE);
-	// else if (token->content[0] == ' ')
-		// return (SPACE);
 	else if (is_part_of_word(token->content[0]))
 		return (WORD);
 	return (UNKNOWN);

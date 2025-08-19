@@ -10,18 +10,25 @@
 
 // TODO: Replace return by exit_error
 
-int	get_args_len(t_token *token) // TODO: refacto
+bool	is_command(t_token *token_node)
 {
-	t_token *tmp;
-	int arg;
+	while (token_node)
+	{
+		if (token_node->type == CMD)
+			return (false);
+		token_node = token_node->next;
+	}
+	return (true);
+}
+
+int	get_args_len(t_token *token)
+{
+	t_token	*tmp;
+	int		arg;
 
 	tmp = token;
 	arg = 0;
-	while (tmp &&
-			(tmp->type == ARG ||
-			tmp->type == CMD
-			// TODO: sikp space before init_ast ?
-			|| tmp->type == SPACE))
+	while (tmp && (tmp->type == ARG || tmp->type == CMD || tmp->type == SPACE))
 	{
 		if (tmp->type == ARG || tmp->type == CMD)
 			arg++;
@@ -107,7 +114,6 @@ t_ast	*create_command_node(t_token *token, t_data *data)
 	new_node->command.fd_out = -1;
 	new_node->type = CMD;
 	len = get_args_len(tmp);
-	// new_node->command.args = malloc(sizeof(char *) * (len + 2));
 	new_node->command.args = ft_calloc(len + 2, sizeof(char *));
 	i = 0;
 	while (tmp && tmp->type != PIPE)
@@ -119,7 +125,6 @@ t_ast	*create_command_node(t_token *token, t_data *data)
 			new_node->command.args[i] = NULL;
 	}
 	init_redir(token, &new_node->command.redir, data);
-	// print_redir_lst(new_node->command.redir);
 	return (new_node);
 }
 
@@ -131,10 +136,6 @@ t_ast	*create_pipe_node(t_token *token, t_data *data)
 
 	token_left = get_prev_priority_token(token);
 	token_right = get_next_priority_token(token);
-	// if (token_left)
-	// 	ft_printf("left = %s\n", token_left->content);
-	// if (token_right)
-	// 	ft_printf("right = %s\n", token_right->content);
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
 		return (NULL);
@@ -151,9 +152,7 @@ t_ast	*create_logic_node(t_token *token, t_data *data)
 	t_token	*token_right;
 
 	token_left = get_prev_priority_token(token);
-	// ft_printf("token_left = %s\n", token_left->content);
 	token_right = get_next_priority_token(token);
-	// ft_printf("token_right = %s\n", token_right->content);
 	new_node = ft_calloc(1, sizeof(t_ast));
 	if (!new_node)
 		return (NULL);
@@ -170,8 +169,6 @@ t_ast	*parse_token(t_token *token, t_data *data)
 {
 	if (!token)
 		return (NULL);
-	// if (token->type == AND || token->type == OR)
-	// 	return (create_logical_operator(token));
 	if (token->type == PIPE)
 		return (create_pipe_node(token, data));
 	if (token->type == CMD)
@@ -179,17 +176,6 @@ t_ast	*parse_token(t_token *token, t_data *data)
 	else if (token->type & REDIR)
 		return (create_command_node(token, data));
 	return (NULL);
-}
-
-bool	is_command(t_token *token_node)
-{
-	while (token_node)
-	{
-		if (token_node->type == CMD)
-			return (false);
-		token_node = token_node->next;
-	}
-	return (true);
 }
 
 int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
@@ -202,24 +188,3 @@ int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
 	*ast_lst = parse_token(root_token, data);
 	return (0);
 }
-
-// int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
-// {
-// 	t_token *root_token;
-// 	t_ast *start;
-// 	t_redir	*redir;
-// 	if (!token_lst || !*token_lst)
-// 		return (1);
-// 	root_token = get_root_token(token_lst, 0);
-// 	if (!root_token)
-// 		return (1);
-// 	if (!is_command(token_lst))
-// 	{
-// 		start = ft_calloc(sizeof(t_ast), 1);
-// 		// init_redir(root_token, &start->command.redir, data);
-// 		printf("XXXXXXXXXXXXXXXXX\n");
-// 		return (0);
-// 	}
-// 	*ast_lst = parse_token(root_token, data);
-// 	return (0);
-// }
