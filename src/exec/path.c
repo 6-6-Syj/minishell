@@ -10,10 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "command.h"
 #include "data.h"
 #include "exec.h"
-#include "command.h"
 #include "print.h"
+#include "utils.h"
 
 static char	*build_full_path(char *dir, char *cmd)
 {
@@ -28,7 +29,7 @@ static char	*build_full_path(char *dir, char *cmd)
 	return (full_path);
 }
 
-char	**split_path(t_data *data)
+static char	**split_path(t_data *data)
 {
 	char	**paths;
 	int		i;
@@ -50,12 +51,6 @@ char	**split_path(t_data *data)
 	return (NULL);
 }
 
-int	is_absolute_or_relative_path(char *cmd)
-{
-	return (cmd[0] == '/' || ft_strncmp(cmd, "./", 2) == 0 || ft_strncmp(cmd,
-			"../", 3) == 0);
-}
-
 char	*find_path(char **paths, char *cmd)
 {
 	char	*full_path;
@@ -73,9 +68,28 @@ char	*find_path(char **paths, char *cmd)
 	return (NULL);
 }
 
-char	*resolve_command_path(char *cmd, t_data *data, t_path_status *status)
+static char	*find_cmd_in_path(char *cmd, t_data *data, t_path_status *status)
 {
 	char	**paths;
+	char	*result;
+
+	paths = split_path(data);
+	if (!paths)
+	{
+		*status = PATH_UNSET;
+		return (NULL);
+	}
+	result = find_path(paths, cmd);
+	free_strs(paths);
+	if (result)
+		*status = PATH_OK;
+	else
+		*status = PATH_NOT_FOUND;
+	return (result);
+}
+
+char	*resolve_command_path(char *cmd, t_data *data, t_path_status *status)
+{
 	char	*result;
 
 	if (!cmd || !data)
@@ -91,17 +105,5 @@ char	*resolve_command_path(char *cmd, t_data *data, t_path_status *status)
 		*status = PATH_OK;
 		return (result);
 	}
-	paths = split_path(data);
-	if (!paths)
-	{
-		*status = PATH_UNSET;
-		return (NULL);
-	}
-	result = find_path(paths, cmd);
-	free_strs(paths);
-	if (result)
-		*status = PATH_OK;
-	else
-		*status = PATH_NOT_FOUND;
-	return (result);
+	return (find_cmd_in_path(cmd, data, status));
 }

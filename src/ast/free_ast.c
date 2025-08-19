@@ -1,6 +1,7 @@
 #include "ast.h"
 #include <redir.h>
 #include <stdlib.h>
+#include <utils.h>
 
 void	free_ast(t_ast **node);
 
@@ -25,21 +26,6 @@ void	free_redir_lst(t_redir **redir_lst)
 		free_redir_node(current);
 		current = tmp;
 	}
-}
-
-static void	free_strs(char **strs)
-{
-	int	i;
-
-	i = 0;
-	if (!strs)
-		return ;
-	while (strs && strs[i])
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);
 }
 
 static void	free_pipe_node(t_ast *node)

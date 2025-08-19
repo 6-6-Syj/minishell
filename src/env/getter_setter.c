@@ -36,7 +36,7 @@ static int	update_value(t_data *data, char *key, char *value)
 	key_len = ft_strlen(key);
 	while (current)
 	{
-		if (current->key && ft_strncmp(current->key, key, key_len + 1) == 0)
+		if (current->key && !ft_strncmp(current->key, key, key_len + 1))
 		{
 			free(current->value);
 			current->value = ft_strdup(value);

@@ -99,37 +99,6 @@ void	open_files(t_command *cmd, t_data *data)
 		redir(cmd, data);
 }
 
-// void	free_pid_list(t_pid_list *pids)
-// {
-// 	t_pid_list	*tmp;
-
-// 	while (pids)
-// 	{
-// 		tmp = pids;
-// 		pids = pids->next;
-// 		free(tmp);
-// 	}
-// }
-
-void	free_pid_list(t_pid_list **pids_lst)
-{
-	t_pid_list	*current;
-	t_pid_list	*tmp;
-
-	if (!pids_lst || !*pids_lst)
-		return ;
-	current = *pids_lst;
-	while (current && current->prev)
-		current = current->prev;
-	while (current)
-	{
-		tmp = current->next;
-		free(current);
-		current = tmp;
-	}
-	*pids_lst = NULL;
-}
-
 static t_command	*find_last_cmd(t_ast *node)
 {
 	if (!node)

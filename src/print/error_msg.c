@@ -33,6 +33,13 @@ void	no_file_or_directory(t_command *cmd, t_data *data)
 void	malloc_fail(t_data *data)
 {
 	data->err = 1;
-	data->err_msg = "Malloc failed";
+	data->err_msg = "minishell: Malloc failed";
+	exit_error(data);
+}
+
+void	syntax_error(t_data *data)
+{
+	data->err = 2;
+	data->err_msg = "minishell: Syntax error";
 	exit_error(data);
 }

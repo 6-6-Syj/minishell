@@ -17,7 +17,6 @@
 #include <signal.h>
 
 volatile int			g_sig;
-volatile sig_atomic_t	g_sig;
 
 static void	clean_exit(t_data *data)
 {
@@ -33,11 +32,12 @@ static void	clean_exit(t_data *data)
 		free_env_lst(&data->env);
 	if (data->env_tab)
 		free_env_tab(data);
-	ft_printf("exit\n");
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	rl_clear_history();
 	exit(data->err);
 }
 
+/* USE WITH TESTER */
 static char	*handle_readline(t_data *data)
 {
 	char	*line;
@@ -113,6 +113,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	// check_tty(ac, av, &data);
 	init_data(&data, env);
 	while (1)
 	{

@@ -3,9 +3,10 @@ EXEC_SRC = 	command					\
 			exec					\
 			pipe					\
 			path					\
+			path_utils				\
 			wrappers				\
 			wrappers_2				\
 			handle_fds_builtin		\
-			handle_end_process	\
+			handle_end_process		\
 
 EXEC_INC = exec/exec.h exec/wrappers.h exec/command.h exec/pipe.h

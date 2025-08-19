@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_token.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-08-19 19:27:09 by jmagand           #+#    #+#             */
+/*   Updated: 2025-08-19 19:27:09 by jmagand          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "data.h"
 #include "env.h"
 #include "errno.h"
@@ -19,7 +31,7 @@ void	lexer(t_data *data)
 	{
 		new_token = add_token_node(&data->token);
 		if (!new_token)
-			exit_error(data); // malloc_error;
+			malloc_fail(data);
 		len = get_token_len(&data->input[i]);
 		new_token->content = ft_strndup(&data->input[i], len);
 		// if (!new_token->content)
@@ -44,7 +56,7 @@ int	get_cmd_count(t_token *token)
 
 bool	redir_is_valid(t_token *token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	while (token)
 	{
@@ -71,7 +83,7 @@ bool	syntax_is_valid(t_token *token)
 
 void	handle_space(t_token **token_lst, t_data *data)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = *token_lst;
 	while (current)
@@ -81,10 +93,7 @@ void	handle_space(t_token **token_lst, t_data *data)
 			free(current->content);
 			current->content = ft_strdup(" ");
 			if (!current->content)
-			{
-				//print_error_message
-				exit_error(data);
-			}
+				malloc_fail(data);
 		}
 		current = current->next;
 	}
@@ -98,7 +107,6 @@ void	init_token(t_data *data)
 	expand_var(&data->token, data);
 	remove_simple_quote(&data->token, data);
 	// remove_space(&data->token, data);
-	// print_all(data);
 	handle_space(&data->token, data);
 	set_file_type(&data->token);
 	join_word(&data->token, data);
@@ -109,7 +117,6 @@ void	init_token(t_data *data)
 		ft_putstr_fd("Error\n", 2);
 		exit_error(data);
 	}
-	// print_all(data);
 }
 
 // syntax_error:

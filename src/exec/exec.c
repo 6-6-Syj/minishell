@@ -46,7 +46,7 @@ static bool	is_echo_exit_status(t_command *cmd)
 	i = 1;
 	while (cmd->args[i])
 	{
-		if (ft_strcmp(cmd->args[i], "$?") == 0)
+		if (!ft_strcmp(cmd->args[i], "$?"))
 			return (true);
 		i++;
 	}
@@ -91,6 +91,5 @@ void	exec_ast(t_ast *node, t_data *data)
 		handle_ast(node, data, fd, &pids);
 		if (!data->err)
 			data->err = wait_all_processes(pids, data);
-		// free_pid_list(&pids);
 	}
 }

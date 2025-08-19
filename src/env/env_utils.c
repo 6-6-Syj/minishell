@@ -12,6 +12,7 @@
 
 #include "env.h"
 #include "print.h"
+#include "utils.h"
 
 void	print_env_tab(char **env_tab)
 {

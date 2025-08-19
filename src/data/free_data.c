@@ -40,15 +40,9 @@ void	free_tmp_data(t_data *data)
 	{
 		if (data->token)
 			free_token_lst(&data->token);
-		// if (data->env)
-			// free_env_lst(&data->env);
 		if (data->ast)
 			free_ast(&data->ast);
-		// if (data->env_tab)
-			// free_env_tab(data);
 		if (data->pid_list)
 			free_pid_list(&data->pid_list);
-		// if (data->input)
-		// 	free(data->input);
 	}
 }
