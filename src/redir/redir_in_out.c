@@ -19,8 +19,8 @@
 
 ACCESS: int access(const char *pathname, int mode);
 
-	◆  La  fonction  vérifie  si  le  path  en  fonction  du/des  mode(s)  sélectionnés
-	renseigne en paramètres est valides.
+	◆  La  fonction  vérifie  si  le  path  en  fonction  du/des  mode(s)
+	sélectionnés renseigne en paramètres est valides.
 ◆  Valeur de mode:
 	●  R_OK : Lecture.
 	●  W_OK : Ecriture.

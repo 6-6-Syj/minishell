@@ -99,6 +99,7 @@ static void	exec_command(t_command *cmd, t_data *data)
 				data->err = 1;
 		}
 	}
+	exit(1);
 }
 
 void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,

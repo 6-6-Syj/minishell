@@ -41,16 +41,13 @@ void	set_token_type(t_token **token_lst, t_data *data)
 {
 	t_token	*token_node;
 
+	(void)data;
 	token_node = *token_lst;
 	while (token_node)
 	{
 		token_node->type = get_token_type(token_node);
-		if (token_node->type == UNKNOWN)
-		{
-			data->err = 2;
-			printf("Error\n");
-			exit_error(data); // syntax_error;
-		}
+		// if (token_node->type == UNKNOWN)
+		// 	syntax_error(data);
 		token_node = token_node->next;
 	}
 }

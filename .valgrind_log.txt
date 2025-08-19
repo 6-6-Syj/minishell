@@ -1,22 +1,255 @@
-==704005== Memcheck, a memory error detector
-==704005== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==704005== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==704005== Command: ./minishell
-==704005== Parent PID: 681765
-==704005== 
-==704005== 
-==704005== FILE DESCRIPTORS: 3 open (3 std) at exit.
-==704005== 
-==704005== HEAP SUMMARY:
-==704005==     in use at exit: 204,162 bytes in 221 blocks
-==704005==   total heap usage: 936 allocs, 715 frees, 244,058 bytes allocated
-==704005== 
-==704005== LEAK SUMMARY:
-==704005==    definitely lost: 0 bytes in 0 blocks
-==704005==    indirectly lost: 0 bytes in 0 blocks
-==704005==      possibly lost: 0 bytes in 0 blocks
-==704005==    still reachable: 0 bytes in 0 blocks
-==704005==         suppressed: 204,162 bytes in 221 blocks
-==704005== 
-==704005== For lists of detected and suppressed errors, rerun with: -s
-==704005== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==799782== Memcheck, a memory error detector
+==799782== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==799782== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==799782== Command: ./minishell
+==799782== Parent PID: 681765
+==799782== 
+==799904== 
+==799904== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==799904== 
+==799904== HEAP SUMMARY:
+==799904==     in use at exit: 221,661 bytes in 554 blocks
+==799904==   total heap usage: 1,002 allocs, 448 frees, 249,655 bytes allocated
+==799904== 
+==799904== 2 bytes in 1 blocks are still reachable in loss record 1 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B6E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x40765E: update_value (getter_setter.c:42)
+==799904==    by 0x407514: set_env_var (getter_setter.c:57)
+==799904==    by 0x401BE6: update_shlvl (utils_data.c:29)
+==799904==    by 0x4018BC: init_env (init_data.c:97)
+==799904==    by 0x401951: init_data (init_data.c:112)
+==799904==    by 0x4013A6: main (main.c:117)
+==799904== 
+==799904== 3 bytes in 1 blocks are still reachable in loss record 2 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B6E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x4098D0: create_command_node (ast_init.c:122)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 3 bytes in 1 blocks are still reachable in loss record 3 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B6E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x4098D0: create_command_node (ast_init.c:122)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099C9: create_pipe_node (ast_init.c:143)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 3 bytes in 1 blocks are still reachable in loss record 4 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B6E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x40A0C3: get_redir_target (init_redir.c:65)
+==799904==    by 0x40A1B9: set_redir_node (init_redir.c:92)
+==799904==    by 0x40A264: init_redir (init_redir.c:110)
+==799904==    by 0x409936: create_command_node (ast_init.c:127)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099C9: create_pipe_node (ast_init.c:143)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 6 bytes in 3 blocks are still reachable in loss record 5 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B6E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x401E62: handle_space (init_token.c:81)
+==799904==    by 0x401F19: init_token (init_token.c:96)
+==799904==    by 0x4013DB: main (main.c:125)
+==799904== 
+==799904== 13 bytes in 2 blocks are still reachable in loss record 13 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B6E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x4098D0: create_command_node (ast_init.c:122)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099C9: create_pipe_node (ast_init.c:143)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 24 bytes in 1 blocks are still reachable in loss record 23 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x409861: create_command_node (ast_init.c:117)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 24 bytes in 1 blocks are still reachable in loss record 24 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x409861: create_command_node (ast_init.c:117)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099C9: create_pipe_node (ast_init.c:143)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 28 bytes in 8 blocks are still reachable in loss record 26 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B7AB: ft_strndup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x401CAD: lexer (init_token.c:36)
+==799904==    by 0x401EC4: init_token (init_token.c:91)
+==799904==    by 0x4013DB: main (main.c:125)
+==799904== 
+==799904== 32 bytes in 1 blocks are still reachable in loss record 27 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x409988: create_pipe_node (ast_init.c:139)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 32 bytes in 1 blocks are still reachable in loss record 28 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x409988: create_pipe_node (ast_init.c:139)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 32 bytes in 1 blocks are still reachable in loss record 29 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x409806: create_command_node (ast_init.c:110)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 32 bytes in 1 blocks are still reachable in loss record 30 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x409806: create_command_node (ast_init.c:110)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099C9: create_pipe_node (ast_init.c:143)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 32 bytes in 1 blocks are still reachable in loss record 31 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x409861: create_command_node (ast_init.c:117)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099C9: create_pipe_node (ast_init.c:143)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x4099B1: create_pipe_node (ast_init.c:142)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 32 bytes in 1 blocks are still reachable in loss record 32 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x409806: create_command_node (ast_init.c:110)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099C9: create_pipe_node (ast_init.c:143)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 40 bytes in 1 blocks are still reachable in loss record 33 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x40A36A: add_redir_node (redir_lst.c:29)
+==799904==    by 0x40A23F: init_redir (init_redir.c:107)
+==799904==    by 0x409936: create_command_node (ast_init.c:127)
+==799904==    by 0x409A69: parse_token (ast_init.c:175)
+==799904==    by 0x4099C9: create_pipe_node (ast_init.c:143)
+==799904==    by 0x409A42: parse_token (ast_init.c:173)
+==799904==    by 0x409BF6: init_ast (ast_init.c:188)
+==799904==    by 0x4013F0: main (main.c:126)
+==799904== 
+==799904== 440 bytes in 11 blocks are still reachable in loss record 46 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x4028BA: add_token_node (token_lst.c:64)
+==799904==    by 0x401C66: lexer (init_token.c:32)
+==799904==    by 0x401EC4: init_token (init_token.c:91)
+==799904==    by 0x4013DB: main (main.c:125)
+==799904== 
+==799904== 584 bytes in 1 blocks are still reachable in loss record 47 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x407127: update_env_tab (env_utils.c:86)
+==799904==    by 0x4018C5: init_env (init_data.c:98)
+==799904==    by 0x401951: init_data (init_data.c:112)
+==799904==    by 0x4013A6: main (main.c:117)
+==799904== 
+==799904== 1,066 bytes in 72 blocks are still reachable in loss record 60 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B7AB: ft_strndup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x401668: is_set_env (init_data.c:29)
+==799904==    by 0x401874: init_env (init_data.c:90)
+==799904==    by 0x401951: init_data (init_data.c:112)
+==799904==    by 0x4013A6: main (main.c:117)
+==799904== 
+==799904== 3,095 bytes in 71 blocks are still reachable in loss record 65 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B6E4: ft_strdup (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x401698: is_set_env (init_data.c:32)
+==799904==    by 0x401874: init_env (init_data.c:90)
+==799904==    by 0x401951: init_data (init_data.c:112)
+==799904==    by 0x4013A6: main (main.c:117)
+==799904== 
+==799904== 3,456 bytes in 72 blocks are still reachable in loss record 66 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40AF2B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x40175A: add_env_node (init_data.c:57)
+==799904==    by 0x401847: init_env (init_data.c:87)
+==799904==    by 0x401951: init_data (init_data.c:112)
+==799904==    by 0x4013A6: main (main.c:117)
+==799904== 
+==799904== 4,163 bytes in 72 blocks are still reachable in loss record 78 of 92
+==799904==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==799904==    by 0x40B869: ft_strjoin (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==799904==    by 0x407261: update_key_values (env_utils.c:58)
+==799904==    by 0x407166: update_env_tab (env_utils.c:90)
+==799904==    by 0x4018C5: init_env (init_data.c:98)
+==799904==    by 0x401951: init_data (init_data.c:112)
+==799904==    by 0x4013A6: main (main.c:117)
+==799904== 
+==799904== LEAK SUMMARY:
+==799904==    definitely lost: 0 bytes in 0 blocks
+==799904==    indirectly lost: 0 bytes in 0 blocks
+==799904==      possibly lost: 0 bytes in 0 blocks
+==799904==    still reachable: 13,142 bytes in 325 blocks
+==799904==         suppressed: 208,519 bytes in 229 blocks
+==799904== 
+==799904== For lists of detected and suppressed errors, rerun with: -s
+==799904== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==799782== 
+==799782== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==799782== 
+==799782== HEAP SUMMARY:
+==799782==     in use at exit: 208,612 bytes in 236 blocks
+==799782==   total heap usage: 1,043 allocs, 807 frees, 250,288 bytes allocated
+==799782== 
+==799782== LEAK SUMMARY:
+==799782==    definitely lost: 0 bytes in 0 blocks
+==799782==    indirectly lost: 0 bytes in 0 blocks
+==799782==      possibly lost: 0 bytes in 0 blocks
+==799782==    still reachable: 0 bytes in 0 blocks
+==799782==         suppressed: 208,612 bytes in 236 blocks
+==799782== 
+==799782== For lists of detected and suppressed errors, rerun with: -s
+==799782== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 1 from 1)

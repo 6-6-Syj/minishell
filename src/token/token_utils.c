@@ -7,7 +7,13 @@ int	get_token_len(char *token)
 	i = 1;
 	while (token[i])
 	{
-		if (is_operator(token[0]) && !is_operator(token[i]))
+		if (token[0] == '|' && token[i] != '|')
+			return (i);
+		else if (token[0] == '<' && token[i] != '<')
+			return (i);
+		else if (token[0] == '>' && token[i] != '>')
+			return (i);
+		else if (is_operator(token[0]) && !is_operator(token[i]))
 			return (i);
 		else if (token[0] == '\'' && token[i] == '\'')
 			return (i + 1);

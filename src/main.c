@@ -124,6 +124,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		init_token(&data);
 		init_ast(&data.ast, &data.token, &data);
+		// print_all(&data);
 		data.err = 0;
 		if (g_sig == 0)
 			exec_ast(data.ast, &data);
