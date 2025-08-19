@@ -81,16 +81,16 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 
 	key = args;
 	value = NULL;
-	if (!is_key_valid(key))
-		return (1);
-	if (got_special_char(key))
-		return (2);
 	equal = ft_strchr(key, '=');
 	if (equal)
 	{
 		*equal = '\0';
 		value = equal + 1;
 	}
+	if (!is_key_valid(key))
+		return (1);
+	if (got_special_char(key))
+		return (2);
 	if (search_key_update_value(data, key, value) || add_key(data,
 			env_lst, key, value))
 	{
@@ -103,7 +103,6 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 // TODO: if variable got a value "with spaces",
 // there are problems. (PARSING EXPORT)
 // It exports at each ' ';
-// See raw 110
 int	handle_export(t_command *cmd, t_env **env_lst, t_data *data)
 {
 	int	i;

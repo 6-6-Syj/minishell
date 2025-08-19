@@ -50,8 +50,6 @@ char	*get_expand(char *token, t_data *data)
 	if (!expand_key)
 		malloc_fail(data);
 	expand_value = get_env_var(data, expand_key);
-	if (!expand_value)
-		malloc_fail(data);
 	free(expand_key);
 	return (expand_value);
 }
