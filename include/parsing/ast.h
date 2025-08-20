@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:11:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/06/28 18:36:29 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/20 17:00:58 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_pipe
 
 typedef struct s_ast
 {
-	t_type		type;
+	t_type			type;
 	union
 	{
 		t_logic		logic;
@@ -67,9 +67,15 @@ typedef struct s_ast
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 // void	init_ast_lst(t_ast **ast_lst); // test version
-int					init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data);
+int					init_ast(t_ast **ast_lst, t_token **token_lst,
+						t_data *data);
 t_ast				*add_ast_node(t_ast **ast_lst);
-t_ast				*parse_token(t_token *token, t_data *data);
+t_ast				*create_ast_node(t_token *token, t_data *data);
 void				free_ast(t_ast **node);
+bool				is_command(t_token *token_node);
+int					get_args_len(t_token *token);
+t_token				*get_prev_priority_token(t_token *root_token);
+t_token				*get_next_priority_token(t_token *root_token);
+t_token				*get_root_token(t_token **token_lst, int priority);
 
 #endif

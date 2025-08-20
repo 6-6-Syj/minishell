@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 16:49:11 by dabuchhe          #+#    #+#             */
+/*   Updated: 2025/08/20 17:22:43 by dabuchhe         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "minishell.h"
 
@@ -86,7 +98,7 @@ void	expand_var(t_token **token_lst, t_data *data)
 			current->content = handle_expand(current->content, -1, data);
 			if (!current->content[0] && current->type != QUOTE_D)
 				remove_node(current, data);
-			if (current->type == QUOTE_D)
+			else if (current->type == QUOTE_D)
 				current->type = WORD;
 		}
 		current = next;

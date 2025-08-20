@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 19:27:09 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/19 23:09:33 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/20 17:18:56 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	init_token(t_data *data)
 	remove_double_quote(&data->token, data);
 	expand_var(&data->token, data);
 	if (!data->token)
-		return;
+		return ;
 	remove_simple_quote(&data->token, data);
 	handle_space(&data->token, data);
 	set_file_type(&data->token);

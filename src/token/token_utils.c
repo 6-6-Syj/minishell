@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 16:47:10 by dabuchhe          #+#    #+#             */
+/*   Updated: 2025/08/20 16:48:04 by dabuchhe         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	get_token_len(char *token)
@@ -30,7 +42,7 @@ int	get_token_len(char *token)
 
 void	set_token_priority(t_token **token_lst) // TODO: refacto
 {
-	t_token *token_node;
+	t_token	*token_node;
 
 	token_node = *token_lst;
 	while (token_node)
@@ -86,8 +98,8 @@ int	remove_space(t_token **token_lst, t_data *data)
 
 int	remove_node(t_token *node, t_data *data)
 {
-	t_token *prev;
-	t_token *next;
+	t_token	*prev;
+	t_token	*next;
 
 	prev = node->prev;
 	next = node->next;

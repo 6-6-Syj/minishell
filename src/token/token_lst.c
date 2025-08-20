@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 20:08:01 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/06/26 17:24:14 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/20 16:43:50 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_token	*add_token_node(t_token **token_lst)
 
 	new_node = ft_calloc(1, sizeof(t_token));
 	if (!new_node)
-		return (NULL); // TODO: MALLOC ERROR
+		return (NULL);
 	if (!*token_lst)
 	{
 		*token_lst = new_node;

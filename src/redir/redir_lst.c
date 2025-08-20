@@ -38,7 +38,7 @@ t_redir	*add_redir_node(t_redir **redir_lst)
 	{
 		last_node = get_last_redir_node(*redir_lst);
 		last_node->next = new_node;
-		new_node->prev = last_node; // NEEDED ?
+		new_node->prev = last_node; // NEEDED ?z
 	}
 	new_node->next = NULL;
 	return (new_node);

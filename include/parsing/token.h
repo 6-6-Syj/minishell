@@ -106,7 +106,7 @@ void	expand_var(t_token **token_lst, t_data *data);
 void	join_word(t_token **token_lst, t_data *data);
 int		get_token_priority(t_token *token);
 void	set_token_priority(t_token **token_lst);
-int	get_expand_key_len(char *token_content);
+int		get_expand_key_len(char *token_content);
 char	*get_expand(char *token, t_data *data);
 bool	is_space(char c);
 #endif

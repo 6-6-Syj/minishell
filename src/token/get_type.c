@@ -1,5 +1,17 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_type.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 16:44:19 by dabuchhe          #+#    #+#             */
+/*   Updated: 2025/08/20 16:46:03 by dabuchhe         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
+#include "minishell.h"
 
 t_type	get_operator_type(t_token *token)
 {
@@ -16,7 +28,6 @@ t_type	get_operator_type(t_token *token)
 	return (UNKNOWN);
 }
 
-
 t_type	get_quote_type(t_token *token)
 {
 	if (token->content[0] == '\"' && ft_strchr(token->content + 1, '"'))
@@ -31,7 +42,8 @@ t_type	get_token_type(t_token *token)
 	int	len;
 
 	len = ft_strlen(token->content);
-	if (is_operator(token->content[0]) && (is_operator(token->content[len - 1])))
+	if (is_operator(token->content[0]) && (is_operator(token->content[len
+					- 1])))
 		return (get_operator_type(token));
 	else if (is_quote(token->content[0]) && is_quote(token->content[len - 1]))
 		return (get_quote_type(token));

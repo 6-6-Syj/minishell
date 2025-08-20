@@ -1,3 +1,5 @@
+Wrong exit code with: '''''''''''''''' echo ok
+
 $HOME$USER
 
 echo "" "" "" -n -n -n -n

@@ -39,12 +39,19 @@ t_token	*get_next_redir(t_token **root_token)
 	return (NULL);
 }
 
-char	*get_redir_delimiter(t_token *token_node)
+char	*get_redir_delimiter(t_token *token_node, t_data *data)
 {
+	char	*delimiter;
+
 	while (token_node && token_node->type != PIPE)
 	{
 		if (token_node->type == REDIR_TARGET)
-			return (token_node->content);
+		{
+			delimiter = ft_strdup(token_node->content);
+			if (!delimiter)
+				malloc_fail(data);
+			return (delimiter);
+		}
 		token_node = token_node->next;
 	}
 	return (NULL);
@@ -78,7 +85,7 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 	redir_node->type = token_node->type;
 	if (token_node->type == HERE_DOC)
 	{
-		redir_node->delimiter = get_redir_delimiter(token_node);
+		redir_node->delimiter = get_redir_delimiter(token_node, data);
 		// replace with get_redir_target ?
 		if (!redir_node->delimiter)
 		{
@@ -105,8 +112,6 @@ void	init_redir(t_token *token_node, t_redir **redir_lst, t_data *data)
 	while (token_node)
 	{
 		new_redir = add_redir_node(redir_lst);
-		if (!new_redir)
-			return ;
 		if (set_redir_node(new_redir, token_node, data) == -1)
 			return ;
 		token_node = get_next_redir(&token_node);

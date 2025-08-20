@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 16:49:54 by dabuchhe          #+#    #+#             */
+/*   Updated: 2025/08/20 16:49:54 by dabuchhe         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "minishell.h"
 
@@ -53,7 +65,7 @@ void	remove_simple_quote(t_token **token_lst, t_data *data)
 
 void	remove_double_quote(t_token **token_lst, t_data *data)
 {
-	t_token *current;
+	t_token	*current;
 	t_token	*tmp;
 
 	current = *token_lst;

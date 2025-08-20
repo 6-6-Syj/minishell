@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_ast.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/20 17:03:05 by dabuchhe          #+#    #+#             */
+/*   Updated: 2025/08/20 17:33:08 by dabuchhe         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ast.h"
 #include <redir.h>
 #include <stdlib.h>
@@ -9,7 +21,7 @@ void	free_redir_lst(t_redir **redir_lst)
 {
 	t_redir	*current;
 	t_redir	*tmp;
-	
+
 	current = *redir_lst;
 	while (current)
 	{
