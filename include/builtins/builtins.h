@@ -70,7 +70,6 @@ int							ft_pwd(t_data *data);
 /* echo */
 int							ft_echo(t_command *cmd);
 
-
 /* exit */
 int							ft_exit(t_command *cmd, t_data *data);
 

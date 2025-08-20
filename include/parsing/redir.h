@@ -46,11 +46,12 @@ void				open_files(t_command *cmd, t_data *data);
 void				free_pid_list(t_pid_list **pids_lst);
 bool				is_last_command_in_ast(t_command *cmd, t_ast *root);
 
-/* here_doc.c */
+/* here_doc */
 void				set_here_doc(t_redir **redir_node, t_data *data);
 
-/* utils_here_doc.c */
-int					disable_ctrl_backslash(struct termios *saved_termios);
-char				*clean_ctrl_char(char *line, t_data *data);
+/* here_doc_utils */
+bool				ctrl_c_catched(char *line, int fd, char *filename);
+bool				eof_catched(char *line, int fd, t_redir *redir,
+						t_data *data);
 
 #endif
