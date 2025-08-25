@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 19:27:09 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/25 22:40:22 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 22:53:06 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,5 @@ void	init_token(t_data *data)
 		ft_putstr_fd("Minishell: Syntax error\n", 2);
 		data->err = 2;
 		data->ast = NULL;
-		exit_error(data);
 	}
 }
