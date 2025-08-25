@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-27 19:12:25 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-27 19:12:25 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/27 19:12:25 by jmagand           #+#    #+#             */
+/*   Updated: 2025/08/25 18:01:05 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
 		if (!has_redir_out(&pipe->left->command))
 			pipe->left->command.fd_out = fd[1];
 	}
-	else if (pipe->left->type == PIPE)
+	else if (pipe->left && pipe->left->type == PIPE)
 		assign_pipe_fds(pipe->left, -1, fd[1]);
 	if (pipe->right->type == CMD)
 	{

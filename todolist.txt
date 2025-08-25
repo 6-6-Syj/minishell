@@ -1,5 +1,13 @@
 Wrong exit code with: '''''''''''''''' echo ok
 
+""
+$NOVAR
+
+""
+
+
+
+
 $HOME$USER
 
 echo "" "" "" -n -n -n -n

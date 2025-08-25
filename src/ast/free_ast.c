@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 17:03:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/20 17:33:08 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 16:16:21 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ static void	free_pipe_node(t_ast *node)
 		free_ast(&node->pipe.left);
 	if (node->pipe.right)
 		free_ast(&node->pipe.right);
-	free(node);
 }
 
 static void	free_command_node(t_ast *node)
@@ -54,7 +53,6 @@ static void	free_command_node(t_ast *node)
 		free_strs(node->command.args);
 	if (node->command.redir)
 		free_redir_lst(&node->command.redir);
-	free(node);
 }
 
 void	free_ast(t_ast **node)
@@ -65,4 +63,6 @@ void	free_ast(t_ast **node)
 		free_pipe_node(*node);
 	else if ((*node)->type == CMD)
 		free_command_node(*node);
+	if (*node)
+		free(*node);
 }

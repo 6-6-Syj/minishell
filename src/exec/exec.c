@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 18:36:22 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/20 17:19:45 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 16:07:52 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	handle_ast(t_ast *node, t_data *data, int *fd, t_pid_list **pids)
 	if (!node)
 		return ;
 	if (node->type == CMD && node->command.args[0])
+	{
 		handle_command(&node->command, data, pids, node);
+	}
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd, pids);
 	else
@@ -65,7 +67,7 @@ void	exec_and_restore_fd(t_fd_backup *backup, t_command *cmd, t_data *data)
 	close_inherited_fds(cmd);
 }
 
-void	exec_ast(t_ast *node, t_data *data)
+void	 exec_ast(t_ast *node, t_data *data)
 {
 	int			fd[2];
 	t_fd_backup	backup;
@@ -76,7 +78,7 @@ void	exec_ast(t_ast *node, t_data *data)
 	fd[1] = 1;
 	init_backup(&backup);
 	if (!node)
-		return;
+		return ;
 	if (node->type == CMD && node->command.args && node->command.args[0]
 		&& is_builtin(node->command.args[0]))
 	{

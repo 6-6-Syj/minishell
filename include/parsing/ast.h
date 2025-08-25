@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 20:11:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/20 17:00:58 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 16:01:49 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,6 @@
 /*                                STRUCT									*/
 /****************************************************************************/
 
-typedef struct s_logic
-{
-	struct s_ast	*left;
-	struct s_ast	*right;
-}					t_logic;
-
 typedef struct s_command
 {
 	int				fd_in;
@@ -57,7 +51,6 @@ typedef struct s_ast
 	t_type			type;
 	union
 	{
-		t_logic		logic;
 		t_command	command;
 		t_pipe		pipe;
 	};

@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:42:44 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/08 18:59:00 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 15:48:24 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ static void	exec_command(t_command *cmd, t_data *data)
 			exit_error(data);
 		}
 		else if (is_a_dir(cmd, data))
+		{
 			exit_error(data);
+		}
 		else
 		{
 			if (!data->err)

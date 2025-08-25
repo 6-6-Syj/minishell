@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-23 15:38:43 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-23 15:38:43 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/23 15:38:43 by jmagand           #+#    #+#             */
+/*   Updated: 2025/08/22 22:28:40 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*resolve_command_path(char *cmd, t_data *data, t_path_status *status)
 {
 	char	*result;
 
-	if (!cmd || !data)
+	if (!cmd || !data || !cmd[0])
 	{
 		*status = PATH_NOT_FOUND;
 		return (NULL);

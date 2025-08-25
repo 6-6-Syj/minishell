@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 19:27:09 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/20 17:18:56 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 17:58:18 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,30 @@ bool	redir_is_valid(t_token *token)
 	return (true);
 }
 
+// bool	pipe_is_valid(t_token *token)
+// {
+// 	t_token	*tmp;
+// 	int	cmd_count;
+
+// 	while (token && token->type != PIPE)
+// 	{
+// 		tmp = token;
+// 		cmd_count = 0;
+// 		while (tmp && tmp->type != PIPE)
+// 		{
+// 			if (tmp->type == CMD)
+// 				cmd_count++;
+// 			tmp = tmp->prev;
+// 		}
+// 		token = token->next;
+// 	}
+// 	return (true);
+// }
+
 bool	syntax_is_valid(t_token *token)
 {
+	// if (!pipe_is_valid(token))
+	// 	return (false);
 	if (!redir_is_valid(token))
 		return (false);
 	if (token->type == PIPE)
@@ -73,6 +95,12 @@ void	handle_space(t_token **token_lst, t_data *data)
 	t_token	*current;
 
 	current = *token_lst;
+	if (current && !current->next && current->type == SPACE)
+	{
+		remove_node(current, data);
+		data->ast = NULL;
+		return ;
+	}
 	while (current)
 	{
 		if (current->type == SPACE)
@@ -100,7 +128,7 @@ void	init_token(t_data *data)
 	join_word(&data->token, data);
 	set_command_type(&data->token);
 	set_token_priority(&data->token);
-	if (!syntax_is_valid(data->token))
+	if (data->token && !syntax_is_valid(data->token))
 	{
 		ft_putstr_fd("Error\n", 2);
 		data->err = 2;

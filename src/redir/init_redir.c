@@ -86,7 +86,6 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 	if (token_node->type == HERE_DOC)
 	{
 		redir_node->delimiter = get_redir_delimiter(token_node, data);
-		// replace with get_redir_target ?
 		if (!redir_node->delimiter)
 		{
 			data->err = 2;
@@ -117,16 +116,3 @@ void	init_redir(t_token *token_node, t_redir **redir_lst, t_data *data)
 		token_node = get_next_redir(&token_node);
 	}
 }
-
-// void	init_redir_no_cmd(t_token **token_lst, t_data *data)
-// {
-// 	t_token *current;
-
-// 	current = *token_lst;
-// 	while (current)
-// 	{
-// 		if (current->type & REDIR)
-
-// 		current = current->next;
-// 	}
-// }

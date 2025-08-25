@@ -123,14 +123,15 @@ int	main(int ac, char **av, char **env)
 		if (!data.input)
 			continue ;
 		init_token(&data);
-		init_ast(&data.ast, &data.token, &data);
 		// print_all(&data);
+		init_ast(&data.ast, &data.token, &data);
 		data.err = 0;
 		if (g_sig == 0)
 			exec_ast(data.ast, &data);
 		free_tmp_data(&data);
 		data.token = NULL;
 	}
+	
 	rl_clear_history();
 	return (0);
 }
