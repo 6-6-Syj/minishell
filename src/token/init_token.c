@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 19:27:09 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/25 22:53:06 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/26 00:45:11 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ void	handle_space(t_token **token_lst, t_data *data)
 
 void	init_token(t_data *data)
 {
+	data->syntax = 0;
 	lexer(data);
 	set_token_type(&data->token, data);
 	remove_double_quote(&data->token, data);
@@ -153,7 +154,7 @@ void	init_token(t_data *data)
 	if (data->token && !syntax_is_valid(data->token))
 	{
 		ft_putstr_fd("Minishell: Syntax error\n", 2);
-		data->err = 2;
+		data->syntax = 2;
 		data->ast = NULL;
 	}
 }

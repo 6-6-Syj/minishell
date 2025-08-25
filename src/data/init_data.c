@@ -109,6 +109,7 @@ void	init_data(t_data *data, char **env)
 	data->err_msg = NULL;
 	data->pid_list = NULL;
 	data->is_nl = false;
+	data->syntax = 0;
 	init_env(data, env);
 	if (init_sig_handler() == false)
 	{
