@@ -37,45 +37,6 @@ static void	clean_exit(t_data *data)
 	exit(data->err);
 }
 
-// /* USE WITH TESTER */
-// static char	*handle_readline(t_data *data)
-// {
-// 	char	*line;
-// 	char	*str;
-
-// 	if (isatty(fileno(stdin)))
-// 	{
-// 		signal(SIGINT, sig_handler);
-// 		str = readline("minishell$ ");
-// 		signal(SIGINT, SIG_IGN);
-// 		if (!str)
-// 			clean_exit(data);
-// 		if (str[0] == '\0')
-// 		{
-// 			free(str);
-// 			return (NULL);
-// 		}
-// 		add_history(str);
-// 		return (str);
-// 	}
-// 	else
-// 	{
-// 		str = get_next_line(fileno(stdin));
-// 		if (str)
-// 		{
-// 			line = ft_strtrim(str, "\n");
-// 			free(str);
-// 			str = line;
-// 		}
-// 		if (!str)
-// 		{
-// 			exit_error(data);
-// 			return (NULL);
-// 		}
-// 	}
-// 	return (str);
-// }
-
 char	*handle_readline(t_data *data)
 {
 	char	*input;
@@ -99,7 +60,7 @@ static void	check_tty(int ac, char **av, t_data *data)
 {
 	(void)ac;
 	(void)av;
-	if(!isatty(STDOUT_FILENO))
+	if (!isatty(STDOUT_FILENO))
 	{
 		ft_putstr_fd("Error: stdout is not a tty\n", STDERR_FILENO);
 		data->err = 130;
@@ -116,14 +77,19 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		data.is_nl = false;
-		g_sig = 0;
+		g_sig = 0; // TODO: check
 		data.input = handle_readline(&data);
 		if (!data.input)
 			continue ;
 		init_token(&data);
-		init_ast(&data.ast, &data.token, &data);
-		data.err = 0;
-		if (g_sig == 0)
+		if (data.syntax == 0)
+		{
+			init_ast(&data.ast, &data.token, &data);
+			data.err = 0;
+		}
+		else
+			data.err = 2;
+		if (g_sig == 0 && !data.err)
 			exec_ast(data.ast, &data);
 		free_tmp_data(&data);
 		data.token = NULL;

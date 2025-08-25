@@ -58,6 +58,7 @@ typedef struct s_data
 	char				*input;
 	bool				is_nl;
 	bool				sig;
+	bool				syntax;
 }	t_data;
 
 /****************************************************************************/

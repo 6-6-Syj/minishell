@@ -97,7 +97,7 @@ int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 	{
 		redir_node->filename = get_redir_target(&token_node);
 		if (!redir_node->filename)
-			exit_error(data);
+			return (-1);
 	}
 	return (0);
 }
