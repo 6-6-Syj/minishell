@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 17:08:13 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/25 16:12:32 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 22:17:58 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_ast	*create_command_node(t_token *token, t_data *data)
 		// SECUUUUUUUUUUUUUUUUUUUUUUUUURE
 		tmp = tmp->next;
 	}
+	// new_node->command.args[i] = NULL;
 	init_redir(token, &new_node->command.redir, data);
 	return (new_node);
 }

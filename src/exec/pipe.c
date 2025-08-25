@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 19:12:25 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/25 18:01:05 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 19:48:39 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
 	}
 	else if (pipe->left && pipe->left->type == PIPE)
 		assign_pipe_fds(pipe->left, -1, fd[1]);
-	if (pipe->right->type == CMD)
+	if (pipe->right && pipe->right->type == CMD)
 	{
 		if (!has_redir_in(&pipe->right->command))
 			pipe->right->command.fd_in = fd[0];

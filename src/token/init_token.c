@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 19:27:09 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/25 17:58:18 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/25 22:40:22 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,52 @@ bool	redir_is_valid(t_token *token)
 	return (true);
 }
 
-// bool	pipe_is_valid(t_token *token)
-// {
-// 	t_token	*tmp;
-// 	int	cmd_count;
+bool	pipe_is_valid(t_token *token)
+{
+	t_token	*tmp;
+	int		cmd_count;
+	int		redir_count;
+	
+	while (token)
+	{
+		if (token->type == PIPE)
+		{
+			tmp = token->next;
+			cmd_count = 0;
+			redir_count = 0;
+			while (tmp && tmp->type != PIPE)
+			{
+				if (tmp->type == CMD)
+					cmd_count++;
+				else if (tmp->type & REDIR)
+					redir_count++;
+				tmp = tmp->next;
+			}
+			if (cmd_count != 1 && redir_count < 1)
+				return (false);
+		}
+		token = token->next;
+	}
+	return (true);
+}
 
-// 	while (token && token->type != PIPE)
-// 	{
-// 		tmp = token;
-// 		cmd_count = 0;
-// 		while (tmp && tmp->type != PIPE)
-// 		{
-// 			if (tmp->type == CMD)
-// 				cmd_count++;
-// 			tmp = tmp->prev;
-// 		}
-// 		token = token->next;
-// 	}
-// 	return (true);
-// }
+bool	type_is_unknow(t_token *token)
+{
+	while (token)
+	{
+		if (token && token->type == UNKNOWN)
+			return (true);
+		token = token->next;
+	}
+	return (false);
+}
 
 bool	syntax_is_valid(t_token *token)
 {
-	// if (!pipe_is_valid(token))
-	// 	return (false);
+	if (type_is_unknow(token))
+		return (false);
+	if (!pipe_is_valid(token))
+		return (false);
 	if (!redir_is_valid(token))
 		return (false);
 	if (token->type == PIPE)
@@ -130,8 +152,9 @@ void	init_token(t_data *data)
 	set_token_priority(&data->token);
 	if (data->token && !syntax_is_valid(data->token))
 	{
-		ft_putstr_fd("Error\n", 2);
+		ft_putstr_fd("Minishell: Syntax error\n", 2);
 		data->err = 2;
+		data->ast = NULL;
 		exit_error(data);
 	}
 }

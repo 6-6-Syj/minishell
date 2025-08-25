@@ -16,7 +16,7 @@
 #include <readline/readline.h>
 #include <signal.h>
 
-volatile int			g_sig;
+volatile int	g_sig;
 
 static void	clean_exit(t_data *data)
 {
@@ -123,7 +123,6 @@ int	main(int ac, char **av, char **env)
 		if (!data.input)
 			continue ;
 		init_token(&data);
-		// print_all(&data);
 		init_ast(&data.ast, &data.token, &data);
 		data.err = 0;
 		if (g_sig == 0)
@@ -131,7 +130,6 @@ int	main(int ac, char **av, char **env)
 		free_tmp_data(&data);
 		data.token = NULL;
 	}
-	
 	rl_clear_history();
 	return (0);
 }
