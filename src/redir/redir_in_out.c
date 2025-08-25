@@ -110,11 +110,10 @@ static t_command	*find_last_cmd(t_ast *node)
 	return (NULL);
 }
 
-bool	is_last_command_in_ast(t_command *cmd, t_ast *root)
+bool	is_last_command_in_ast(t_ast *root)
 {
 	t_command	*rightmost;
 
-	(void)cmd;
 	rightmost = find_last_cmd(root);
 	return (rightmost);
 }

@@ -126,7 +126,7 @@ void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
 	}
 	else
 	{
-		is_last = is_last_command_in_ast(cmd, root);
+		is_last = is_last_command_in_ast(root);
 		add_pid(pids, pid, is_last, data);
 		if (cmd->fd_in > 2)
 			w_close(cmd->fd_in, data);
