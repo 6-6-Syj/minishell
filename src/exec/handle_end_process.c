@@ -103,7 +103,10 @@ static int	get_exit_code(int status, t_data *data)
 			data->is_nl = true;
 			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
 		}
-		return (128 + sig);
+		if (sig == SIGPIPE)
+			return (0);
+		else
+			return (128 + sig);
 	}
 	else if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

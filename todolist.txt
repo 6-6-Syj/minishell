@@ -7,6 +7,23 @@ $NOVAR
 
 
 
+' ou "
+
+SYNTAX ERROR:
+
+| - pipe
+|| - OR logique
+&& - AND logique
+& - tâche en arrière-plan
+> - redirection sortie
+>> - redirection sortie (append)
+< - redirection entrée
+<< - here document
+<<< - here string
+; - séparateur de commandes
+;; - fin de case
+
+
 
 $HOME$USER
 

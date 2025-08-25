@@ -90,9 +90,7 @@ static void	exec_command(t_command *cmd, t_data *data)
 			exit_error(data);
 		}
 		else if (is_a_dir(cmd, data))
-		{
 			exit_error(data);
-		}
 		else
 		{
 			if (!data->err)
@@ -121,7 +119,10 @@ void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
 		}
 		open_files(cmd, data);
 		close_inherited_fds(cmd);
-		exec_command(cmd, data);
+		if (!data->err)
+			exec_command(cmd, data);
+		else
+			exit_error(data);
 	}
 	else
 	{
