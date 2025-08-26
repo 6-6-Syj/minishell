@@ -27,6 +27,5 @@ void	update_shlvl(t_data *data)
 		free(shlvl_str);
 		shlvl_str = ft_itoa(shlvl_int);
 		set_env_var(data, "SHLVL", shlvl_str);
-		free(shlvl_str); // LEAKS
 	}
 }

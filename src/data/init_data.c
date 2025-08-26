@@ -101,6 +101,7 @@ void	init_env(t_data *data, char **env)
 void	init_data(t_data *data, char **env)
 {
 	data->env = NULL;
+	data->input = NULL;
 	data->env_tab = NULL;
 	data->token = NULL;
 	data->ast = NULL;
