@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 19:21:04 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/08 17:50:38 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/26 21:07:47 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,16 @@ static bool	validate_oldpwd(char *oldpwd, t_data *data)
 
 static int	cd_oldpwd(t_data *data)
 {
+	char	oldpwd_stack[PATH_MAX];
 	char	*oldpwd;
 	char	*pwd;
 
 	oldpwd = get_env_var(data, "OLDPWD");
-	if (!validate_oldpwd(oldpwd, data))
+	ft_strcpy(oldpwd_stack, oldpwd);
+	free(oldpwd);
+	if (!validate_oldpwd(oldpwd_stack, data))
 		return (data->err);
-	if (w_cd(oldpwd, data) == 0)
+	if (w_cd(oldpwd_stack, data) == 0)
 	{
 		pwd = get_env_var(data, "PWD");
 		if (pwd)
@@ -85,6 +88,7 @@ static int	cd_oldpwd(t_data *data)
 			ft_putstr_fd(pwd, STDOUT_FILENO);
 			ft_putstr_fd("\n", STDOUT_FILENO);
 		}
+		free(pwd);
 	}
 	return (data->err);
 }
