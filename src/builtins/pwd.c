@@ -12,7 +12,6 @@
 
 #include "builtins.h"
 #include <errno.h>
-#include <stdio.h>
 
 static int	w_getcwd(char *path, t_data *data)
 {
@@ -23,7 +22,6 @@ static int	w_getcwd(char *path, t_data *data)
 	return (data->err);
 }
 
-/* TODO: CHECK ERROR MESSAGES */
 int	ft_pwd(t_data *data)
 {
 	char	path[PATH_MAX];
