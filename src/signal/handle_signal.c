@@ -17,13 +17,21 @@
 
 extern volatile int	g_sig;
 
-void	sig_handler_heredoc(int signum)
+int event_hook(void)
 {
-	if (signum == SIGINT)
-	{
-		g_sig = 1;
-		write(1, "^C\n", 3);
-	}
+    if (g_sig == 1)
+    {
+        rl_done = 1;
+    }
+    return (0);
+}
+
+void sig_handler_heredoc(int signum)
+{
+    if (signum == SIGINT)
+    {
+        g_sig = 1;
+    }
 }
 
 void	sig_handler(int signum)
@@ -43,7 +51,7 @@ bool	init_sig_handler(void)
 
 	sa.sa_handler = sig_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		return (false);
 	signal(SIGQUIT, SIG_IGN);

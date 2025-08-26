@@ -29,10 +29,10 @@ static void	init_heredoc_sig_handler(void)
 
 	sa.sa_handler = sig_handler_heredoc;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
-		ft_putstr_fd("sigaction failed\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: sigaction failed\n", STDERR_FILENO);
 		return ;
 	}
 	signal(SIGQUIT, SIG_IGN);
@@ -57,9 +57,9 @@ static int	read_heredoc_loop(t_redir *redir, t_data *data)
 	if (fd < 0)
 		return (-1);
 	init_heredoc_sig_handler();
+	rl_event_hook = event_hook;
 	while (g_sig == 0)
 	{
-		signal(SIGINT, sig_handler_heredoc);
 		line = readline("> ");
 		if (ctrl_c_catched(line, fd, redir->filename))
 			return (-1);
@@ -72,6 +72,7 @@ static int	read_heredoc_loop(t_redir *redir, t_data *data)
 	close(fd);
 	unlink(redir->filename);
 	signal(SIGINT, SIG_IGN);
+	rl_event_hook = NULL;
 	return (-1);
 }
 
