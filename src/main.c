@@ -37,42 +37,82 @@ static void	clean_exit(t_data *data)
 	exit(data->err);
 }
 
-char	*handle_readline(t_data *data)
+static char	*handle_readline(t_data *data)
 {
-	char	*input;
+	char	*line;
+	char	*str;
 
-	g_sig = 0;
-	signal(SIGINT, sig_handler);
-	input = readline("minishell$ ");
-	signal(SIGINT, SIG_IGN);
-	if (!input)
-		clean_exit(data);
-	if (input[0] == '\0')
+	if (isatty(fileno(stdin)))
 	{
-		free(input);
-		return (NULL);
+		signal(SIGINT, sig_handler);
+		str = readline("minishell$ ");
+		signal(SIGINT, SIG_IGN);
+		if (!str)
+			clean_exit(data);
+		if (str[0] == '\0')
+		{
+			free(str);
+			return (NULL);
+		}
+		add_history(str);
+		return (str);
 	}
-	add_history(input);
-	return (input);
+	else
+	{
+		str = get_next_line(fileno(stdin));
+		if (str)
+		{
+			line = ft_strtrim(str, "\n");
+			free(str);
+			str = line;
+		}
+		if (!str)
+		{
+			exit_error(data);
+			return (NULL);
+		}
+	}
+	return (str);
 }
 
-static void	check_tty(int ac, char **av, t_data *data)
-{
-	(void)ac;
-	(void)av;
-	if (!isatty(STDOUT_FILENO))
-	{
-		ft_putstr_fd("minishell: stdout is not a tty\n", STDERR_FILENO);
-		data->err = 130;
-		exit_error(data);
-	}
-}
+// char	*handle_readline(t_data *data)
+// {
+// 	char	*input;
+
+// 	g_sig = 0;
+// 	signal(SIGINT, sig_handler);
+// 	input = readline("minishell$ ");
+// 	signal(SIGINT, SIG_IGN);
+// 	if (!input)
+// 		clean_exit(data);
+// 	if (input[0] == '\0')
+// 	{
+// 		free(input);
+// 		return (NULL);
+// 	}
+// 	add_history(input);
+// 	return (input);
+// }
+
+// static void	check_tty(int ac, char **av, t_data *data)
+// {
+// 	(void)ac;
+// 	(void)av;
+// 	if (!isatty(STDOUT_FILENO))
+// 	{
+// 		ft_putstr_fd("minishell: stdout is not a tty\n", STDERR_FILENO);
+// 		data->err = 130;
+// 		exit_error(data);
+// 	}
+// }
 
 int	main(int ac, char **av, char **env)
 {
 	t_data	data;
 
-	check_tty(ac, av, &data);
+	(void)ac;
+	(void)av;
+	// check_tty(ac, av, &data);
 	init_data(&data, env);
 	while (1)
 	{

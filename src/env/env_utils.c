@@ -50,20 +50,14 @@ static void	update_key_values(t_data *data, t_env *env_node, int i)
 		env_node->print_exp = true;
 		buff = ft_strjoin(env_node->key, "=");
 		if (!buff)
-		{
-			free_strs(data->env_tab);
 			malloc_fail(data);
-		}
 		if (env_node->value)
 			data->env_tab[i] = ft_strjoin(buff, env_node->value);
 		else
 			data->env_tab[i] = ft_strdup(buff);
 		free(buff);
 		if (!data->env_tab[i++])
-		{
-			free_strs(data->env_tab);
 			malloc_fail(data);
-		}
 		env_node->print_env = true;
 		env_node = env_node->next;
 	}

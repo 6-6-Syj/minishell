@@ -40,6 +40,8 @@ static int	update_value(t_data *data, char *key, char *value)
 		{
 			free(current->value);
 			current->value = ft_strdup(value);
+			if (value)
+				free(value);
 			if (!current->value)
 				malloc_fail(data);
 			update_env_tab(data);

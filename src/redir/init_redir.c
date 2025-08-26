@@ -111,6 +111,8 @@ void	init_redir(t_token *token_node, t_redir **redir_lst, t_data *data)
 	while (token_node)
 	{
 		new_redir = add_redir_node(redir_lst);
+		if (!new_redir)
+			malloc_fail(data);
 		if (set_redir_node(new_redir, token_node, data) == -1)
 			return ;
 		token_node = get_next_redir(&token_node);

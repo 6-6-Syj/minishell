@@ -26,6 +26,7 @@
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
+int		event_hook(void);
 void	sig_handler(int signum);
 void	sig_handler_heredoc(int signum);
 bool	init_sig_handler(void);

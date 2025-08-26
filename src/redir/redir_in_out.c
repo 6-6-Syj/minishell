@@ -15,23 +15,6 @@
 #include "token.h"
 #include <fcntl.h>
 
-/*
-
-ACCESS: int access(const char *pathname, int mode);
-
-	◆  La  fonction  vérifie  si  le  path  en  fonction  du/des  mode(s)
-	sélectionnés renseigne en paramètres est valides.
-◆  Valeur de mode:
-	●  R_OK : Lecture.
-	●  W_OK : Ecriture.
-	●  X_OK : Exécution.
-	●  F_OK : Existence.
-◆  Retour: La fonction renvoie 0 si les permissions demandées sont disponibles
-ou -1 si l'accès est refusé ou si une erreur survient.
-
-*/
-
-// TODO: CHECK ACCESS ?
 static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 {
 	int	flags;
@@ -95,7 +78,7 @@ void	open_files(t_command *cmd, t_data *data)
 		else
 			break ;
 	}
-	if (ft_strcmp(cmd->args[0], "(null)") != 0)
+	if (cmd && cmd->args[0] && ft_strcmp(cmd->args[0], "(null)") != 0)
 		redir(cmd, data);
 }
 
