@@ -1,0 +1,17 @@
+caca
+coucou
+doc
+funcheck
+include
+lib
+ls
+Makefile
+minishell
+minishell_tester
+mk_files
+out
+readline.supp
+src
+t4
+t9
+todolist.txt

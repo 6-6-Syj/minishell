@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 17:03:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/26 16:54:23 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/26 20:01:05 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include <redir.h>
 #include <stdlib.h>
 #include <utils.h>
+#include <command.h>
 
-void	free_ast(t_ast **node);
+void		free_ast(t_ast **node);
 
 void	free_redir_lst(t_redir **redir_lst)
 {
@@ -53,6 +54,7 @@ static void	free_command_node(t_ast *node)
 		free_strs(node->command.args);
 	if (node->command.redir)
 		free_redir_lst(&node->command.redir);
+	close_inherited_fds(&node->command);
 }
 
 void	free_ast(t_ast **node)

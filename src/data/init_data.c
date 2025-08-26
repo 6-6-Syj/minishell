@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+
+	+:+     */
+/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+
+	+#+        */
+/*                                                +#+#+#+#+#+
+	+#+           */
 /*   Created: 2025-07-24 20:30:52 by jmagand           #+#    #+#             */
 /*   Updated: 2025-07-24 20:30:52 by jmagand          ###   ########.fr       */
 /*                                                                            */
@@ -15,9 +18,10 @@
 #include "minishell.h"
 #include "print.h"
 
+
 bool	is_set_env(t_env *new_env, char *env_line)
 {
-	char	*equal;
+	char *equal;
 
 	new_env->print_env = false;
 	new_env->print_exp = true;
@@ -39,7 +43,7 @@ bool	is_set_env(t_env *new_env, char *env_line)
 
 t_env	*get_last_env(t_env *env_lst)
 {
-	t_env	*last;
+	t_env *last;
 
 	last = env_lst;
 	if (!env_lst)
@@ -51,8 +55,8 @@ t_env	*get_last_env(t_env *env_lst)
 
 t_env	*add_env_node(t_env **env_lst)
 {
-	t_env	*new_node;
-	t_env	*last_node;
+	t_env *new_node;
+	t_env *last_node;
 
 	new_node = ft_calloc(1, sizeof(t_env));
 	if (!new_node)
@@ -74,8 +78,8 @@ t_env	*add_env_node(t_env **env_lst)
 
 void	init_env(t_data *data, char **env)
 {
-	t_env	*new_env;
-	int		i;
+	t_env *new_env;
+	int i;
 
 	i = 0;
 	if (!env[0])
@@ -110,6 +114,8 @@ void	init_data(t_data *data, char **env)
 	data->pid_list = NULL;
 	data->is_nl = false;
 	data->syntax = 0;
+	data->input = NULL;
+	data->i = 0;
 	init_env(data, env);
 	if (init_sig_handler() == false)
 	{

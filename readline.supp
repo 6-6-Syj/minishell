@@ -13,13 +13,6 @@
 }
 
 {
-	ls
-	Memcheck:Leak
-	...
-	obj:*/usr/bin/ls
-}
-
-{
 	cat
 	Memcheck:Leak
 	...

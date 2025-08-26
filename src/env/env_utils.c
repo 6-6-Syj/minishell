@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-21 21:18:49 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-21 21:18:49 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/21 21:18:49 by jmagand           #+#    #+#             */
+/*   Updated: 2025/08/26 18:48:48 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static int	get_size_env_lst(t_env *current)
 	}
 	return (size);
 }
-
 static void	update_key_values(t_data *data, t_env *env_node, int i)
 {
 	char	*buff;
@@ -50,20 +49,14 @@ static void	update_key_values(t_data *data, t_env *env_node, int i)
 		env_node->print_exp = true;
 		buff = ft_strjoin(env_node->key, "=");
 		if (!buff)
-		{
-			free_strs(data->env_tab);
 			malloc_fail(data);
-		}
 		if (env_node->value)
 			data->env_tab[i] = ft_strjoin(buff, env_node->value);
 		else
 			data->env_tab[i] = ft_strdup(buff);
 		free(buff);
 		if (!data->env_tab[i++])
-		{
-			free_strs(data->env_tab);
 			malloc_fail(data);
-		}
 		env_node->print_env = true;
 		env_node = env_node->next;
 	}
