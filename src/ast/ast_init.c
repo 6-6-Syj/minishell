@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 17:08:13 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/26 00:37:49 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/26 17:04:55 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_ast	*create_command_node(t_token *token, t_data *data)
 	new_node->command.fd_out = -1;
 	new_node->type = CMD;
 	len = get_args_len(tmp);
-	new_node->command.args = ft_calloc(len + 2, sizeof(char *));
+	new_node->command.args = ft_calloc(len + 1, sizeof(char *));
 	if (!new_node->command.args)
 		malloc_fail(data);
 	i = 0;
@@ -43,10 +43,9 @@ t_ast	*create_command_node(t_token *token, t_data *data)
 	{
 		if (tmp->type == CMD || tmp->type == ARG)
 			new_node->command.args[i++] = ft_strdup(tmp->content);
-		// SECUUUUUUUUUUUUUUUUUUUUUUUUURE
+			// SECUUUUUUUUUUUUUUUUUUUUUUUUURE
 		tmp = tmp->next;
 	}
-	// new_node->command.args[i] = NULL;
 	init_redir(token, &new_node->command.redir, data);
 	return (new_node);
 }
