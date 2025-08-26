@@ -62,7 +62,7 @@ static void	check_tty(int ac, char **av, t_data *data)
 	(void)av;
 	if (!isatty(STDOUT_FILENO))
 	{
-		ft_putstr_fd("Error: stdout is not a tty\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: stdout is not a tty\n", STDERR_FILENO);
 		data->err = 130;
 		exit_error(data);
 	}

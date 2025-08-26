@@ -1,82 +1,32 @@
-==131722== Memcheck, a memory error detector
-==131722== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==131722== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==131722== Command: ./minishell
-==131722== Parent PID: 45250
-==131722== 
-==131722== 
-==131722== FILE DESCRIPTORS: 7 open (3 std) at exit.
-==131722== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==131722==    <inherited from parent>
-==131722== 
-==131722== Open file descriptor 42: /dev/ptmx
-==131722==    <inherited from parent>
-==131722== 
-==131722== Open file descriptor 41: /home/jmagand/.config/Code/logs/20250825T203414/ptyhost.log
-==131722==    <inherited from parent>
-==131722== 
-==131722== Open file descriptor 3: /home/jmagand/Documents/wip/3./minishell/.valgrind_log.txt
-==131722==    <inherited from parent>
-==131722== 
-==131722== 
-==131722== HEAP SUMMARY:
-==131722==     in use at exit: 208,636 bytes in 252 blocks
-==131722==   total heap usage: 1,004 allocs, 752 frees, 249,293 bytes allocated
-==131722== 
-==131722== 16 bytes in 1 blocks are still reachable in loss record 10 of 72
-==131722==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==131722==    by 0x40B09B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==131722==    by 0x40980D: create_command_node (ast_init.c:38)
-==131722==    by 0x409A22: create_ast_node (ast_init.c:80)
-==131722==    by 0x40994D: create_pipe_node (ast_init.c:65)
-==131722==    by 0x4099D2: create_ast_node (ast_init.c:76)
-==131722==    by 0x409A96: init_ast (ast_init.c:91)
-==131722==    by 0x401520: main (main.c:124)
-==131722== 
-==131722== 32 bytes in 1 blocks are still reachable in loss record 14 of 72
-==131722==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==131722==    by 0x40B09B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==131722==    by 0x409928: create_pipe_node (ast_init.c:62)
-==131722==    by 0x4099D2: create_ast_node (ast_init.c:76)
-==131722==    by 0x409A96: init_ast (ast_init.c:91)
-==131722==    by 0x401520: main (main.c:124)
-==131722== 
-==131722== 32 bytes in 1 blocks are still reachable in loss record 15 of 72
-==131722==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==131722==    by 0x40B09B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==131722==    by 0x4097B6: create_command_node (ast_init.c:31)
-==131722==    by 0x409A22: create_ast_node (ast_init.c:80)
-==131722==    by 0x40994D: create_pipe_node (ast_init.c:65)
-==131722==    by 0x4099D2: create_ast_node (ast_init.c:76)
-==131722==    by 0x409A96: init_ast (ast_init.c:91)
-==131722==    by 0x401520: main (main.c:124)
-==131722== 
-==131722== 40 bytes in 1 blocks are still reachable in loss record 17 of 72
-==131722==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==131722==    by 0x40B09B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==131722==    by 0x40A4CA: add_redir_node (redir_lst.c:29)
-==131722==    by 0x40A3AF: init_redir (init_redir.c:113)
-==131722==    by 0x4098DB: create_command_node (ast_init.c:50)
-==131722==    by 0x409A22: create_ast_node (ast_init.c:80)
-==131722==    by 0x40994D: create_pipe_node (ast_init.c:65)
-==131722==    by 0x4099D2: create_ast_node (ast_init.c:76)
-==131722==    by 0x409A96: init_ast (ast_init.c:91)
-==131722==    by 0x401520: main (main.c:124)
-==131722== 
-==131722== 48 bytes in 3 blocks are definitely lost in loss record 22 of 72
-==131722==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==131722==    by 0x40B09B: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
-==131722==    by 0x40980D: create_command_node (ast_init.c:38)
-==131722==    by 0x409A22: create_ast_node (ast_init.c:80)
-==131722==    by 0x409A96: init_ast (ast_init.c:91)
-==131722==    by 0x401520: main (main.c:124)
-==131722== 
-==131722== LEAK SUMMARY:
-==131722==    definitely lost: 48 bytes in 3 blocks
-==131722==    indirectly lost: 0 bytes in 0 blocks
-==131722==      possibly lost: 0 bytes in 0 blocks
-==131722==    still reachable: 120 bytes in 4 blocks
-==131722==         suppressed: 208,468 bytes in 245 blocks
-==131722== 
-==131722== For lists of detected and suppressed errors, rerun with: -s
-==131722== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 1 from 1)
+==18824== Memcheck, a memory error detector
+==18824== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==18824== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==18824== Command: ./minishell
+==18824== Parent PID: 15032
+==18824== 
+==18824== 
+==18824== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==18824== 
+==18824== HEAP SUMMARY:
+==18824==     in use at exit: 208,267 bytes in 233 blocks
+==18824==   total heap usage: 1,146 allocs, 913 frees, 252,436 bytes allocated
+==18824== 
+==18824== 16 bytes in 1 blocks are definitely lost in loss record 11 of 66
+==18824==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==18824==    by 0x40B0CB: ft_calloc (in /home/jmagand/Documents/wip/3./minishell/minishell)
+==18824==    by 0x40983D: create_command_node (ast_init.c:38)
+==18824==    by 0x409A52: create_ast_node (ast_init.c:80)
+==18824==    by 0x409995: create_pipe_node (ast_init.c:66)
+==18824==    by 0x409A02: create_ast_node (ast_init.c:76)
+==18824==    by 0x409AC6: init_ast (ast_init.c:91)
+==18824==    by 0x401531: main (main.c:87)
+==18824== 
+==18824== LEAK SUMMARY:
+==18824==    definitely lost: 16 bytes in 1 blocks
+==18824==    indirectly lost: 0 bytes in 0 blocks
+==18824==      possibly lost: 0 bytes in 0 blocks
+==18824==    still reachable: 0 bytes in 0 blocks
+==18824==         suppressed: 208,251 bytes in 232 blocks
+==18824== 
+==18824== For lists of detected and suppressed errors, rerun with: -s
+==18824== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 1 from 1)
