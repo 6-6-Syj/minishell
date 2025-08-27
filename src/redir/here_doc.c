@@ -57,9 +57,9 @@ static int	read_heredoc_loop(t_redir *redir, t_data *data)
 	if (fd < 0)
 		return (-1);
 	init_heredoc_sig_handler();
-	rl_event_hook = event_hook;
 	while (g_sig == 0)
 	{
+		rl_event_hook = event_hook;
 		line = readline("> ");
 		if (ctrl_c_catched(line, fd, redir->filename))
 			return (-1);

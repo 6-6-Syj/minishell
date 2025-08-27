@@ -45,6 +45,11 @@ char	*handle_readline(t_data *data)
 	signal(SIGINT, sig_handler);
 	input = readline("minishell$ ");
 	signal(SIGINT, SIG_IGN);
+	if (g_sig)
+	{
+		data->err = 130;
+		g_sig = 0;
+	}
 	if (!input)
 		clean_exit(data);
 	if (input[0] == '\0')
@@ -77,13 +82,13 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		data.is_nl = false;
-		g_sig = 0; // TODO: check
 		data.input = handle_readline(&data);
 		if (!data.input)
 			continue ;
 		init_token(&data);
 		if (data.syntax == 0)
 		{
+			// print_all(&data);
 			init_ast(&data.ast, &data.token, &data);
 			data.err = 0;
 		}
@@ -91,6 +96,8 @@ int	main(int ac, char **av, char **env)
 			data.err = 2;
 		if (g_sig == 0 && !data.err)
 			exec_ast(data.ast, &data);
+		if (g_sig)
+			data.err = 130;
 		free_tmp_data(&data);
 		data.token = NULL;
 	}

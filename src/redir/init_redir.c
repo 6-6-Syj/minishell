@@ -79,7 +79,6 @@ char	*get_redir_target(t_token **root_token)
 
 int	set_redir_node(t_redir *redir_node, t_token *token_node, t_data *data)
 {
-	(void)data;
 	if (!token_node || !token_node->next)
 		return (-1);
 	redir_node->type = token_node->type;

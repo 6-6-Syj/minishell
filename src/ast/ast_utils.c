@@ -68,7 +68,7 @@ t_token	*get_next_priority_token(t_token *root_token)
 	while (priority <= 2)
 	{
 		tmp = root_token->next;
-		while (tmp)
+		while (tmp && tmp->type != PIPE)
 		{
 			if (tmp->priority == priority)
 				return (tmp);
