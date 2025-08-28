@@ -92,13 +92,19 @@ static void	exec_command(t_command *cmd, t_data *data)
 			exit_error(data);
 		else
 		{
+			ft_printf("cmd: -%s-\n", cmd->args[0]);
+			ft_printf("in: -%d-\nout: -%d-\n", cmd->fd_in, cmd->fd_out);
 			if (!data->err)
 				search_cmd_and_exec(cmd, data);
 			else
 				data->err = 1;
 		}
 	}
-	exit(1);
+	ft_printf("cmd: -%s-\n", cmd->args[0]);
+	ft_printf("in: -%d-\nout: -%d-\n", cmd->fd_in, cmd->fd_out);
+	// close(cmd->fd_in);
+	// close(cmd->fd_out);
+	exit_error(data); //TODO: CHECK ERROR CODE THERE
 }
 
 void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
@@ -125,6 +131,13 @@ void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
 	}
 	else
 	{
+		// if (!ft_strcmp(cmd->args[0], "(null)"))
+		// {
+		// 	if (cmd->fd_in > 2)
+		// 		w_close(cmd->fd_in, data);
+		// 	if (cmd->fd_out > 2)
+		// 		w_close(cmd->fd_out, data);
+		// }
 		is_last = is_last_command_in_ast(root);
 		add_pid(pids, pid, is_last, data);
 		if (cmd->fd_in > 2)

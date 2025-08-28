@@ -59,6 +59,7 @@ static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 	}
 }
 
+
 void	handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
 {
 	w_pipe(fd, data);
@@ -79,3 +80,5 @@ void	handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
 	close(fd[1]);
 	close(fd[0]);
 }
+
+

@@ -16,20 +16,49 @@
 #include "pipe.h"
 #include "redir.h"
 
+/*
+		void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
+				t_ast *root)
+		{
+			pid_t	pid;
+			bool	is_last;
+
+			pid = w_fork(data);
+			if (pid == 0)
+			{
+				data->pid_list = NULL;
+				if (pids && *pids)
+				{
+					free_pid_list(pids);
+					*pids = NULL;
+				}
+				open_files(cmd, data);
+				close_inherited_fds(cmd);
+				if (!data->err)
+					exec_command(cmd, data);
+				else
+					exit_error(data);
+			}
+			else
+			{
+				is_last = is_last_command_in_ast(root);
+				add_pid(pids, pid, is_last, data);
+				if (cmd->fd_in > 2)
+					w_close(cmd->fd_in, data);
+				if (cmd->fd_out > 2)
+					w_close(cmd->fd_out, data);
+			}
+		}
+*/
+
 void	handle_ast(t_ast *node, t_data *data, int *fd, t_pid_list **pids)
 {
 	if (!node)
 		return ;
-	if (node->type == CMD && node->command.args[0])
-	{
+	if (node->type == CMD && (node->command.args[0] || node->command.redir))
 		handle_command(&node->command, data, pids, node);
-	}
 	else if (node->type == PIPE)
 		handle_pipe(&node->pipe, data, fd, pids);
-	else
-	{
-		open_files(&node->command, data);
-	}
 }
 
 static void	init_backup(t_fd_backup *backup)

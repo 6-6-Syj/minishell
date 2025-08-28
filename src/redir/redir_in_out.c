@@ -78,7 +78,7 @@ void	open_files(t_command *cmd, t_data *data)
 		else
 			break ;
 	}
-	if (cmd && cmd->args[0] && ft_strcmp(cmd->args[0], "(null)") != 0)
+	if (cmd && cmd->args[0])
 		redir(cmd, data);
 }
 
