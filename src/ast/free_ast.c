@@ -66,5 +66,8 @@ void	free_ast(t_ast **node)
 	else if ((*node)->type == CMD)
 		free_command_node(*node);
 	if (*node)
+	{
 		free(*node);
+		*node = NULL;
+	}
 }
