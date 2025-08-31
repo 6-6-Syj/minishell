@@ -16,7 +16,5 @@ void	print_all(t_data *data)
 {
 	ft_printf("\n");
 	print_token_lst(data->token);
-	// print_ast_graphical(data->ast);
 	ft_printf("\033[0;34m\033[1m ECHO $?: %d\033[0m\n", data->err);
-	// print_data(data);
 }
