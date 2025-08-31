@@ -83,7 +83,7 @@ static void	init_oldpwd_i(t_data *data)
 	new_env = add_env_node(&data->env);
 	if (!new_env)
 		malloc_failed(data, NULL);
-	new_env->key = ft_strdup("_");
+	new_env->key = ft_strdup("OLDPWD");
 	if (!new_env->key)
 		malloc_failed(data, NULL);
 	new_env->print_env = false;

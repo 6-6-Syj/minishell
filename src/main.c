@@ -63,13 +63,22 @@ char	*handle_readline(t_data *data)
 
 static void	check_tty(int ac, char **av, t_data *data)
 {
+	int	fd;
+
 	(void)ac;
 	(void)av;
+	fd = 3;
+	while (fd < 1024)
+	{
+		close(fd);
+		fd++;
+	}
 	if (!isatty(STDOUT_FILENO))
 	{
 		ft_putstr_fd("minishell: stdout is not a tty\n", STDERR_FILENO);
 		data->err = 130;
-		exit_error(data);
+		// exit_error(data);
+		exit(130);
 	}
 }
 
@@ -88,7 +97,6 @@ int	main(int ac, char **av, char **env)
 		init_token(&data);
 		if (data.syntax == 0)
 		{
-			// print_all(&data);
 			init_ast(&data.ast, &data.token, &data);
 			data.err = 0;
 		}
