@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "env.h"
+#include "data.h"
 
 void	malloc_failed(t_data *data, char *pwd)
 {

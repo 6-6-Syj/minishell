@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "libft.h"
+#include "env.h"
 
 int	ft_env(t_env *env_lst)
 {

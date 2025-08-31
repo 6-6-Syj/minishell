@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "print.h"
+#include "env.h"
+#include "libft.h"
+#include "data.h"
 
 static void	free_and_exit(t_env *node, t_data *data)
 {

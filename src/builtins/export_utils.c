@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "print.h"
+# include <unistd.h>
+# include <stdbool.h>
+# include "libft.h"
 
 static bool	is_special_char(char c)
 {

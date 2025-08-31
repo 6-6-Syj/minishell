@@ -10,24 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "data.h"
 #include "handle_signal.h"
-#include "print.h"
 #include <signal.h>
-
-/*
-WIFSIGNALED(status) : Vrai si le processus fils a été terminé par un signal.
-
-WTERMSIG(status) : Si WIFSIGNALED est vrai,
-	retourne le numéro du signal qui a tué le processus.
-
-WIFSTOPPED(status) : Vrai si le processus fils a été stoppé (par exemple,
-	par SIGSTOP).
-
-WSTOPSIG(status) : Si WIFSTOPPED est vrai,
-	retourne le numéro du signal qui a stoppé le processus.
-
-*/
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 static int	get_exit_code(int status, t_data *data)
 {
@@ -58,8 +46,8 @@ static int	get_exit_code(int status, t_data *data)
 
 int	wait_all_processes(t_data *data)
 {
-	int			status;
-	int			last_exit_code;
+	int	status;
+	int	last_exit_code;
 
 	last_exit_code = 0;
 	if (waitpid(data->last_cmd_pid, &status, 0) > 0)

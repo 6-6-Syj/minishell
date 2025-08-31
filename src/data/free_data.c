@@ -13,8 +13,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
+#include "data.h"
+#include "token.h"
+#include "env.h"
+#include "ast.h"
 
 void	free_data(t_data *data)
 {

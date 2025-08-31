@@ -17,10 +17,7 @@
 /*                                INCLUDE									*/
 /****************************************************************************/
 # include "command.h"
-# include "data.h"
-# include "env.h"
-# include <linux/limits.h>
-# include <unistd.h>
+# include <stdbool.h>
 
 /****************************************************************************/
 /*                                STRUCT									*/

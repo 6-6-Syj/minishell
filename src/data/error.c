@@ -1,16 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_msg.c                                        :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-07-05 19:37:11 by jmagand           #+#    #+#             */
-/*   Updated: 2025-07-05 19:37:11 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/01 19:40:40 by jmagand           #+#    #+#             */
+/*   Updated: 2025/08/18 23:47:13 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "print.h"
+#include "data.h"
+#include "command.h"
+#include <unistd.h>
+#include "libft.h"
+
+void	exit_error(t_data *data)
+{
+	int	err;
+
+	err = 0;
+	if (data)
+	{
+		if (data->err_msg)
+		{
+			ft_putstr_fd(data->err_msg, STDERR_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
+		}
+		err = data->err;
+		free_data(data);
+	}
+	exit(err);
+}
 
 void	cmd_not_found(t_command *cmd, t_data *data)
 {

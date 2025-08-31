@@ -11,8 +11,10 @@
 /* ************************************************************************** */
 
 #include "command.h"
-#include "print.h"
 #include "redir.h"
+#include "wrappers.h"
+#include "exec.h"
+#include "builtins.h"
 
 static void	check_access(char *path, t_command *cmd, t_data *data)
 {

@@ -1,6 +1,5 @@
 #include "ast.h"
 #include "data.h"
-#include "print.h"
 #include "redir.h"
 #include "token.h"
 #include "unistd.h"

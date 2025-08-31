@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "data.h"
+#include "libft.h"
 
 static bool	is_valid_number(char *str, bool *minus)
 {

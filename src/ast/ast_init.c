@@ -12,7 +12,6 @@
 
 #include "ast.h"
 #include "libft.h"
-#include "print.h"
 #include "redir.h"
 #include "token.h"
 #include "unistd.h"

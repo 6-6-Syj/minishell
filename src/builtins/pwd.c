@@ -11,7 +11,10 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "data.h"
+#include "libft.h"
 #include <errno.h>
+#include <linux/limits.h>
 
 static int	w_getcwd(char *path, t_data *data)
 {

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "env.h"
 #include "handle_signal.h"
 #include "minishell.h"
 #include <readline/history.h>
@@ -65,20 +66,19 @@ static void	check_tty(int ac, char **av, t_data *data)
 {
 	int	fd;
 
+	fd = 3;
 	(void)ac;
 	(void)av;
-	fd = 3;
-	while (fd < 1024)
-	{
-		close(fd);
-		fd++;
-	}
 	if (!isatty(STDOUT_FILENO))
 	{
 		ft_putstr_fd("minishell: stdout is not a tty\n", STDERR_FILENO);
+		while (fd < 1024)
+		{
+			close(fd);
+			fd++;
+		}
 		data->err = 130;
-		// exit_error(data);
-		exit(130);
+		exit(data->err);
 	}
 }
 

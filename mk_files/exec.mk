@@ -2,6 +2,7 @@ EXEC_SRC = 	command					\
 			command_utils			\
 			exec					\
 			pipe					\
+			pipe_utils				\
 			path					\
 			path_utils				\
 			wrappers				\

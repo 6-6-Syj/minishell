@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "env.h"
+#include "libft.h"
 
 void	free_copy_env_lst(t_env *copy_env_lst)
 {

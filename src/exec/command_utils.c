@@ -13,6 +13,7 @@
 #include "command.h"
 #include <sys/stat.h>
 #include <sys/types.h>
+#include "wrappers.h"
 
 void	close_inherited_fds(t_command *cmd)
 {

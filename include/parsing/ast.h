@@ -24,12 +24,12 @@
 
 typedef struct s_command
 {
-	int				fd_in;
-	int				fd_out;
-	char			**args;
-	bool			is_last_cmd;
-	struct s_redir	*redir;
-}					t_command;
+	int						fd_in;
+	int						fd_out;
+	char					**args;
+	bool					is_last_cmd;
+	struct s_redir			*redir;
+}							t_command;
 
 typedef struct s_pipe
 {

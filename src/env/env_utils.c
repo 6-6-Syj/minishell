@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "env.h"
-#include "print.h"
 #include "utils.h"
+#include "data.h"
 
 void	print_env_tab(char **env_tab)
 {

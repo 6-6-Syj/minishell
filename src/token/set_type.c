@@ -12,7 +12,6 @@
 
 #include "libft.h"
 #include "minishell.h"
-#include "print.h"
 
 void	set_command_type(t_token **token_lst)
 {

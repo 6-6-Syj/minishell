@@ -16,56 +16,54 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
-# include "builtins.h"
-# include "data.h"
-# include "error.h"
-# include "libft.h"
 # include "status.h"
-# include <unistd.h>
-
-/****************************************************************************/
-/*                                DEFINE									*/
-/****************************************************************************/
-
-/****************************************************************************/
-/*                                ENUM										*/
-/****************************************************************************/
+# include <stdbool.h>
 
 /****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
+typedef struct s_data	t_data;
+
 typedef struct s_env
 {
-	t_status		err;
-	char			*key;
-	char			*value;
-	bool			print_env;
-	bool			print_exp;
-	struct s_env	*prev;
-	struct s_env	*next;
-}					t_env;
+	t_status			err;
+	char				*key;
+	char				*value;
+	bool				print_env;
+	bool				print_exp;
+	struct s_env		*prev;
+	struct s_env		*next;
+}						t_env;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 /* env_i_utils.c */
-void				malloc_failed(t_data *data, char *pwd);
-void				init_underscore_i(t_data *data);
+void					malloc_failed(t_data *data, char *pwd);
+void					init_underscore_i(t_data *data);
 
-bool				is_set_env(t_env *new_env, char *env_line);
-t_env				*get_last_env(t_env *lst);
-t_env				*add_env_node(t_env **env_lst);
+/* init_data */
+void					init_data(t_data *data, char **env);
+void					init_env(t_data *data, char **env);
+bool					is_set_env(t_env *new_env, char *env_line);
+t_env					*get_last_env(t_env *lst);
+t_env					*add_env_node(t_env **env_lst);
 
-void				update_shlvl(t_data *data);
+/* utils_data */
+void					update_shlvl(t_data *data);
 
-void				init_env_i(t_data *data);
-void				init_env(t_data *data, char **env);
+/* env_i */
+void					init_env_i(t_data *data);
 
-void				print_env_tab(char **env_tab);
-char				**update_env_tab(t_data *data);
-void				free_env_lst(t_env **env_lst);
-void				free_env_tab(t_data *data);
+/* env_utils */
+void					print_env_tab(char **env_tab);
+char					**update_env_tab(t_data *data);
 
-char				*get_env_var(t_data *data, char *key);
-int					set_env_var(t_data *data, char *key, char *value);
+/* free_env */
+void					free_env_lst(t_env **env_lst);
+void					free_env_tab(t_data *data);
+
+/* getter_setter */
+char					*get_env_var(t_data *data, char *key);
+int						set_env_var(t_data *data, char *key, char *value);
 #endif

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "env.h"
+#include "data.h"
 
 static void	free_lst_node(t_env *env_node)
 {

@@ -11,35 +11,10 @@
 /* ************************************************************************** */
 
 #include "pipe.h"
-#include "redir.h"
-
-static bool	has_redir_out(t_command *cmd)
-{
-	t_redir	*redir;
-
-	redir = cmd->redir;
-	while (redir)
-	{
-		if (redir->type == REDIR_OUT || redir->type == REDIR_APPEND)
-			return (true);
-		redir = redir->next;
-	}
-	return (false);
-}
-
-static bool	has_redir_in(t_command *cmd)
-{
-	t_redir	*redir;
-
-	redir = cmd->redir;
-	while (redir)
-	{
-		if (redir->type == REDIR_IN)
-			return (true);
-		redir = redir->next;
-	}
-	return (false);
-}
+#include "wrappers.h"
+#include "ast.h"
+#include "data.h"
+#include "exec.h"
 
 static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 {

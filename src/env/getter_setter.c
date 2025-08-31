@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "env.h"
-#include "print.h"
+#include "data.h"
 
 char	*get_env_var(t_data *data, char *key)
 {

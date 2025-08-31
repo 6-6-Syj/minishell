@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "env.h"
+#include "libft.h"
+#include <linux/limits.h>
+#include "data.h"
 
 static char	*get_pwd_i(t_data *data)
 {

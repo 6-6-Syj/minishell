@@ -10,11 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <linux/limits.h>
 #include "builtins.h"
 #include "errno.h"
 #include "libft.h"
 #include <string.h>
 #include <sys/stat.h>
+#include "env.h"
+#include "data.h"
 
 static int	w_cd(char *target, t_data *data)
 {

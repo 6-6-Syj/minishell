@@ -13,7 +13,6 @@
 #include "command.h"
 #include "data.h"
 #include "exec.h"
-#include "print.h"
 #include "utils.h"
 
 static char	*build_full_path(char *dir, char *cmd)

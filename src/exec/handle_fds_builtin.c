@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "command.h"
+#include "data.h"
+#include "wrappers.h"
+#include <unistd.h>
 
 int	backup_fds(t_fd_backup *backup)
 {

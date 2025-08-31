@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "env.h"
 #include "libft.h"
-#include "print.h"
+#include "data.h"
 
-static bool	search_key_update_value(t_data *data, char *key,
-		char *value)
+static bool	search_key_update_value(t_data *data, char *key, char *value)
 {
 	t_env	*curr;
 
@@ -91,8 +91,8 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 		return (1);
 	if (got_special_char(key))
 		return (2);
-	if (search_key_update_value(data, key, value) || add_key(data,
-			env_lst, key, value))
+	if (search_key_update_value(data, key, value) || add_key(data, env_lst, key,
+			value))
 	{
 		update_env_tab(data);
 		return (0);

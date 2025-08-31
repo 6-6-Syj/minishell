@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "builtins.h"
 
 int	is_builtin(char *cmd)

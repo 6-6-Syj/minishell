@@ -1,4 +1,5 @@
 #include "libft.h"
+#include "env.h"
 #include "minishell.h"
 
 static bool	is_special_char(char c)

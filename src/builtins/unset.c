@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "env.h"
+#include "libft.h"
 
 static int	ft_unset(t_command *cmd, t_env **head)
 {
@@ -41,7 +43,7 @@ static int	ft_unset(t_command *cmd, t_env **head)
 
 int	handle_unset(t_command *cmd, t_env **env_lst, t_data *data)
 {
-	int		res;
+	int	res;
 
 	res = 0;
 	if (cmd->args && cmd->args[1])

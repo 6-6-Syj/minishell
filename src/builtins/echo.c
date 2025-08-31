@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "print.h"
+#include "libft.h"
 
 static int	parse_echo(char **args, int *i)
 {
@@ -45,16 +45,6 @@ static bool	handle_echo_no_arg(t_command *cmd)
 	return (false);
 }
 
-/*
-if (is_special_case(ft_strtrim(cmd->args[1], " ")))
-	still reachable echo ''''''''''$USER''''''''''
-	{
-		ft_putchar_fd('-', STDOUT_FILENO);
-		if (newline)
-			ft_putchar_fd('\n', STDOUT_FILENO);
-		return (0);
-		}
-*/
 static bool	handle_echo_special_case(t_command *cmd)
 {
 	int	i;

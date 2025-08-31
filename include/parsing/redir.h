@@ -28,28 +28,28 @@
 /****************************************************************************/
 typedef struct s_redir
 {
-	t_type			type;
-	char			*filename;
-	char			*delimiter;
-	struct s_redir	*prev;
-	struct s_redir	*next;
-}					t_redir;
+	t_type					type;
+	char					*filename;
+	char					*delimiter;
+	struct s_redir			*prev;
+	struct s_redir			*next;
+}							t_redir;
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-t_redir				*add_redir_node(t_redir **redir_lst);
-void				init_redir(t_token *token_node, t_redir **redir_lst,
-						t_data *data);
-void				open_files(t_command *cmd, t_data *data);
-bool				is_last_command_in_ast(t_ast *root);
+t_redir						*add_redir_node(t_redir **redir_lst);
+void						init_redir(t_token *token_node, t_redir **redir_lst,
+								t_data *data);
+void						open_files(t_command *cmd, t_data *data);
+bool						is_last_command_in_ast(t_ast *root);
 
 /* here_doc */
-void				set_here_doc(t_redir **redir_node, t_data *data);
+void						set_here_doc(t_redir **redir_node, t_data *data);
 
 /* here_doc_utils */
-bool				ctrl_c_catched(char *line, int fd, char *filename);
-bool				eof_catched(char *line, int fd, t_redir *redir,
-						t_data *data);
+bool						ctrl_c_catched(char *line, int fd, char *filename);
+bool						eof_catched(char *line, int fd, t_redir *redir,
+								t_data *data);
 
 #endif

@@ -15,6 +15,7 @@
 #include "handle_signal.h"
 #include "pipe.h"
 #include "redir.h"
+#include "builtins.h"
 
 void	handle_ast(t_ast *node, t_data *data, int *fd)
 {

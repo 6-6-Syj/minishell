@@ -14,7 +14,6 @@
 #include "env.h"
 #include "errno.h"
 #include "libft.h"
-#include "print.h"
 #include "stdio.h"
 #include "string.h"
 #include "token.h"
@@ -64,7 +63,7 @@ bool	pipe_is_valid(t_token *token)
 	t_token	*tmp;
 	int		cmd_count;
 	int		redir_count;
-	
+
 	while (token)
 	{
 		if (token->type == PIPE)
