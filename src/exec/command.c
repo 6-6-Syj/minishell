@@ -110,8 +110,10 @@ void	handle_command(t_command *cmd, t_data *data)
 	{
 		open_files(cmd, data);
 		close_inherited_fds(cmd);
-		if (!ft_strcmp(cmd->args[0], "(null)"))
+		if (!ft_strcmp(cmd->args[0], "(null)") && cmd->fd_out != -1)
 			w_close(cmd->fd_out, data);
+		if (!ft_strcmp(cmd->args[0], "(null)") && cmd->fd_in != -1)
+			w_close(cmd->fd_in, data);
 		if (!data->err)
 			exec_command(cmd, data);
 		else

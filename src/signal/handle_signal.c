@@ -17,17 +17,17 @@
 
 extern volatile int	g_sig;
 
-int event_hook(void)
+int	event_hook(void)
 {
-    if (g_sig == 1)
-        rl_done = 1;
-    return (0);
+	if (g_sig == 1)
+		rl_done = 1;
+	return (0);
 }
 
-void sig_handler_heredoc(int signum)
+void	sig_handler_heredoc(int signum)
 {
-    if (signum == SIGINT)
-        g_sig = 1;
+	if (signum == SIGINT)
+		g_sig = 1;
 }
 
 void	sig_handler(int signum)
@@ -38,7 +38,7 @@ void	sig_handler(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-        g_sig = 1;
+		g_sig = 1;
 	}
 }
 
