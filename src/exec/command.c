@@ -101,23 +101,17 @@ static void	exec_command(t_command *cmd, t_data *data)
 	exit_error(data); //TODO: CHECK ERROR CODE THERE
 }
 
-void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
-		t_ast *root)
+void	handle_command(t_command *cmd, t_data *data)
 {
 	pid_t	pid;
-	bool	is_last;
 
 	pid = w_fork(data);
 	if (pid == 0)
 	{
-		data->pid_list = NULL;
-		if (pids && *pids)
-		{
-			free_pid_list(pids);
-			*pids = NULL;
-		}
 		open_files(cmd, data);
 		close_inherited_fds(cmd);
+		if (!ft_strcmp(cmd->args[0], "(null)"))
+			w_close(cmd->fd_out, data);
 		if (!data->err)
 			exec_command(cmd, data);
 		else
@@ -125,8 +119,8 @@ void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
 	}
 	else
 	{
-		is_last = is_last_command_in_ast(root);
-		add_pid(pids, pid, is_last, data);
+		if (cmd->is_last_cmd)
+			data->last_cmd_pid = pid;
 		if (cmd->fd_in > 2)
 			w_close(cmd->fd_in, data);
 		if (cmd->fd_out > 2)

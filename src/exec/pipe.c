@@ -70,8 +70,7 @@ static bool	right_cmd_got_redirout(t_ast *node)
 	return (false);
 }
 
-static void	handle_pipe_with_redirout(t_pipe *pipe, t_data *data, int *fd,
-		t_pid_list **pids)
+static void	handle_pipe_with_redirout(t_pipe *pipe, t_data *data, int *fd)
 {
 	int	empty_pipe[2];
 
@@ -79,17 +78,17 @@ static void	handle_pipe_with_redirout(t_pipe *pipe, t_data *data, int *fd,
 	close(empty_pipe[1]);
 	if (pipe->right && pipe->right->type == CMD)
 		pipe->right->command.fd_in = empty_pipe[0];
-	handle_ast(pipe->left, data, fd, pids);
-	handle_ast(pipe->right, data, fd, pids);
+	handle_ast(pipe->left, data, fd);
+	handle_ast(pipe->right, data, fd);
 	close(empty_pipe[0]);
 }
 
-void	handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
+void	handle_pipe(t_pipe *pipe, t_data *data, int *fd)
 {
 	if ((pipe->left && pipe->left->type == PIPE
 			&& right_cmd_got_redirout(pipe->left)) || (pipe->left
 			&& pipe->left->type == CMD && has_redir_out(&pipe->left->command)))
-		handle_pipe_with_redirout(pipe, data, fd, pids);
+		handle_pipe_with_redirout(pipe, data, fd);
 	else
 	{
 		w_pipe(fd, data);
@@ -105,8 +104,8 @@ void	handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
 			if (!has_redir_in(&pipe->right->command))
 				pipe->right->command.fd_in = fd[0];
 		}
-		handle_ast(pipe->left, data, fd, pids);
-		handle_ast(pipe->right, data, fd, pids);
+		handle_ast(pipe->left, data, fd);
+		handle_ast(pipe->right, data, fd);
 		close(fd[1]);
 		close(fd[0]);
 	}

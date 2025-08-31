@@ -39,7 +39,6 @@ typedef struct s_ast	t_ast;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-void					handle_pipe(t_pipe *pipe, t_data *data, int *fd,
-							t_pid_list **pids);
+void					handle_pipe(t_pipe *pipe, t_data *data, int *fd);
 
 #endif

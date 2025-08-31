@@ -16,49 +16,14 @@
 #include "pipe.h"
 #include "redir.h"
 
-/*
-		void	handle_command(t_command *cmd, t_data *data, t_pid_list **pids,
-				t_ast *root)
-		{
-			pid_t	pid;
-			bool	is_last;
-
-			pid = w_fork(data);
-			if (pid == 0)
-			{
-				data->pid_list = NULL;
-				if (pids && *pids)
-				{
-					free_pid_list(pids);
-					*pids = NULL;
-				}
-				open_files(cmd, data);
-				close_inherited_fds(cmd);
-				if (!data->err)
-					exec_command(cmd, data);
-				else
-					exit_error(data);
-			}
-			else
-			{
-				is_last = is_last_command_in_ast(root);
-				add_pid(pids, pid, is_last, data);
-				if (cmd->fd_in > 2)
-					w_close(cmd->fd_in, data);
-				if (cmd->fd_out > 2)
-					w_close(cmd->fd_out, data);
-			}
-		}
-*/
-
-void	handle_ast(t_ast *node, t_data *data, int *fd, t_pid_list **pids)
+void	handle_ast(t_ast *node, t_data *data, int *fd)
 {
 	if (!node)
 		return ;
 	if (node->type == CMD && (node->command.args[0] || node->command.redir))
-		handle_command(&node->command, data, pids, node);
+		handle_command(&node->command, data);
 	else if (node->type == PIPE)
-		handle_pipe(&node->pipe, data, fd, pids);
+		handle_pipe(&node->pipe, data, fd);
 }
 
 static void	init_backup(t_fd_backup *backup)
@@ -102,9 +67,7 @@ void	exec_ast(t_ast *node, t_data *data)
 {
 	int			fd[2];
 	t_fd_backup	backup;
-	t_pid_list	*pids;
 
-	pids = NULL;
 	fd[0] = 0;
 	fd[1] = 1;
 	init_backup(&backup);
@@ -121,8 +84,8 @@ void	exec_ast(t_ast *node, t_data *data)
 	}
 	else
 	{
-		handle_ast(node, data, fd, &pids);
+		handle_ast(node, data, fd);
 		if (!data->err)
-			data->err = wait_all_processes(pids, data);
+			data->err = wait_all_processes(data);
 	}
 }

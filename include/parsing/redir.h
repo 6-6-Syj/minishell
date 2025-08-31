@@ -21,7 +21,6 @@
 # include "libft.h"
 # include <signal.h>
 # include <stdio.h>
-# include <termios.h>
 # include <unistd.h>
 
 /****************************************************************************/
@@ -43,7 +42,6 @@ t_redir				*add_redir_node(t_redir **redir_lst);
 void				init_redir(t_token *token_node, t_redir **redir_lst,
 						t_data *data);
 void				open_files(t_command *cmd, t_data *data);
-void				free_pid_list(t_pid_list **pids_lst);
 bool				is_last_command_in_ast(t_ast *root);
 
 /* here_doc */
