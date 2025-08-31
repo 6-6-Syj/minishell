@@ -19,16 +19,6 @@
 # include "token.h"
 
 /****************************************************************************/
-/*                                ENUM										*/
-/****************************************************************************/
-// typedef struct s_redirect
-// {
-// 	struct s_ast	*child;
-// 	char			*filename;
-// 	int mode; // par ex. O_WRONLY, O_RDONLY
-// }					t_redirect;
-
-/****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
 
@@ -37,6 +27,7 @@ typedef struct s_command
 	int				fd_in;
 	int				fd_out;
 	char			**args;
+	bool			is_last_cmd;
 	struct s_redir	*redir;
 }					t_command;
 
@@ -59,7 +50,6 @@ typedef struct s_ast
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-// void	init_ast_lst(t_ast **ast_lst); // test version
 int					init_ast(t_ast **ast_lst, t_token **token_lst,
 						t_data *data);
 t_ast				*add_ast_node(t_ast **ast_lst);

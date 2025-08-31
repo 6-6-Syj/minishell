@@ -43,7 +43,7 @@ t_ast	*create_command_node(t_token *token, t_data *data)
 	{
 		if (tmp->type == CMD || tmp->type == ARG)
 			new_node->command.args[i++] = ft_strdup(tmp->content);
-			// SECUUUUUUUUUUUUUUUUUUUUUUUUURE
+		// SECUUUUUUUUUUUUUUUUUUUUUUUUURE
 		tmp = tmp->next;
 	}
 	init_redir(token, &new_node->command.redir, data);
@@ -88,5 +88,9 @@ int	init_ast(t_ast **ast_lst, t_token **token_lst, t_data *data)
 	if (!root_token)
 		return (1);
 	*ast_lst = create_ast_node(root_token, data);
+	if (*ast_lst && (*ast_lst)->type == CMD)
+		(*ast_lst)->command.is_last_cmd = true;
+	else if (*ast_lst && (*ast_lst)->type == PIPE)
+		(*ast_lst)->pipe.right->command.is_last_cmd = true;
 	return (0);
 }
