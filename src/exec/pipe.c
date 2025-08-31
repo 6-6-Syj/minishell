@@ -70,14 +70,11 @@ static bool right_cmd_got_redirout(t_ast *node)
     return (false);
 }
 
-void handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
+static void	handle_pipe_with_right_redirout(t_pipe *pipe, t_data *data,
+		int *fd, t_pid_list **pids)
 {
-    if ((pipe->left && pipe->left->type == PIPE && 
-         right_cmd_got_redirout(pipe->left)) ||
-        (pipe->left && pipe->left->type == CMD && 
-         has_redir_out(&pipe->left->command)))
-    {
         int empty_pipe[2];
+
         w_pipe(empty_pipe, data);
         close(empty_pipe[1]);
         if (pipe->right && pipe->right->type == CMD)
@@ -85,7 +82,15 @@ void handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
         handle_ast(pipe->left, data, fd, pids);
         handle_ast(pipe->right, data, fd, pids);
         close(empty_pipe[0]);
-    }
+}
+
+void handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
+{
+    if ((pipe->left && pipe->left->type == PIPE && 
+         right_cmd_got_redirout(pipe->left)) ||
+        (pipe->left && pipe->left->type == CMD && 
+         has_redir_out(&pipe->left->command)))
+			handle_pipe_with_right_redirout(pipe, data, fd, pids);
     else
     {
         w_pipe(fd, data);
@@ -96,12 +101,9 @@ void handle_pipe(t_pipe *pipe, t_data *data, int *fd, t_pid_list **pids)
         }
         else if (pipe->left && pipe->left->type == PIPE)
             assign_pipe_fds(pipe->left, -1, fd[1]);
-            
         if (pipe->right && pipe->right->type == CMD)
-        {
             if (!has_redir_in(&pipe->right->command))
                 pipe->right->command.fd_in = fd[0];
-        }
         handle_ast(pipe->left, data, fd, pids);
         handle_ast(pipe->right, data, fd, pids);
         close(fd[1]);
