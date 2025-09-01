@@ -13,6 +13,8 @@
 #include "command.h"
 #include "redir.h"
 #include "token.h"
+#include "data.h"
+#include <stdio.h>
 #include <fcntl.h>
 
 static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
@@ -80,23 +82,4 @@ void	open_files(t_command *cmd, t_data *data)
 	}
 	if (cmd && cmd->args[0])
 		redir(cmd, data);
-}
-
-static t_command	*find_last_cmd(t_ast *node)
-{
-	if (!node)
-		return (NULL);
-	if (node->type == CMD)
-		return (&node->command);
-	if (node->type == PIPE)
-		return (find_last_cmd(node->pipe.right));
-	return (NULL);
-}
-
-bool	is_last_command_in_ast(t_ast *root)
-{
-	t_command	*rightmost;
-
-	rightmost = find_last_cmd(root);
-	return (rightmost);
 }

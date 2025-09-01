@@ -11,14 +11,16 @@
 /* ************************************************************************** */
 
 #include "handle_signal.h"
-#include "minishell.h"
 #include "redir.h"
+#include "libft.h"
+#include "data.h"
 #include <fcntl.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <token.h>
+#include <signal.h>
 #include <unistd.h>
 
 extern volatile int	g_sig;

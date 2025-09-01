@@ -1,22 +1,43 @@
-==740135== Memcheck, a memory error detector
-==740135== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==740135== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==740135== Command: ./minishell
-==740135== Parent PID: 675474
-==740135== 
-==740135== 
-==740135== FILE DESCRIPTORS: 3 open (3 std) at exit.
-==740135== 
-==740135== HEAP SUMMARY:
-==740135==     in use at exit: 204,162 bytes in 221 blocks
-==740135==   total heap usage: 936 allocs, 715 frees, 244,265 bytes allocated
-==740135== 
-==740135== LEAK SUMMARY:
-==740135==    definitely lost: 0 bytes in 0 blocks
-==740135==    indirectly lost: 0 bytes in 0 blocks
-==740135==      possibly lost: 0 bytes in 0 blocks
-==740135==    still reachable: 0 bytes in 0 blocks
-==740135==         suppressed: 204,162 bytes in 221 blocks
-==740135== 
-==740135== For lists of detected and suppressed errors, rerun with: -s
-==740135== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==684827== Memcheck, a memory error detector
+==684827== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==684827== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==684827== Command: ./minishell
+==684827== Parent PID: 677922
+==684827== 
+==684827== 
+==684827== Process terminating with default action of signal 2 (SIGINT)
+==684827==    at 0x4025B6F: __open_nocancel (open64_nocancel.c:39)
+==684827==    by 0x4005CBB: open_verify.constprop.0 (dl-load.c:1623)
+==684827==    by 0x4006299: open_path (dl-load.c:1863)
+==684827==    by 0x40095F2: _dl_map_object (dl-load.c:2100)
+==684827==    by 0x4002A2C: openaux (dl-deps.c:64)
+==684827==    by 0x400151B: _dl_catch_exception (dl-catch.c:237)
+==684827==    by 0x4002E66: _dl_map_object_deps (dl-deps.c:232)
+==684827==    by 0x402241B: dl_main (rtld.c:1965)
+==684827==    by 0x401EF45: _dl_sysdep_start (dl-sysdep.c:140)
+==684827==    by 0x402075D: _dl_start_final (rtld.c:494)
+==684827==    by 0x402075D: _dl_start (rtld.c:581)
+==684827==    by 0x401F547: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+==684827== 
+==684827== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==684827== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==684827==    <inherited from parent>
+==684827== 
+==684827== Open AF_UNIX socket 41: <unknown>
+==684827==    <inherited from parent>
+==684827== 
+==684827== Open file descriptor 40: /home/md/.config/Code/logs/20250902T001327/ptyhost.log
+==684827==    <inherited from parent>
+==684827== 
+==684827== Open file descriptor 3: /home/md/Documents/42/minishell/.valgrind_log.txt
+==684827==    <inherited from parent>
+==684827== 
+==684827== 
+==684827== HEAP SUMMARY:
+==684827==     in use at exit: 0 bytes in 0 blocks
+==684827==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==684827== 
+==684827== All heap blocks were freed -- no leaks are possible
+==684827== 
+==684827== For lists of detected and suppressed errors, rerun with: -s
+==684827== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

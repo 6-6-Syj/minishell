@@ -15,6 +15,7 @@
 #include "ast.h"
 #include "data.h"
 #include "exec.h"
+#include "data.h"
 
 static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 {

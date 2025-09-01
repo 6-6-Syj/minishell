@@ -11,7 +11,10 @@
 /* ************************************************************************** */
 
 #include "redir.h"
+#include "libft.h"
 #include <readline/readline.h>
+#include <stdio.h>
+#include <signal.h>
 
 extern volatile int	g_sig;
 

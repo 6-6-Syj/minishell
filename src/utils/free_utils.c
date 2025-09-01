@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "utils.h"
+#include <stdlib.h>
 
 void	*free_strs(char **strs)
 {

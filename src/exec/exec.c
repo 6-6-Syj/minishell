@@ -16,6 +16,8 @@
 #include "pipe.h"
 #include "redir.h"
 #include "builtins.h"
+#include "libft.h"
+#include "data.h"
 
 void	handle_ast(t_ast *node, t_data *data, int *fd)
 {

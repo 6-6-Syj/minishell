@@ -17,22 +17,16 @@
 /*                                INCLUDE									*/
 /****************************************************************************/
 # include "redir.h"
-
-/****************************************************************************/
-/*                                STRUCT									*/
-/****************************************************************************/
-typedef struct s_data	t_data;
-typedef struct s_pipe	t_pipe;
-typedef struct s_ast	t_ast;
+# include "data.h"
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 /* pipe */
-void					handle_pipe(t_pipe *pipe, t_data *data, int *fd);
+void					    handle_pipe(t_pipe *pipe, t_data *data, int *fd);
 
 /* pipe_utils */
-bool					has_redir_out(t_command *cmd);
-bool					has_redir_in(t_command *cmd);
+bool					    has_redir_out(t_command *cmd);
+bool					    has_redir_in(t_command *cmd);
 
 #endif

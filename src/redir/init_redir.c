@@ -3,6 +3,7 @@
 #include "redir.h"
 #include "token.h"
 #include "unistd.h"
+#include "libft.h"
 
 t_token	*get_first_redir(t_token **root_token)
 {

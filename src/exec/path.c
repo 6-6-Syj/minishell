@@ -14,6 +14,7 @@
 #include "data.h"
 #include "exec.h"
 #include "utils.h"
+#include "libft.h"
 
 static char	*build_full_path(char *dir, char *cmd)
 {

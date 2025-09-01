@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "redir.h"
 #include "token.h"
+#include "data.h"
 #include "unistd.h"
 #include <fcntl.h>
 #include <sys/stat.h>

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "exec.h"
+#include "libft.h"
 
 int	is_absolute_or_relative_path(char *cmd)
 {

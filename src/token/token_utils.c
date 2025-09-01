@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
 int	get_token_len(char *token)
 {

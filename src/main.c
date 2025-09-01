@@ -16,6 +16,8 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
+#include "libft.h"
+#include <unistd.h>
 
 volatile int	g_sig;
 

@@ -12,6 +12,7 @@
 
 #include "redir.h"
 #include "unistd.h"
+#include "libft.h"
 
 t_redir	*get_first_redir_node(t_redir *current)
 {
