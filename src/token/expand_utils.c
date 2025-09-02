@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/31 21:49:04 by dabuchhe          #+#    #+#             */
+/*   Updated: 2025/09/02 18:29:48 by dabuchhe         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
+#include "data.h"
 #include "env.h"
-#include "minishell.h"
 
 static bool	is_special_char(char c)
 {
@@ -8,6 +20,7 @@ static bool	is_special_char(char c)
 		return (true);
 	return (false);
 }
+
 bool	is_expand(char *token_content)
 {
 	if (ft_strlen(token_content) < 2)

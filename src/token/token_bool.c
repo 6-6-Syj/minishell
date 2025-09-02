@@ -6,11 +6,11 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:46:49 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/20 16:46:58 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/08/31 22:10:13 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdbool.h>
 
 bool	is_space(char c)
 {

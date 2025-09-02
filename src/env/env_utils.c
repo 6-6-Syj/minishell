@@ -6,13 +6,12 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:18:49 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/26 18:48:48 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 18:29:27 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "env.h"
-#include "utils.h"
 #include "data.h"
 
 void	print_env_tab(char **env_tab)

@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 01:37:06 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/04/25 15:28:12 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 17:10:55 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				*ft_memmove(void *dest, const void *src, size_t n);
 void				*ft_memset(void *s, int c, size_t n);
 void				ft_bzero(void *s, size_t n);
-
+void				*free_strs(char **strs);
 /* ************************************************************************** */
 /*                                PRTINT                                      */
 /* ************************************************************************** */

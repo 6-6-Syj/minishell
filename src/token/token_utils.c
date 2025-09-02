@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:47:10 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/20 16:48:04 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 16:11:29 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,22 +79,6 @@ void	join_word(t_token **token_lst, t_data *data)
 		else
 			current = current->next;
 	}
-}
-
-int	remove_space(t_token **token_lst, t_data *data)
-{
-	t_token	*token_node;
-	t_token	*tmp;
-
-	token_node = *token_lst;
-	while (token_node)
-	{
-		tmp = token_node->next;
-		if (token_node->type == SPACE)
-			remove_node(token_node, data);
-		token_node = tmp;
-	}
-	return (0);
 }
 
 int	remove_node(t_token *node, t_data *data)

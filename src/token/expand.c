@@ -6,14 +6,16 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:49:11 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/20 17:22:43 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 17:04:21 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "minishell.h"
+#include "print.h"
+#include "token.h"
+#include <stdlib.h>
 
-void	free_expand_buffer(char *first, char *inter, char *last)
+static void	free_expand_buffer(char *first, char *inter, char *last)
 {
 	if (first)
 	{
@@ -32,7 +34,8 @@ void	free_expand_buffer(char *first, char *inter, char *last)
 	}
 }
 
-char	*concatenate_expand(char *first, char *inter, char *last, t_data *data)
+static char	*concatenate_expand(char *first, char *inter, char *last,
+		t_data *data)
 {
 	char	*buff;
 	char	*dst;

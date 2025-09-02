@@ -6,32 +6,15 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:49:54 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/20 16:49:54 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 16:15:21 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "token.h"
 #include "libft.h"
-#include "minishell.h"
+#include "print.h"
 
-bool	is_in_quote(char *token, int pos)
-{
-	int		i;
-	bool	in_quote;
-
-	i = 0;
-	in_quote = false;
-	while (token[i] && i < pos)
-	{
-		if (token[i] == '\"' && in_quote == false)
-			in_quote = true;
-		if (token[i] == '\"' && in_quote == true)
-			in_quote = false;
-		i++;
-	}
-	return (in_quote);
-}
-
-void	remove_quote(char **token_content, t_data *data)
+static void	remove_quote(char **token_content, t_data *data)
 {
 	char	*buff;
 	int		len;

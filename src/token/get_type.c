@@ -6,14 +6,14 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:44:19 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/20 16:46:03 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 16:17:33 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "token.h"
 #include "libft.h"
-#include "minishell.h"
 
-t_type	get_operator_type(t_token *token)
+static t_type	get_operator_type(t_token *token)
 {
 	if (ft_strcmp(token->content, "<") == 0)
 		return (REDIR_IN);
@@ -28,7 +28,7 @@ t_type	get_operator_type(t_token *token)
 	return (UNKNOWN);
 }
 
-t_type	get_quote_type(t_token *token)
+static t_type	get_quote_type(t_token *token)
 {
 	if (token->content[0] == '\"' && ft_strchr(token->content + 1, '"'))
 		return (QUOTE_D);

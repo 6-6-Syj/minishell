@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include "token.h"
 
-void	free_token_node(t_token *token_node)
+static void	free_token_node(t_token *token_node)
 {
 	if (token_node && token_node->content)
 	{

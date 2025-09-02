@@ -6,14 +6,13 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:38:43 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/22 22:28:40 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 18:29:35 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "command.h"
 #include "data.h"
 #include "exec.h"
-#include "utils.h"
 #include "libft.h"
 
 static char	*build_full_path(char *dir, char *cmd)

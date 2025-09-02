@@ -38,7 +38,7 @@
 vpath %.c src src/builtins src/token src/data src/env src/exec src/ast src/redir src/utils src/signal
 vpath %.i include include/builtins include/parsing include/exec include/utils include/signal
 
--include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/exec.mk mk_files/ast.mk mk_files/redir.mk mk_files/utils.mk mk_files/handle_signal.mk
+-include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/exec.mk mk_files/ast.mk mk_files/redir.mk mk_files/handle_signal.mk
 
 #------------------------------------------------#
 #					NOTES						 #
@@ -51,8 +51,8 @@ vpath %.i include include/builtins include/parsing include/exec include/utils in
 #------------------------------------------------#
 NAME		= minishell
 LIBFT		= lib/libft/libft.a
-INCLUDES	= minishell.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC) $(EXEC_INC) $(AST_INC) $(REDIR_INC) $(UTILS_INC) $(SIGNAL_INC)
-SRC_FILES	= main $(DATA_SRC) $(TOKEN_SRC) $(BUILTINS_SRC) $(PRINT_SRC) $(ENV_SRC) $(EXEC_SRC) $(AST_SRC) $(REDIR_SRC) $(UTILS_SRC) $(SIGNAL_SRC)
+INCLUDES	= minishell.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC) $(EXEC_INC) $(AST_INC) $(REDIR_INC) $(SIGNAL_INC)
+SRC_FILES	= main $(DATA_SRC) $(TOKEN_SRC) $(BUILTINS_SRC) $(PRINT_SRC) $(ENV_SRC) $(EXEC_SRC) $(AST_SRC) $(REDIR_SRC) $(SIGNAL_SRC)
 
 #------------------------------------------------#
 #					DIRECTORY					 #
