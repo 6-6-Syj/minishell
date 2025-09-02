@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 19:12:25 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/25 19:48:39 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:14:28 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "ast.h"
 #include "data.h"
 #include "exec.h"
-#include "data.h"
+#include <unistd.h>
 
 static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
 {

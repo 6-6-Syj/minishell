@@ -6,13 +6,13 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 19:21:04 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/26 21:07:47 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:20:58 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <linux/limits.h>
 #include "builtins.h"
-#include "errno.h"
+#include <errno.h>
 #include "libft.h"
 #include <string.h>
 #include <sys/stat.h>

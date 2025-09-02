@@ -6,13 +6,15 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 16:14:43 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/26 20:01:47 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:16:52 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "data.h"
 #include "wrappers.h"
 #include <errno.h>
+#include <unistd.h>
+#include <stdio.h>
 
 void	w_pipe(int *fd, t_data *data)
 {

@@ -6,13 +6,13 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:49:54 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 16:15:21 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 18:43:56 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 #include "libft.h"
-#include "print.h"
+#include "data.h"
 
 static void	remove_quote(char **token_content, t_data *data)
 {

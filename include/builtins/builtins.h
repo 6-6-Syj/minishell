@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 20:43:41 by jmagand           #+#    #+#             */
-/*   Updated: 2025/05/08 17:24:43 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:10:20 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_command	t_command;
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
+/* builtins */
 int							is_builtin(char *cmd);
 int							exec_builtin(t_command *command, t_env **env_lst,
 								t_data *data);

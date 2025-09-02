@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-05-27 19:12:46 by jmagand           #+#    #+#             */
-/*   Updated: 2025-05-27 19:12:46 by jmagand          ###   ########.fr       */
+/*   Created: 2025/05/27 19:12:46 by jmagand           #+#    #+#             */
+/*   Updated: 2025/09/02 18:31:22 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@
 /****************************************************************************/
 /*                                INCLUDE									*/
 /****************************************************************************/
-# include "redir.h"
 # include "data.h"
+# include "redir.h"
 
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
 /* pipe */
-void					    handle_pipe(t_pipe *pipe, t_data *data, int *fd);
+void	handle_pipe(t_pipe *pipe, t_data *data, int *fd);
 
 /* pipe_utils */
-bool					    has_redir_out(t_command *cmd);
-bool					    has_redir_in(t_command *cmd);
+bool	has_redir_out(t_command *cmd);
+bool	has_redir_in(t_command *cmd);
 
 #endif

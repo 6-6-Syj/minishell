@@ -35,8 +35,8 @@
 # 		include/error		\
 # 		include/builtins	\
 
-vpath %.c src src/builtins src/token src/data src/env src/exec src/ast src/redir src/utils src/signal
-vpath %.i include include/builtins include/parsing include/exec include/utils include/signal
+vpath %.c src src/builtins src/token src/data src/env src/exec src/ast src/redir src/signal
+vpath %.i include include/builtins include/parsing include/exec include/signal
 
 -include mk_files/token.mk mk_files/data.mk mk_files/builtins.mk mk_files/env.mk mk_files/exec.mk mk_files/ast.mk mk_files/redir.mk mk_files/handle_signal.mk
 
@@ -80,10 +80,9 @@ RM			= rm -rf
 CFLAGS		= -Wall -Wextra -Werror -g3
 CPPFLAGS	= -MMD -MP $(IFLAGS)
 LDFLAGS		= -Llib/libft
-IFLAGS		= -Iinclude -Ilib/libft/include -Iinclude/builtins -Iinclude/parsing -Iinclude/print -Iinclude/exec -Iinclude/utils -Iinclude/signal
+IFLAGS		= -Iinclude -Ilib/libft/include -Iinclude/builtins -Iinclude/parsing -Iinclude/exec -Iinclude/signal
 LDLIBS		= -lft
 MAKEFLAGS	+= --no-print-directory
-# DEBUG		= -g3
 
 #------------------------------------------------#
 #					RULES						 #
@@ -147,7 +146,7 @@ valgrind: all
 	@echo "$(BOLD)Running with Valgrind:$(RESET)"
 	@valgrind --leak-check=full --track-origins=yes --track-fds=yes --show-leak-kinds=all ./$(NAME) $(ARGS)
 # make && valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --log-file=.valgrind_log.txt --suppressions=readline.supp ./minishell
-# --log-file=.valgrind_log.txt to write valgrind's output in a file
+# --log-file=.valgrind_log.txt
 
 run: all
 	@echo "$(BOLD)🚀 Running:$(RESET) ./$(NAME) $(ARGS)"

@@ -6,14 +6,16 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 15:33:10 by jmagand           #+#    #+#             */
-/*   Updated: 2025/07/17 01:59:55 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:16:29 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wrappers.h"
-#include "redir.h"
+#include "data.h"
 #include <errno.h>
 #include <signal.h>
+#include <unistd.h>
+#include <stdio.h>
 
 void	w_execve(char *path, char **cmds, char **env, t_data *data)
 {

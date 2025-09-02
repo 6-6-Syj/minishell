@@ -121,4 +121,3 @@ void	init_data(t_data *data, char **env)
 	}
 	data->input = NULL;
 }
-

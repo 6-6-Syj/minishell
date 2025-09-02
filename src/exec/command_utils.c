@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 19:01:46 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/08 18:34:52 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:13:41 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include "wrappers.h"
+#include "libft.h"
+#include "data.h"
+#include <unistd.h>
 
 void	close_inherited_fds(t_command *cmd)
 {

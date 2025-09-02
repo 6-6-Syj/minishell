@@ -1,0 +1,96 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/31 19:00:43 by jmagand           #+#    #+#             */
+/*   Updated: 2025/09/02 18:50:55 by dabuchhe         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "redir.h"
+#include "libft.h"
+#include "data.h"
+
+t_token	*get_first_redir(t_token **root_token)
+{
+	t_token	*token_node;
+
+	if (!*root_token)
+		return (NULL);
+	token_node = *root_token;
+	while (token_node->prev && token_node->prev->type != PIPE)
+		token_node = token_node->prev;
+	while (token_node && token_node->type != PIPE)
+	{
+		if (token_node->type & REDIR)
+			return (token_node);
+		token_node = token_node->next;
+	}
+	return (NULL);
+}
+
+t_token	*get_next_redir(t_token **root_token)
+{
+	t_token	*token_node;
+
+	if (!*root_token || !(*root_token)->next)
+		return (NULL);
+	token_node = (*root_token)->next;
+	while (token_node && token_node->type != PIPE)
+	{
+		if (token_node->type & REDIR)
+			return (token_node);
+		token_node = token_node->next;
+	}
+	return (NULL);
+}
+
+t_redir	*get_last_redir_node(t_redir *current)
+{
+	if (!current)
+		return (NULL);
+	while (current->next != NULL)
+		current = current->next;
+	return (current);
+}
+
+char	*get_redir_delimiter(t_token *token_node, t_data *data)
+{
+	char	*delimiter;
+
+	while (token_node && token_node->type != PIPE)
+	{
+		if (token_node->type == REDIR_TARGET)
+		{
+			delimiter = ft_strdup(token_node->content);
+			if (!delimiter)
+				malloc_fail(data);
+			return (delimiter);
+		}
+		token_node = token_node->next;
+	}
+	return (NULL);
+}
+
+char	*get_redir_target(t_token **root_token)
+{
+	t_token	*token_node;
+	char	*redir_target;
+
+	if (!*root_token || !(*root_token)->next)
+		return (NULL);
+	token_node = (*root_token)->next;
+	while (token_node && token_node->type != PIPE)
+	{
+		if (token_node->type == REDIR_TARGET)
+		{
+			redir_target = ft_strdup(token_node->content);
+			return (redir_target);
+		}
+		token_node = token_node->next;
+	}
+	return (NULL);
+}

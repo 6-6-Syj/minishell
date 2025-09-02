@@ -6,22 +6,12 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 17:10:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/08/20 17:10:05 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:08:50 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-bool	is_command(t_token *token_node)
-{
-	while (token_node)
-	{
-		if (token_node->type == CMD)
-			return (false);
-		token_node = token_node->next;
-	}
-	return (true);
-}
+#include <stdlib.h>
+#include "token.h"
 
 int	get_args_len(t_token *token)
 {

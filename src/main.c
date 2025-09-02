@@ -44,6 +44,7 @@ char	*handle_readline(t_data *data)
 {
 	char	*input;
 
+	data->is_nl = false;
 	g_sig = 0;
 	signal(SIGINT, sig_handler);
 	input = readline("minishell$ ");
@@ -92,16 +93,12 @@ int	main(int ac, char **av, char **env)
 	init_data(&data, env);
 	while (1)
 	{
-		data.is_nl = false;
 		data.input = handle_readline(&data);
 		if (!data.input)
 			continue ;
 		init_token(&data);
 		if (data.syntax == 0)
-		{
 			init_ast(&data.ast, &data.token, &data);
-			data.err = 0;
-		}
 		else
 			data.err = 2;
 		if (g_sig == 0 && !data.err)

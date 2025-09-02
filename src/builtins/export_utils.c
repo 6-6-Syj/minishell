@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-08-18 21:22:38 by jmagand           #+#    #+#             */
-/*   Updated: 2025-08-18 21:22:38 by jmagand          ###   ########.fr       */
+/*   Created: 2025/08/18 21:22:38 by jmagand           #+#    #+#             */
+/*   Updated: 2025/09/02 18:39:40 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <unistd.h>
-# include <stdbool.h>
-# include "libft.h"
+#include "libft.h"
+#include <stdbool.h>
+#include <unistd.h>
 
 static bool	is_special_char(char c)
 {
@@ -67,7 +67,7 @@ bool	is_key_valid(char *key)
 	{
 		if (key[i] == '-' || key[i] == '!' || key[i] == '@' || key[i] == '#'
 			|| key[i] == '*' || key[i] == '^' || key[i] == '{' || key[i] == '}'
-			|| (key[i] == '+' && key[i + 1] != '=' ) || key[i] == '.')
+			|| (key[i] == '+' && key[i + 1] != '=') || key[i] == '.')
 		{
 			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
 			ft_putstr_fd(key, STDERR_FILENO);

@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:42:44 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/26 16:25:00 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:11:53 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "wrappers.h"
 #include "exec.h"
 #include "builtins.h"
+#include "libft.h"
+#include "data.h"
 
 static void	check_access(char *path, t_command *cmd, t_data *data)
 {
@@ -100,7 +102,7 @@ static void	exec_command(t_command *cmd, t_data *data)
 				data->err = 1;
 		}
 	}
-	exit_error(data); //TODO: CHECK ERROR CODE THERE
+	exit_error(data);
 }
 
 void	handle_command(t_command *cmd, t_data *data)

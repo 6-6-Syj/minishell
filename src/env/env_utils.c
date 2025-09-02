@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 21:18:49 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/02 18:29:27 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 18:40:36 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static int	get_size_env_lst(t_env *current)
 	}
 	return (size);
 }
+
 static void	update_key_values(t_data *data, t_env *env_node, int i)
 {
 	char	*buff;
