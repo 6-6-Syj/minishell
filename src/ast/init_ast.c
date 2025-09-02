@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 17:08:13 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 22:01:26 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 20:42:39 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,20 @@
 
 static t_ast	*create_ast_node(t_token *token, t_data *data);
 
-static void	set_command_node(t_command *cmd, t_token **token, t_data *data)
+static void	set_command_node(t_command *cmd, t_token *token, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (*token && (*token)->type != PIPE)
+	while (token && token->type != PIPE)
 	{
-		if ((*token)->type == CMD || (*token)->type == ARG)
+		if (token->type == CMD || token->type == ARG)
 		{
-			cmd->args[i++] = ft_strdup((*token)->content);
-			if (ft_strlen((*token)->content) != ft_strlen(cmd->args[i - 1]))
+			cmd->args[i++] = ft_strdup(token->content);
+			if (ft_strlen(token->content) != ft_strlen(cmd->args[i - 1]))
 				malloc_fail(data);
 		}
-		*token = (*token)->next;
+		token = token->next;
 	}
 }
 
@@ -51,7 +51,7 @@ static t_ast	*create_command_node(t_token *token, t_data *data)
 	new_node->command.args = ft_calloc(len + 1, sizeof(char *));
 	if (!new_node->command.args)
 		malloc_fail(data);
-	set_command_node(&new_node->command, &token, data);
+	set_command_node(&new_node->command, token, data);
 	init_redir(token, &new_node->command.redir, data);
 	return (new_node);
 }
