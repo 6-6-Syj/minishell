@@ -18,7 +18,11 @@
 void	exit_error(t_data *data)
 {
 	int	err;
+	int	fd;
 
+	fd = 3;
+	while (fd < 1024)
+		close(fd++);
 	err = 0;
 	if (data)
 	{

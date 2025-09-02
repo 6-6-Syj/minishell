@@ -15,10 +15,6 @@
 #include "libft.h"
 #include "redir.h"
 #include "token.h"
-#include "unistd.h"
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 
 static t_ast	*create_ast_node(t_token *token, t_data *data);
 
