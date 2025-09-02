@@ -111,6 +111,7 @@ void	init_data(t_data *data, char **env)
 	data->last_cmd_pid = 0;
 	data->is_nl = false;
 	data->syntax = 0;
+	data->exit_pipe = false;
 	data->input = NULL;
 	data->i = 0;
 	init_env(data, env);

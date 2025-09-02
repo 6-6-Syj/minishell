@@ -50,6 +50,7 @@ typedef struct s_data
 	int						exit_err;
 	char					*input;
 	bool					is_nl;
+	bool					exit_pipe;
 	bool					sig;
 	bool					syntax;
 	int						i;

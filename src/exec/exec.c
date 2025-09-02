@@ -26,7 +26,10 @@ void	handle_ast(t_ast *node, t_data *data, int *fd)
 	if (node->type == CMD && (node->command.args[0] || node->command.redir))
 		handle_command(&node->command, data);
 	else if (node->type == PIPE)
+	{
+		data->exit_pipe = true;
 		handle_pipe(&node->pipe, data, fd);
+	}
 }
 
 static void	init_backup(t_fd_backup *backup)

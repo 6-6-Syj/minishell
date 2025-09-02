@@ -35,7 +35,7 @@ static void	clean_exit(t_data *data)
 		free_env_lst(&data->env);
 	if (data->env_tab)
 		free_env_tab(data);
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	ft_putstr_fd("exit\n", STDERR_FILENO);
 	rl_clear_history();
 	exit(data->err);
 }
@@ -45,6 +45,7 @@ char	*handle_readline(t_data *data)
 	char	*input;
 
 	data->is_nl = false;
+	data->exit_pipe = false;
 	g_sig = 0;
 	signal(SIGINT, sig_handler);
 	input = readline("minishell$ ");

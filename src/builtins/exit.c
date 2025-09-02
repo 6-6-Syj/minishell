@@ -41,7 +41,7 @@ static bool	is_valid_number(char *str, bool *minus)
 		return (false);
 }
 
-static bool	handle_first_arg(t_command *cmd, int *exit_code)
+static bool	handle_first_arg(t_command *cmd, int *exit_code, t_data *data)
 {
 	long long	num;
 	bool		minus;
@@ -54,12 +54,15 @@ static bool	handle_first_arg(t_command *cmd, int *exit_code)
 		*exit_code = (int)(num % 256);
 		if (*exit_code < 0)
 			*exit_code += 256;
-		ft_putstr_fd("exit\n", STDERR_FILENO);
+		if (!data->exit_pipe)
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 		return (false);
 	}
 	else
 	{
-		ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
+		if (!data->exit_pipe)
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 		ft_putstr_fd(cmd->args[1], STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 		*exit_code = 2;
@@ -77,20 +80,21 @@ int	ft_exit(t_command *cmd, t_data *data)
 	if (!cmd->args[1])
 	{
 		exit_code = data->exit_err;
-		ft_putstr_fd("exit\n", STDERR_FILENO);
+		if (!data->exit_pipe)
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 	}
 	else
 	{
-		should_exit = handle_first_arg(cmd, &exit_code);
+		should_exit = handle_first_arg(cmd, &exit_code, data);
 		if (!should_exit && cmd->args[2])
 		{
-			ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: exit: too many arguments\n",
+				STDERR_FILENO);
 			data->err = 1;
 			return (data->err);
 		}
 	}
 	data->err = exit_code;
-	close_inherited_fds(cmd);
 	exit_error(data);
 	return (-42);
 }
