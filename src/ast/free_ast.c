@@ -6,14 +6,14 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 17:03:05 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 17:06:42 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 19:55:18 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 #include <redir.h>
 #include <stdlib.h>
-#include "libft.h"
+#include <libft.h>
 #include <command.h>
 
 void		free_ast(t_ast **node);

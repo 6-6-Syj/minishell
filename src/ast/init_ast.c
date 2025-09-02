@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 17:08:13 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 19:04:19 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/02 20:42:39 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ static void	set_command_node(t_command *cmd, t_token *token, t_data *data)
 	while (token && token->type != PIPE)
 	{
 		if (token->type == CMD || token->type == ARG)
+		{
 			cmd->args[i++] = ft_strdup(token->content);
-		if (!cmd->args[i])
-			malloc_fail(data);
+			if (ft_strlen(token->content) != ft_strlen(cmd->args[i - 1]))
+				malloc_fail(data);
+		}
 		token = token->next;
 	}
 }
