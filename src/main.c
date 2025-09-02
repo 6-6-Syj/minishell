@@ -44,8 +44,6 @@ char	*handle_readline(t_data *data)
 {
 	char	*input;
 
-	data->is_nl = false;
-	data->exit_pipe = false;
 	g_sig = 0;
 	signal(SIGINT, sig_handler);
 	input = readline("minishell$ ");
@@ -108,6 +106,8 @@ int	main(int ac, char **av, char **env)
 			data.err = 130;
 		free_tmp_data(&data);
 		data.token = NULL;
+		data.exit_pipe = false;
+		data.is_nl = false;
 	}
 	rl_clear_history();
 	return (0);
