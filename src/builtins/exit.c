@@ -17,9 +17,7 @@
 static bool	handle_first_arg(t_command *cmd, int *exit_code, t_data *data)
 {
 	long long	num;
-	bool		minus;
 
-	minus = false;
 	num = ft_atoll_shell(cmd->args[1], data);
 	if (!data->err)
 	{
