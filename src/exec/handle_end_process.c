@@ -13,9 +13,9 @@
 #include "data.h"
 #include "handle_signal.h"
 #include <signal.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 static int	get_exit_code(int status)
 {
@@ -40,17 +40,20 @@ static int	get_exit_code(int status)
 
 int	wait_all_processes(t_data *data)
 {
-	int	status;
-	int	last_exit_code;
+	int		status;
+	int		last_exit_code;
 
 	last_exit_code = 0;
-	if (waitpid(data->last_cmd_pid, &status, 0) > 0)
+	while (waitpid(-1, &status, 0) > 0)
 	{
-		signal(SIGINT, SIG_IGN);
-		last_exit_code = get_exit_code(status);
-		signal(SIGINT, sig_handler);
-		data->err = last_exit_code;
-		data->exit_err = last_exit_code;
+		if (waitpid(-1, &status, 0) == data->last_cmd_pid)
+		{
+			signal(SIGINT, SIG_IGN);
+			last_exit_code = get_exit_code(status);
+			signal(SIGINT, sig_handler);
+			data->err = last_exit_code;
+			data->exit_err = last_exit_code;
+		}
 	}
 	return (last_exit_code);
 }
