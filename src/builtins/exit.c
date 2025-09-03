@@ -14,43 +14,15 @@
 #include "data.h"
 #include "libft.h"
 
-static bool	is_valid_number(char *str, bool *minus)
-{
-	int	i;
-
-	i = 0;
-	if (str[0] == '\0')
-		return (false);
-	if (str[0] == '-' || str[0] == '+')
-	{
-		if (str[0] == '-')
-			*minus = true;
-		i++;
-	}
-	else
-		*minus = false;
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (false);
-		i++;
-	}
-	if (i > (*minus))
-		return (true);
-	else
-		return (false);
-}
-
 static bool	handle_first_arg(t_command *cmd, int *exit_code, t_data *data)
 {
 	long long	num;
 	bool		minus;
 
-	num = 0;
 	minus = false;
-	if (is_valid_number(cmd->args[1], &minus))
+	num = ft_atoll_shell(cmd->args[1], data);
+	if (!data->err)
 	{
-		num = ft_atoll_shell(cmd->args[1]);
 		*exit_code = (int)(num % 256);
 		if (*exit_code < 0)
 			*exit_code += 256;

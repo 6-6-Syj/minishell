@@ -11,14 +11,8 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "data.h"
 #include <limits.h>
-
-static long long	handle_overflow(int sign)
-{
-	if (sign == 1)
-		return (LLONG_MAX);
-	return (LLONG_MIN);
-}
 
 static void	parse_sign_whitespace(const char *str, int *i, int *sign)
 {
@@ -32,7 +26,7 @@ static void	parse_sign_whitespace(const char *str, int *i, int *sign)
 	}
 }
 
-long long	ft_atoll_shell(const char *str)
+long long	ft_atoll_shell(const char *str, t_data *data)
 {
 	long long	nb;
 	int			i;
@@ -46,11 +40,11 @@ long long	ft_atoll_shell(const char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		if (nb > (LLONG_MAX / 10))
-			return (handle_overflow(sign));
+			data->err = 2;
 		nb *= 10;
 		digit = str[i] - '0';
 		if (nb > (LLONG_MAX - digit))
-			return (handle_overflow(sign));
+			data->err = 2;
 		nb += digit;
 		i++;
 	}
