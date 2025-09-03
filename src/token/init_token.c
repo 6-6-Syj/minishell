@@ -6,13 +6,13 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 19:27:09 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/02 18:43:22 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 21:46:24 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "data.h"
-#include "token.h"
 #include "libft.h"
+#include "token.h"
 
 static void	lexer(t_data *data)
 {

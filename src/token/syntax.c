@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:42:06 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 16:08:46 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 21:46:06 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,35 +24,44 @@ static bool	redir_is_valid(t_token *token)
 			while (tmp && tmp->type == SPACE)
 				tmp = tmp->next;
 			if (!tmp || tmp->type != REDIR_TARGET)
+			{
 				return (false);
+			}
 		}
 		token = token->next;
 	}
 	return (true);
 }
 
+static bool	pipe_target_is_valid(t_token *token)
+{
+	int	cmd_count;
+	int	redir_count;
+
+	cmd_count = 0;
+	redir_count = 0;
+	while (token && token->type != PIPE)
+	{
+		if (token->type == CMD)
+			cmd_count++;
+		else if (token->type & REDIR)
+			redir_count++;
+		token = token->next;
+	}
+	if (cmd_count != 1 && redir_count < 1)
+		return (false);
+	return (true);
+}
+
 static bool	pipe_is_valid(t_token *token)
 {
-	t_token	*tmp;
-	int		cmd_count;
-	int		redir_count;
-
+	if (!pipe_target_is_valid(token))
+		return (false);
 	while (token)
 	{
 		if (token->type == PIPE)
 		{
-			tmp = token->next;
-			cmd_count = 0;
-			redir_count = 0;
-			while (tmp && tmp->type != PIPE)
-			{
-				if (tmp->type == CMD)
-					cmd_count++;
-				else if (tmp->type & REDIR)
-					redir_count++;
-				tmp = tmp->next;
-			}
-			if (cmd_count != 1 && redir_count < 1)
+			if (!pipe_target_is_valid(token->next))
 				return (false);
 		}
 		token = token->next;
@@ -78,8 +87,6 @@ bool	syntax_is_valid(t_token *token)
 	if (!pipe_is_valid(token))
 		return (false);
 	if (!redir_is_valid(token))
-		return (false);
-	if (token->type == PIPE)
 		return (false);
 	return (true);
 }

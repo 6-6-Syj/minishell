@@ -6,42 +6,33 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:49:04 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 18:29:48 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 21:46:03 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "data.h"
 #include "env.h"
+#include "libft.h"
 
-static bool	is_special_char(char c)
+bool	is_expand(char *content)
 {
-	if (c == ',' || c == ' ')
-		return (true);
-	return (false);
-}
-
-bool	is_expand(char *token_content)
-{
-	if (ft_strlen(token_content) < 2)
+	if (ft_strlen(content) < 2)
 		return (false);
-	if (token_content[0] == '$' && !is_special_char(token_content[1]))
+	if (content[0] == '$' && (content[1] == '_' || ft_isalpha(content[1])))
 		return (true);
 	return (false);
 }
 
-int	get_expand_key_len(char *token_content)
+int	get_expand_key_len(char *content)
 {
 	int	i;
 
 	i = 1;
-	if (!token_content)
+	if (!content)
 		return (0);
-	if (ft_strncmp(token_content, "$?", 2) == 0)
+	if (ft_strncmp(content, "$?", 2) == 0)
 		return (1);
-	while (token_content[i] && token_content[i] != '$'
-		&& token_content[i] != '/' && token_content[i] != ' '
-		&& token_content[i] != '\'')
+	while (content[i] && content[i] != '_' && !ft_isalnum(content[i]))
 		i++;
 	return (i - 1);
 }

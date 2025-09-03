@@ -6,14 +6,14 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:49:11 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 18:43:48 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 21:46:34 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "data.h"
 #include "libft.h"
 #include "token.h"
-#include "data.h"
+#include <stdlib.h>
 
 static void	free_expand_buffer(char *first, char *inter, char *last)
 {
