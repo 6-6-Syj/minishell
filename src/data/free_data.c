@@ -18,7 +18,6 @@
 #include "env.h"
 #include "token.h"
 
-
 void	free_data(t_data *data)
 {
 	if (data->token)
