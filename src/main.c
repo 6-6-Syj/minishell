@@ -107,7 +107,6 @@ int	main(int ac, char **av, char **env)
 		free_tmp_data(&data);
 		data.token = NULL;
 		data.exit_pipe = false;
-		data.is_nl = false;
 	}
 	rl_clear_history();
 	return (0);

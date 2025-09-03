@@ -109,7 +109,6 @@ void	init_data(t_data *data, char **env)
 	data->exit_err = 0;
 	data->err_msg = NULL;
 	data->last_cmd_pid = 0;
-	data->is_nl = false;
 	data->syntax = 0;
 	data->exit_pipe = false;
 	data->input = NULL;

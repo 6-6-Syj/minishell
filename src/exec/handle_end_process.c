@@ -17,23 +17,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static int	get_exit_code(int status, t_data *data)
+static int	get_exit_code(int status)
 {
 	int	sig;
 
 	if (WIFSIGNALED(status))
 	{
 		sig = WTERMSIG(status);
-		if (sig == SIGINT && !data->is_nl)
-		{
-			data->is_nl = true;
+		if (sig == SIGINT)
 			write(STDOUT_FILENO, "\n", 1);
-		}
-		else if (sig == SIGQUIT && !data->is_nl)
-		{
-			data->is_nl = true;
+		else if (sig == SIGQUIT)
 			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
-		}
 		if (sig == SIGPIPE)
 			return (0);
 		else
@@ -53,7 +47,7 @@ int	wait_all_processes(t_data *data)
 	if (waitpid(data->last_cmd_pid, &status, 0) > 0)
 	{
 		signal(SIGINT, SIG_IGN);
-		last_exit_code = get_exit_code(status, data);
+		last_exit_code = get_exit_code(status);
 		signal(SIGINT, sig_handler);
 		data->err = last_exit_code;
 		data->exit_err = last_exit_code;
