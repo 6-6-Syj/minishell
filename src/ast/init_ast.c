@@ -48,7 +48,7 @@ static t_ast	*create_command_node(t_token *token, t_data *data)
 	new_node->command.is_last_cmd = false;
 	new_node->type = CMD;
 	len = get_args_len(token);
-	new_node->command.args = ft_calloc(len + 1, sizeof(char *));
+	new_node->command.args = ft_calloc(len + 2, sizeof(char *));
 	if (!new_node->command.args)
 		malloc_fail(data);
 	set_command_node(&new_node->command, token, data);

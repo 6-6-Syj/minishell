@@ -100,9 +100,6 @@ static int	ft_export(t_env **env_lst, t_data *data, char *args)
 	return (1);
 }
 
-// TODO: if variable got a value "with spaces",
-// there are problems. (PARSING EXPORT)
-// It exports at each ' ';
 int	handle_export(t_command *cmd, t_env **env_lst, t_data *data)
 {
 	int	i;

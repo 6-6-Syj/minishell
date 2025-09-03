@@ -13,46 +13,46 @@
 #include "builtins.h"
 #include <limits.h>
 
-static long long	handle_overflow(int neg)
+static long long	handle_overflow(int sign)
 {
-	if (neg == 1)
+	if (sign == 1)
 		return (LLONG_MAX);
 	return (LLONG_MIN);
 }
 
-static void	parse_sign_whitespace(const char *str, int *i, int *neg)
+static void	parse_sign_whitespace(const char *str, int *i, int *sign)
 {
 	while (str[*i] == ' ' || str[*i] == '\t')
 		(*i)++;
 	if (str[*i] == '+' || str[*i] == '-')
 	{
 		if (str[*i] == '-')
-			*neg = -1;
+			*sign = -1;
 		(*i)++;
 	}
 }
 
 long long	ft_atoll_shell(const char *str)
 {
-	long long	out;
+	long long	nb;
 	int			i;
-	int			neg;
+	int			sign;
 	int			digit;
 
-	out = 0;
+	nb = 0;
 	i = 0;
-	neg = 1;
-	parse_sign_whitespace(str, &i, &neg);
+	sign = 1;
+	parse_sign_whitespace(str, &i, &sign);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (out > (LLONG_MAX / 10))
-			return (handle_overflow(neg));
-		out *= 10;
+		if (nb > (LLONG_MAX / 10))
+			return (handle_overflow(sign));
+		nb *= 10;
 		digit = str[i] - '0';
-		if (out > (LLONG_MAX - digit))
-			return (handle_overflow(neg));
-		out += digit;
+		if (nb > (LLONG_MAX - digit))
+			return (handle_overflow(sign));
+		nb += digit;
 		i++;
 	}
-	return (out * neg);
+	return (nb * sign);
 }
