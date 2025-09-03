@@ -21,7 +21,7 @@ void	print_env_tab(char **env_tab)
 	i = 0;
 	while (env_tab[i])
 	{
-		ft_printf("%s\n", env_tab[i]);
+		ft_putendl_fd(env_tab[i], STDOUT_FILENO);
 		i++;
 	}
 }
