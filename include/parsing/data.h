@@ -51,7 +51,7 @@ typedef struct s_data
 	char					*input;
 	bool					exit_pipe;
 	bool					sig;
-	bool					syntax;
+	bool					syntax_err;
 	int						i;
 }							t_data;
 

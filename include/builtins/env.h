@@ -66,4 +66,5 @@ void					free_env_tab(t_data *data);
 /* getter_setter */
 char					*get_env_var(t_data *data, char *key);
 int						set_env_var(t_data *data, char *key, char *value);
+
 #endif

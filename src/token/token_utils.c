@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
+#include "token.h"
+#include "data.h"
 
 int	get_token_len(char *token)
 {
@@ -41,7 +42,7 @@ int	get_token_len(char *token)
 	return (i);
 }
 
-void	set_token_priority(t_token **token_lst) // TODO: refacto
+void	set_token_priority(t_token **token_lst)
 {
 	t_token	*token_node;
 

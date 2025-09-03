@@ -51,7 +51,7 @@ vpath %.i include include/builtins include/parsing include/exec include/signal
 #------------------------------------------------#
 NAME		= minishell
 LIBFT		= lib/libft/libft.a
-INCLUDES	= minishell.h $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC) $(EXEC_INC) $(AST_INC) $(REDIR_INC) $(SIGNAL_INC)
+INCLUDES	= $(DATA_INC) $(TOKEN_INC) $(BUILTINS_INC) $(PRINT_INC) $(ENV_INC) $(EXEC_INC) $(AST_INC) $(REDIR_INC) $(SIGNAL_INC)
 SRC_FILES	= main $(DATA_SRC) $(TOKEN_SRC) $(BUILTINS_SRC) $(PRINT_SRC) $(ENV_SRC) $(EXEC_SRC) $(AST_SRC) $(REDIR_SRC) $(SIGNAL_SRC)
 
 #------------------------------------------------#
@@ -139,9 +139,6 @@ clean-all: clean clean-libft
 
 re-all: fclean fclean-libft libft all
 
-# debug:
-# 	@$(NAME)
-
 valgrind: all
 	@echo "$(BOLD)Running with Valgrind:$(RESET)"
 	@valgrind --leak-check=full --track-origins=yes --track-fds=yes --show-leak-kinds=all ./$(NAME) $(ARGS)
@@ -152,7 +149,7 @@ run: all
 	@echo "$(BOLD)🚀 Running:$(RESET) ./$(NAME) $(ARGS)"
 	@./$(NAME) $(ARGS)
 
-.PHONY: all clean fclean re debug valgrind run
+.PHONY: all clean fclean re valgrind run
 .PHONY: libft clean-libft fclean-libft re-libft
 .PHONY: clean-all fclean-all re-all
 

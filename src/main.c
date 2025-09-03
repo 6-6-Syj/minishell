@@ -10,13 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ast.h"
+#include "data.h"
 #include "env.h"
+#include "exec.h"
 #include "handle_signal.h"
-#include "minishell.h"
+#include "libft.h"
+#include "token.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
-#include "libft.h"
 #include <unistd.h>
 
 volatile int	g_sig;
@@ -96,7 +99,7 @@ int	main(int ac, char **av, char **env)
 		if (!data.input)
 			continue ;
 		init_token(&data);
-		if (data.syntax == 0)
+		if (data.syntax_err == false)
 			init_ast(&data.ast, &data.token, &data);
 		else
 			data.err = 2;

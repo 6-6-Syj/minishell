@@ -64,7 +64,8 @@ void	malloc_fail(t_data *data)
 
 void	syntax_error(t_data *data)
 {
+	data->syntax_err = true;
 	data->err = 2;
-	data->err_msg = "minishell: Syntax error";
-	exit_error(data);
+	ft_putendl_fd("minishell: Syntax error", STDERR_FILENO);
+	free_tmp_data(data);
 }

@@ -60,7 +60,7 @@ static void	handle_space(t_token **token_lst, t_data *data)
 
 void	init_token(t_data *data)
 {
-	data->syntax = 0;
+	data->syntax_err = false;
 	lexer(data);
 	set_token_type(&data->token);
 	remove_double_quote(&data->token, data);

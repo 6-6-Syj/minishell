@@ -37,7 +37,6 @@ typedef enum e_type
 	UNKNOWN = 1 << 10,
 	REDIR_TARGET = 1 << 11,
 	EXPAND = 1 << 12,
-	VAR = 1 << 13,
 	REDIR = REDIR_IN | REDIR_OUT | REDIR_APPEND | HERE_DOC,
 }						t_type;
 
@@ -59,7 +58,6 @@ typedef struct s_token
 /****************************************************************************/
 /*                                FUNCTIONS									*/
 /****************************************************************************/
-
 /*expand_utils*/
 int						get_expand_key_len(char *token_content);
 char					*get_expand(char *token, t_data *data);

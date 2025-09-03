@@ -1,6 +1,0 @@
-==43188== Memcheck, a memory error detector
-==43188== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==43188== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==43188== Command: ./minishell
-==43188== Parent PID: 38575
-==43188== 
