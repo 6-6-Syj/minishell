@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:42:06 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/03 21:46:06 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 23:14:02 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ static bool	redir_is_valid(t_token *token)
 			while (tmp && tmp->type == SPACE)
 				tmp = tmp->next;
 			if (!tmp || tmp->type != REDIR_TARGET)
-			{
 				return (false);
-			}
 		}
 		token = token->next;
 	}

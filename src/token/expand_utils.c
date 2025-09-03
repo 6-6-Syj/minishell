@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:49:04 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/03 21:46:03 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/03 23:12:53 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ bool	is_expand(char *content)
 {
 	if (ft_strlen(content) < 2)
 		return (false);
+	if (ft_strncmp(content, "$?", 2) == 0)
+		return (true);
 	if (content[0] == '$' && (content[1] == '_' || ft_isalpha(content[1])))
 		return (true);
 	return (false);
@@ -32,7 +34,7 @@ int	get_expand_key_len(char *content)
 		return (0);
 	if (ft_strncmp(content, "$?", 2) == 0)
 		return (1);
-	while (content[i] && content[i] != '_' && !ft_isalnum(content[i]))
+	while (content[i] && (content[i] == '_' || ft_isalnum(content[i])))
 		i++;
 	return (i - 1);
 }
