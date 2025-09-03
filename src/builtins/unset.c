@@ -14,7 +14,7 @@
 #include "env.h"
 #include "libft.h"
 
-static int	ft_unset(t_command *cmd, t_env **head)
+static void	ft_unset(t_command *cmd, int *i, t_env **head)
 {
 	t_env	*curr;
 	t_env	*prev;
@@ -23,7 +23,7 @@ static int	ft_unset(t_command *cmd, t_env **head)
 	prev = NULL;
 	while (curr)
 	{
-		if (curr->key && !ft_strcmp(curr->key, cmd->args[1]))
+		if (curr->key && !ft_strcmp(curr->key, cmd->args[*i]))
 		{
 			if (prev)
 				prev->next = curr->next;
@@ -33,21 +33,23 @@ static int	ft_unset(t_command *cmd, t_env **head)
 			if (curr->value)
 				free(curr->value);
 			free(curr);
-			return (0);
+			return ;
 		}
 		prev = curr;
 		curr = curr->next;
 	}
-	return (0);
 }
 
 int	handle_unset(t_command *cmd, t_env **env_lst, t_data *data)
 {
-	int	res;
+	int	i;
 
-	res = 0;
-	if (cmd->args && cmd->args[1])
-		res = ft_unset(cmd, env_lst);
+	i = 1;
+	while (cmd && cmd->args[i])
+	{
+		ft_unset(cmd, &i, env_lst);
+		i++;
+	}
 	update_env_tab(data);
-	return (res);
+	return (0);
 }

@@ -72,6 +72,6 @@ int							ft_echo(t_command *cmd);
 int							ft_exit(t_command *cmd, t_data *data);
 
 /* exit_utils */
-long long					ft_atoll_shell(const char *str);
+long long					ft_atoll_shell(const char *str, t_data *data);
 
 #endif
