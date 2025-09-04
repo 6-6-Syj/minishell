@@ -40,16 +40,15 @@ static int	get_exit_code(int status)
 
 int	wait_all_processes(t_data *data)
 {
-	int		status;
-	int		last_exit_code;
-	int		w_pid;
-	
+	int status;
+	int last_exit_code;
+	int wpid;
+
 	last_exit_code = 0;
-	w_pid = 1;
-	while (w_pid > 0)
+	wpid = waitpid(-1, &status, 0);
+	while (wpid > 0)
 	{
-		w_pid = waitpid(-1, &status, 0);		
-		if (w_pid == data->last_cmd_pid)
+		if (wpid == data->last_cmd_pid)
 		{
 			signal(SIGINT, SIG_IGN);
 			last_exit_code = get_exit_code(status);
@@ -57,6 +56,7 @@ int	wait_all_processes(t_data *data)
 			data->err = last_exit_code;
 			data->exit_err = last_exit_code;
 		}
+		wpid = waitpid(-1, &status, 0);
 	}
 	return (last_exit_code);
 }
