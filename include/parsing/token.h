@@ -29,15 +29,16 @@ typedef enum e_type
 	REDIR_IN = 1 << 2,
 	REDIR_OUT = 1 << 3,
 	REDIR_APPEND = 1 << 4,
-	QUOTE_S = 1 << 5,
-	QUOTE_D = 1 << 6,
-	CMD = 1 << 7,
-	ARG = 1 << 8,
-	SPACE = 1 << 9,
-	UNKNOWN = 1 << 10,
-	REDIR_TARGET = 1 << 11,
-	EXPAND = 1 << 12,
-	REDIR = REDIR_IN | REDIR_OUT | REDIR_APPEND | HERE_DOC,
+	REDIR_AMBIGUOUS = 1 << 5,
+	QUOTE_S = 1 << 6,
+	QUOTE_D = 1 << 7,
+	CMD = 1 << 8,
+	ARG = 1 << 9,
+	SPACE = 1 << 10,
+	UNKNOWN = 1 << 11,
+	REDIR_TARGET = 1 << 12,
+	EXPAND = 1 << 13,
+	REDIR = HERE_DOC | REDIR_IN | REDIR_OUT | REDIR_APPEND,
 }						t_type;
 
 /****************************************************************************/
@@ -47,10 +48,11 @@ typedef struct s_data	t_data;
 
 typedef struct s_token
 {
-	int					err;
 	int					priority;
 	int					type;
+	bool				is_expand;
 	char				*content;
+	char				*tmp;
 	struct s_token		*prev;
 	struct s_token		*next;
 }						t_token;
@@ -62,7 +64,7 @@ typedef struct s_token
 int						get_expand_key_len(char *token_content);
 char					*get_expand(char *token, t_data *data);
 bool					is_expand(char *token);
-
+bool					is_a_target_redir(t_token *token);
 /*expand*/
 char					*handle_expand(char *token, int i, t_data *data);
 void					expand_var(t_token **token_lst, t_data *data);
@@ -102,5 +104,4 @@ int						get_token_len(char *token);
 int						remove_node(t_token *node, t_data *data);
 void					join_word(t_token **token_lst, t_data *data);
 void					set_token_priority(t_token **token_lst);
-
 #endif

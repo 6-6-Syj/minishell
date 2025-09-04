@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 19:00:43 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/02 18:50:55 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 17:12:34 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 t_token	*get_first_redir(t_token **root_token)
 {
 	t_token	*token_node;
+	t_token *tmp;
 
 	if (!*root_token)
 		return (NULL);
@@ -25,8 +26,14 @@ t_token	*get_first_redir(t_token **root_token)
 		token_node = token_node->prev;
 	while (token_node && token_node->type != PIPE)
 	{
+		tmp = token_node->next;
 		if (token_node->type & REDIR)
-			return (token_node);
+		{
+			while (tmp && tmp->type != REDIR_TARGET)
+				tmp = tmp->next;
+			if (tmp)
+				return (token_node);
+		}
 		token_node = token_node->next;
 	}
 	return (NULL);
@@ -35,6 +42,7 @@ t_token	*get_first_redir(t_token **root_token)
 t_token	*get_next_redir(t_token **root_token)
 {
 	t_token	*token_node;
+	t_token *tmp;
 
 	if (!*root_token || !(*root_token)->next)
 		return (NULL);
@@ -42,7 +50,12 @@ t_token	*get_next_redir(t_token **root_token)
 	while (token_node && token_node->type != PIPE)
 	{
 		if (token_node->type & REDIR)
-			return (token_node);
+		{
+			while (tmp && tmp->type != REDIR_TARGET)
+				tmp = tmp->next;
+			if (tmp)
+				return (token_node);
+		}
 		token_node = token_node->next;
 	}
 	return (NULL);

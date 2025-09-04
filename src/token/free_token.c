@@ -20,6 +20,11 @@ static void	free_token_node(t_token *token_node)
 		free(token_node->content);
 		token_node->content = NULL;
 	}
+	if (token_node && token_node->tmp)
+	{
+		free(token_node->tmp);
+		token_node->tmp = NULL;
+	}
 	if (token_node)
 	{
 		free(token_node);

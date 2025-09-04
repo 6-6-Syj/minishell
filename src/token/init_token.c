@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 19:27:09 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/03 23:17:51 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 18:58:50 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static void	handle_space(t_token **token_lst, t_data *data)
 		current = current->next;
 	}
 }
-
 void	init_token(t_data *data)
 {
 	data->syntax_err = false;

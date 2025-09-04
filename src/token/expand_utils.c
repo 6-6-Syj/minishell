@@ -6,13 +6,14 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:49:04 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/03 23:12:53 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 18:16:46 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "data.h"
 #include "env.h"
 #include "libft.h"
+#include "token.h"
 
 bool	is_expand(char *content)
 {
@@ -22,6 +23,16 @@ bool	is_expand(char *content)
 		return (true);
 	if (content[0] == '$' && (content[1] == '_' || ft_isalpha(content[1])))
 		return (true);
+	return (false);
+}
+bool	is_a_target_redir(t_token *token)
+{
+	while (token && token->type != PIPE)
+	{
+		if (token->type & REDIR)
+			return (true);
+		token = token->prev;
+	}
 	return (false);
 }
 

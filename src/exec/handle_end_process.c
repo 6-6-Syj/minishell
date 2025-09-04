@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_end_process.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-06-24 20:39:56 by jmagand           #+#    #+#             */
-/*   Updated: 2025-06-24 20:39:56 by jmagand          ###   ########.fr       */
+/*   Created: 2025/06/24 20:39:56 by jmagand           #+#    #+#             */
+/*   Updated: 2025/09/04 19:00:21 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,14 @@ int	wait_all_processes(t_data *data)
 {
 	int		status;
 	int		last_exit_code;
-
+	int		w_pid;
+	
 	last_exit_code = 0;
-	while (waitpid(-1, &status, 0) > 0)
+	w_pid = 1;
+	while (w_pid > 0)
 	{
-		if (waitpid(-1, &status, 0) == data->last_cmd_pid)
+		w_pid = waitpid(-1, &status, 0);		
+		if (w_pid == data->last_cmd_pid)
 		{
 			signal(SIGINT, SIG_IGN);
 			last_exit_code = get_exit_code(status);

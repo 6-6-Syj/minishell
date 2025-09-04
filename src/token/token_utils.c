@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:47:10 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 16:11:29 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 18:07:39 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	remove_node(t_token *node, t_data *data)
 		return (0);
 	if (node->content)
 		free(node->content);
+	if (node->tmp)
+		free(node->tmp);
 	free(node);
 	if (!prev)
 	{

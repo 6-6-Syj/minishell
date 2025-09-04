@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 19:40:40 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/18 23:47:13 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 18:12:53 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	malloc_fail(t_data *data)
 void	syntax_error(t_data *data)
 {
 	data->syntax_err = true;
-	data->err = 2;
 	ft_putendl_fd("minishell: Syntax error", STDERR_FILENO);
 	free_tmp_data(data);
 }

@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:49:11 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/03 21:46:34 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/04 19:11:38 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static char	*concatenate_expand(char *first, char *inter, char *last,
 	free_expand_buffer(first, inter, last);
 	return (dst);
 }
-
 char	*handle_expand(char *token, int i, t_data *data)
 {
 	char	*first;
@@ -87,19 +86,33 @@ char	*handle_expand(char *token, int i, t_data *data)
 	return (token);
 }
 
+static void	print_ambiguous_redir(t_token *token)
+{
+	token->type = REDIR_AMBIGUOUS;
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(token->tmp, 2);
+	ft_putstr_fd(": ambiguous redirect\n", 2);
+}
+
 void	expand_var(t_token **token_lst, t_data *data)
 {
 	t_token	*current;
 	t_token	*next;
-
+	
 	current = *token_lst;
 	while (current)
 	{
 		next = current->next;
+		current->tmp = NULL;
 		if (current->content && current->type != QUOTE_S)
 		{
+			current->tmp = ft_strdup(current->content);
+			if (!current->tmp)
+				malloc_fail(data);
 			current->content = handle_expand(current->content, -1, data);
-			if (!current->content[0] && current->type != QUOTE_D)
+			if (!current->content[0] && is_a_target_redir(current) && current->type != QUOTE_D)
+				print_ambiguous_redir(current);
+			else if (!current->content[0] && current->type != QUOTE_D)
 				remove_node(current, data);
 			else if (current->type == QUOTE_D)
 				current->type = WORD;
