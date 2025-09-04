@@ -42,7 +42,7 @@ bool	eof_catched(char *line, int fd, t_redir *redir, t_data *data)
 			ft_putstr_fd("minishell: warning: here-document ", STDERR_FILENO);
 			ft_putstr_fd("delimited by end-of-file (wanted `", STDERR_FILENO);
 			ft_putstr_fd(redir->delimiter, STDERR_FILENO);
-			ft_putstr_fd("')\n", STDERR_FILENO);
+			ft_putendl_fd("')", STDERR_FILENO);
 		}
 		close(fd);
 		signal(SIGINT, SIG_IGN);

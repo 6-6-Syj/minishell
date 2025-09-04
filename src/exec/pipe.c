@@ -59,11 +59,20 @@ static void	handle_pipe_with_redirout(t_pipe *pipe, t_data *data, int *fd)
 	close(empty_pipe[0]);
 }
 
+static bool	left_pipe_got_redirout(t_pipe *pipe)
+{
+	if ((pipe->left && pipe->left->type == CMD 
+			&& has_redir_out(&pipe->left->command)))
+		return (true);
+	else if (pipe->left && pipe->left->type == PIPE
+			&& right_cmd_got_redirout(pipe->left))
+		return (true);
+	return (false);
+}
+
 void	handle_pipe(t_pipe *pipe, t_data *data, int *fd)
 {
-	if ((pipe->left && pipe->left->type == PIPE
-			&& right_cmd_got_redirout(pipe->left)) || (pipe->left
-			&& pipe->left->type == CMD && has_redir_out(&pipe->left->command)))
+	if (left_pipe_got_redirout(pipe))
 		handle_pipe_with_redirout(pipe, data, fd);
 	else
 	{

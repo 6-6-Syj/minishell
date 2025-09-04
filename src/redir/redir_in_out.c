@@ -14,8 +14,10 @@
 #include "redir.h"
 #include "token.h"
 #include "data.h"
+#include "libft.h"
 #include <stdio.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 {
@@ -30,6 +32,7 @@ static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 		*fd = open(file->filename, flags, 0644);
 		if (*fd == -1)
 		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(file->filename);
 			data->err = 1;
 			return ;
@@ -45,6 +48,7 @@ static void	open_infile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 		*fd = open(file->filename, O_RDONLY, 0644);
 		if (*fd == -1)
 		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(file->filename);
 			data->err = 1;
 			return ;
@@ -56,6 +60,7 @@ static void	open_infile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 		*fd = open(file->filename, O_RDONLY, 0644);
 		if (*fd == -1)
 		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			perror(file->filename);
 			data->err = 1;
 			return ;

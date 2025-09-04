@@ -63,15 +63,15 @@ static bool	is_special_input(t_command *cmd, t_data *data)
 {
 	if (!ft_strcmp(".", cmd->args[0]))
 	{
-		ft_putstr_fd("minishell: .: filename argument required\n",
+		ft_putendl_fd("minishell: .: filename argument required",
 			STDERR_FILENO);
-		ft_putstr_fd(".: usage: . filename [arguments]\n", STDERR_FILENO);
+		ft_putendl_fd(".: usage: . filename [arguments]", STDERR_FILENO);
 		data->err = 2;
 		return (true);
 	}
 	if (!ft_strcmp("..", cmd->args[0]))
 	{
-		ft_putstr_fd("minishell: ..: command not found\n", STDERR_FILENO);
+		ft_putendl_fd("minishell: ..: command not found", STDERR_FILENO);
 		data->err = 127;
 		return (true);
 	}
@@ -90,7 +90,7 @@ bool	is_a_dir(t_command *cmd, t_data *data)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(cmd->args[0], STDERR_FILENO);
-			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+			ft_putendl_fd(": Is a directory", STDERR_FILENO);
 			data->err = 126;
 			return (true);
 		}

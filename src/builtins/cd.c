@@ -31,8 +31,7 @@ static int	w_cd(char *target, t_data *data)
 		ft_putstr_fd("cd: ", STDERR_FILENO);
 		ft_putstr_fd(target, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		data->err = 1;
 		return (data->err);
 	}
@@ -50,21 +49,21 @@ static bool	validate_oldpwd(char *oldpwd, t_data *data)
 
 	if (!oldpwd)
 	{
-		ft_putstr_fd("cd: OLDPWD not set\n", STDERR_FILENO);
+		ft_putendl_fd("cd: OLDPWD not set", STDERR_FILENO);
 		data->err = 1;
 	}
 	else if (stat(oldpwd, &sb) == -1)
 	{
 		ft_putstr_fd("cd: ", STDERR_FILENO);
 		ft_putstr_fd(oldpwd, STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		data->err = 1;
 	}
 	else if (!S_ISDIR(sb.st_mode))
 	{
 		ft_putstr_fd("cd: ", STDERR_FILENO);
 		ft_putstr_fd(oldpwd, STDERR_FILENO);
-		ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
+		ft_putendl_fd(": Not a directory", STDERR_FILENO);
 		data->err = 1;
 	}
 	if (data->err)
@@ -87,10 +86,7 @@ static int	cd_oldpwd(t_data *data)
 	{
 		pwd = get_env_var(data, "PWD");
 		if (pwd)
-		{
-			ft_putstr_fd(pwd, STDOUT_FILENO);
-			ft_putstr_fd("\n", STDOUT_FILENO);
-		}
+			ft_putendl_fd(pwd, STDOUT_FILENO);
 		free(pwd);
 	}
 	return (data->err);
@@ -107,7 +103,7 @@ static int	cd_home(t_data *data)
 			return (w_cd(current->value, data));
 		current = current->next;
 	}
-	ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
+	ft_putendl_fd("cd: HOME not set", STDERR_FILENO);
 	data->err = 1;
 	return (data->err);
 }
@@ -123,7 +119,7 @@ int	ft_cd(t_command *cmd, t_data *data)
 		return (cd_home(data));
 	if (i > 2)
 	{
-		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
+		ft_putendl_fd("cd: too many arguments", STDERR_FILENO);
 		data->err = 1;
 		return (data->err);
 	}

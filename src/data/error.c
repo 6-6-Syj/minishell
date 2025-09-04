@@ -27,10 +27,7 @@ void	exit_error(t_data *data)
 	if (data)
 	{
 		if (data->err_msg)
-		{
-			ft_putstr_fd(data->err_msg, STDERR_FILENO);
-			ft_putstr_fd("\n", STDERR_FILENO);
-		}
+			ft_putendl_fd(data->err_msg, STDERR_FILENO);
 		err = data->err;
 		free_data(data);
 	}

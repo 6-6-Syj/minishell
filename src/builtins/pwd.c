@@ -37,16 +37,13 @@ int	ft_pwd(t_data *data)
 		ft_putstr_fd("getcwd: cannot access parent directories: ",
 			STDERR_FILENO);
 		if (errno == ENOENT)
-			ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
+			ft_putendl_fd("No such file or directory", STDERR_FILENO);
 		else if (errno == EACCES)
-			ft_putstr_fd("Permission denied\n", STDERR_FILENO);
+			ft_putendl_fd("Permission denied", STDERR_FILENO);
 		else
-			ft_putstr_fd("Cannot access directory\n", STDERR_FILENO);
+			ft_putendl_fd("Cannot access directory", STDERR_FILENO);
 	}
 	else
-	{
-		ft_putstr_fd(path, STDOUT_FILENO);
-		ft_putchar_fd('\n', STDOUT_FILENO);
-	}
+		ft_putendl_fd(path, STDOUT_FILENO);
 	return (data->err);
 }

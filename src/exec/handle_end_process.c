@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "data.h"
+#include "libft.h"
 #include "handle_signal.h"
 #include <signal.h>
 #include <sys/types.h>
@@ -25,9 +26,9 @@ static int	get_exit_code(int status)
 	{
 		sig = WTERMSIG(status);
 		if (sig == SIGINT)
-			write(STDOUT_FILENO, "\n", 1);
+			ft_putchar_fd('\n', STDERR_FILENO);
 		else if (sig == SIGQUIT)
-			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+			ft_putendl_fd("Quit (core dumped)", STDERR_FILENO);
 		if (sig == SIGPIPE)
 			return (0);
 		else

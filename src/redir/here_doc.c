@@ -34,7 +34,7 @@ static void	init_heredoc_sig_handler(void)
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
-		ft_putstr_fd("minishell: sigaction failed\n", STDERR_FILENO);
+		ft_putendl_fd("minishell: sigaction failed", STDERR_FILENO);
 		return ;
 	}
 	signal(SIGQUIT, SIG_IGN);
@@ -67,8 +67,7 @@ static int	read_heredoc_loop(t_redir *redir, t_data *data)
 			return (-1);
 		if (eof_catched(line, fd, redir, data))
 			return (0);
-		ft_putstr_fd(line, fd);
-		write(fd, "\n", 1);
+		ft_putendl_fd(line, fd);
 		free(line);
 	}
 	close(fd);
