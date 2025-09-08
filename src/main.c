@@ -105,8 +105,6 @@ int	main(int ac, char **av, char **env)
 			data.err = 2;
 		if (g_sig == 0 && !data.err)
 			exec_ast(data.ast, &data);
-		if (g_sig)
-			data.err = 130;
 		free_tmp_data(&data);
 		data.exit_pipe = false;
 	}
