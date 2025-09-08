@@ -14,6 +14,7 @@
 #include "data.h"
 #include "env.h"
 #include "exec.h"
+#include "wrappers.h"
 #include "handle_signal.h"
 #include "libft.h"
 #include "token.h"
@@ -48,9 +49,9 @@ char	*handle_readline(t_data *data)
 	char	*input;
 
 	g_sig = 0;
-	signal(SIGINT, sig_handler);
+	w_signal(SIGINT, sig_handler, data);
 	input = readline("minishell$ ");
-	signal(SIGINT, SIG_IGN);
+	w_signal(SIGINT, SIG_IGN, data);
 	if (g_sig)
 	{
 		data->err = 130;

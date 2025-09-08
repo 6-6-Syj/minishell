@@ -54,7 +54,7 @@ void	no_file_or_directory(t_command *cmd, t_data *data)
 
 void	malloc_fail(t_data *data)
 {
-	data->err = 1;
+	data->err = 12;
 	data->err_msg = "minishell: Malloc failed";
 	exit_error(data);
 }

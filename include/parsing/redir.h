@@ -58,7 +58,8 @@ void						open_files(t_command *cmd, t_data *data);
 void						set_here_doc(t_redir **redir_node, t_data *data);
 
 /* here_doc_utils */
-bool						ctrl_c_catched(char *line, int fd, char *filename);
+bool						ctrl_c_catched(char *line, int fd, char *filename,
+								t_data *data);
 bool						eof_catched(char *line, int fd, t_redir *redir,
 								t_data *data);
 

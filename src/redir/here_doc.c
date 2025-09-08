@@ -10,34 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "handle_signal.h"
-#include "redir.h"
-#include "libft.h"
 #include "data.h"
+#include "handle_signal.h"
+#include "libft.h"
+#include "redir.h"
+#include "wrappers.h"
 #include <fcntl.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <token.h>
-#include <signal.h>
 #include <unistd.h>
 
 extern volatile int	g_sig;
 
-static void	init_heredoc_sig_handler(void)
+static void	init_heredoc_sig_handler(t_data *data)
 {
 	struct sigaction	sa;
 
 	sa.sa_handler = sig_handler_heredoc;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL) == -1)
+	if (sigaction(SIGINT, &sa, NULL) != -1)
 	{
 		ft_putendl_fd("minishell: sigaction failed", STDERR_FILENO);
+		// data->err =
 		return ;
 	}
-	signal(SIGQUIT, SIG_IGN);
+	w_signal(SIGQUIT, SIG_IGN, data);
 }
 
 static int	open_heredoc_file(char *filename)
@@ -46,7 +48,7 @@ static int	open_heredoc_file(char *filename)
 
 	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
-		perror("open");
+		perror("minishell: open");
 	return (fd);
 }
 
@@ -58,12 +60,12 @@ static int	read_heredoc_loop(t_redir *redir, t_data *data)
 	fd = open_heredoc_file(redir->filename);
 	if (fd < 0)
 		return (-1);
-	init_heredoc_sig_handler();
+	init_heredoc_sig_handler(data);
 	while (g_sig == 0)
 	{
 		rl_event_hook = event_hook;
 		line = readline("> ");
-		if (ctrl_c_catched(line, fd, redir->filename))
+		if (ctrl_c_catched(line, fd, redir->filename, data))
 			return (-1);
 		if (eof_catched(line, fd, redir, data))
 			return (0);
@@ -72,7 +74,7 @@ static int	read_heredoc_loop(t_redir *redir, t_data *data)
 	}
 	close(fd);
 	unlink(redir->filename);
-	signal(SIGINT, SIG_IGN);
+	w_signal(SIGINT, SIG_IGN, data);
 	rl_event_hook = NULL;
 	return (-1);
 }

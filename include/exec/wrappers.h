@@ -14,6 +14,11 @@
 # define WRAPPERS_H
 
 /****************************************************************************/
+/*                                INCLUDE									*/
+/****************************************************************************/
+// #include <signal.h>
+
+/****************************************************************************/
 /*                                STRUCT									*/
 /****************************************************************************/
 typedef struct s_data	t_data;
@@ -30,5 +35,6 @@ void					w_close(int fd, t_data *data);
 void					w_pipe(int *fd, t_data *data);
 void					w_dup2(int new, int old, t_data *data);
 int						w_fork(t_data *data);
+void					w_signal(int sig, void (*handler)(int), t_data *data);
 
 #endif

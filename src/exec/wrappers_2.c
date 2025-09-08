@@ -12,15 +12,16 @@
 
 #include "data.h"
 #include "wrappers.h"
+#include "signal.h"
 #include <errno.h>
-#include <unistd.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void	w_pipe(int *fd, t_data *data)
 {
 	if (pipe(fd) == -1)
 	{
-		perror("pipe");
+		perror("minishell: pipe");
 		if (data)
 			data->err = errno;
 		exit_error(data);
@@ -31,7 +32,7 @@ void	w_dup2(int new, int old, t_data *data)
 {
 	if (dup2(new, old) == -1)
 	{
-		perror("dup2");
+		perror("minishell: dup2");
 		if (data)
 			data->err = errno;
 		exit_error(data);
@@ -45,10 +46,21 @@ int	w_fork(t_data *data)
 	pid = fork();
 	if (pid == -1)
 	{
-		perror("fork");
+		perror("minishell: fork");
 		if (data)
 			data->err = errno;
 		exit_error(data);
 	}
 	return (pid);
+}
+
+void	w_signal(int sig, void (*handler)(int), t_data *data)
+{
+	if (signal(sig, handler) == SIG_ERR)
+	{
+		perror("minishell: signal");
+		if (data)
+			data->err = 6;
+		exit_error(data);
+	}
 }

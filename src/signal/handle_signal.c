@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "handle_signal.h"
+#include "wrappers.h"
 #include "libft.h"
 #include <readline/readline.h>
 #include <signal.h>
@@ -42,7 +43,7 @@ void	sig_handler(int signum)
 	}
 }
 
-bool	init_sig_handler(void)
+bool	init_sig_handler(t_data *data)
 {
 	struct sigaction	sa;
 
@@ -51,6 +52,6 @@ bool	init_sig_handler(void)
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		return (false);
-	signal(SIGQUIT, SIG_IGN);
+	w_signal(SIGQUIT, SIG_IGN, data);
 	return (true);
 }

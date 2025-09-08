@@ -10,15 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "redir.h"
 #include "libft.h"
+#include "redir.h"
+#include "wrappers.h"
 #include <readline/readline.h>
-#include <stdio.h>
 #include <signal.h>
+#include <stdio.h>
 
 extern volatile int	g_sig;
 
-bool	ctrl_c_catched(char *line, int fd, char *filename)
+bool	ctrl_c_catched(char *line, int fd, char *filename, t_data *data)
 {
 	if (g_sig == 1)
 	{
@@ -26,7 +27,7 @@ bool	ctrl_c_catched(char *line, int fd, char *filename)
 			free(line);
 		close(fd);
 		unlink(filename);
-		signal(SIGINT, SIG_IGN);
+		w_signal(SIGINT, SIG_IGN, data);
 		rl_event_hook = NULL;
 		return (true);
 	}
@@ -45,7 +46,7 @@ bool	eof_catched(char *line, int fd, t_redir *redir, t_data *data)
 			ft_putendl_fd("')", STDERR_FILENO);
 		}
 		close(fd);
-		signal(SIGINT, SIG_IGN);
+		w_signal(SIGINT, SIG_IGN, data);
 		rl_event_hook = NULL;
 		return (true);
 	}

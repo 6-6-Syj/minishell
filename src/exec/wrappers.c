@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "wrappers.h"
+#include "libft.h"
 #include "data.h"
 #include <errno.h>
 #include <signal.h>
@@ -19,10 +20,11 @@
 
 void	w_execve(char *path, char **cmds, char **env, t_data *data)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	w_signal(SIGINT, SIG_DFL, data);
+	w_signal(SIGQUIT, SIG_DFL, data);
 	if (execve(path, cmds, env) == -1)
 	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		perror(path);
 		free(path);
 		if (data)
@@ -35,7 +37,7 @@ void	w_close(int fd, t_data *data)
 {
 	if (close(fd) == -1)
 	{
-		perror("close");
+		perror("minishell: close");
 		if (data)
 			data->err = errno;
 		exit_error(data);

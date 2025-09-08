@@ -96,7 +96,7 @@ void	open_files(t_command *cmd, t_data *data)
 			break ;
 	}
 	if (data->syntax_err == true)
-		data->err = 1;
+		data->err = 2;
 	if (cmd && cmd->args[0])
 		redir(cmd, data);
 }

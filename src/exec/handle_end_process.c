@@ -13,6 +13,7 @@
 #include "data.h"
 #include "handle_signal.h"
 #include "libft.h"
+#include "wrappers.h"
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -51,9 +52,9 @@ int	wait_all_processes(t_data *data)
 	{
 		if (wpid == data->last_cmd_pid)
 		{
-			signal(SIGINT, SIG_IGN);
+			w_signal(SIGINT, SIG_IGN, data);
 			last_exit_code = get_exit_code(status);
-			signal(SIGINT, sig_handler);
+			w_signal(SIGINT, sig_handler, data);
 			data->err = last_exit_code;
 			data->exit_err = last_exit_code;
 		}
