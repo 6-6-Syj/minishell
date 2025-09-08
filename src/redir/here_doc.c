@@ -36,7 +36,7 @@ static void	init_heredoc_sig_handler(t_data *data)
 	if (sigaction(SIGINT, &sa, NULL) != -1)
 	{
 		ft_putendl_fd("minishell: sigaction failed", STDERR_FILENO);
-		// data->err =
+		data->err = 6;
 		return ;
 	}
 	w_signal(SIGQUIT, SIG_IGN, data);
