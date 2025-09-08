@@ -53,7 +53,7 @@ static int	set_redir_node(t_redir *redir_node, t_token *token_node,
 	}
 	if (is_ambiguous_redir(token_node))
 	{
-		redir_node->is_ambiguous = true;	
+		redir_node->is_ambiguous = true;
 	}
 	return (0);
 }
@@ -96,12 +96,7 @@ void	init_redir(t_token *token_node, t_redir **redir_lst, t_data *data)
 				malloc_fail(data);
 			if (set_redir_node(new_redir, token_node, data) == -1)
 				return ;
-			// ft_putstr_fd(new_redir->filename, 2);
-			// if (new_redir->is_ambiguous == true)
-			// 	ft_putstr_fd(" is ambiguous\n", 2);
-			// if (new_redir->is_ambiguous == false)
-			// 	ft_putstr_fd(" is not ambiguous\n", 2);
-			token_node = get_next_redir(&token_node);	
+			token_node = get_next_redir(&token_node);
 		}
 	}
 }

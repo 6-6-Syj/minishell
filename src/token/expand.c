@@ -86,19 +86,11 @@ char	*handle_expand(char *token, int i, t_data *data)
 	return (token);
 }
 
-static void	print_ambiguous_redir(t_token *token)
-{
-	token->type = REDIR_AMBIGUOUS;
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(token->tmp, 2);
-	ft_putstr_fd(": ambiguous redirect\n", 2);
-}
-
 void	expand_var(t_token **token_lst, t_data *data)
 {
 	t_token	*current;
 	t_token	*next;
-	
+
 	current = *token_lst;
 	while (current)
 	{
@@ -111,7 +103,7 @@ void	expand_var(t_token **token_lst, t_data *data)
 				malloc_fail(data);
 			current->content = handle_expand(current->content, -1, data);
 			if (!current->content[0] && is_a_target_redir(current) && current->type != QUOTE_D)
-				print_ambiguous_redir(current);
+				current->type = REDIR_AMBIGUOUS;
 			else if (!current->content[0] && current->type != QUOTE_D)
 				remove_node(current, data);
 			else if (current->type == QUOTE_D)

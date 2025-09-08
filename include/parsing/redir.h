@@ -31,6 +31,7 @@ typedef struct s_redir
 	t_type					type;
 	char					*filename;
 	char					*delimiter;
+	bool					is_ambiguous;
 	struct s_redir			*prev;
 	struct s_redir			*next;
 }							t_redir;

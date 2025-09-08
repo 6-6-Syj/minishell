@@ -79,19 +79,8 @@ void	open_files(t_command *cmd, t_data *data)
 	file = cmd->redir;
 	while (file)
 	{
-		if (file->is_ambiguous == true)
-		{
-			// ft_putstr_fd(" is ambiguous\n", 2);
-			
-		}
-		if (file->is_ambiguous == false)
-		{
-			// ft_putstr_fd(" is not ambiguous\n", 2);
-			open_infile(file, &new_fd_in, cmd, data);
-			open_outfile(file, &new_fd_out, cmd, data);
-		}
-		else
-			data->err = 1;
+		open_infile(file, &new_fd_in, cmd, data);
+		open_outfile(file, &new_fd_out, cmd, data);
 		if (!data->err)
 			file = file->next;
 		else
