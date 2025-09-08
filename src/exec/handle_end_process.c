@@ -6,13 +6,13 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 20:39:56 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/04 19:00:21 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:08:12 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "data.h"
-#include "libft.h"
 #include "handle_signal.h"
+#include "libft.h"
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -41,9 +41,9 @@ static int	get_exit_code(int status)
 
 int	wait_all_processes(t_data *data)
 {
-	int status;
-	int last_exit_code;
-	int wpid;
+	int	status;
+	int	last_exit_code;
+	int	wpid;
 
 	last_exit_code = 0;
 	wpid = waitpid(-1, &status, 0);

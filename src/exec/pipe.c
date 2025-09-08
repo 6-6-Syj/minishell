@@ -6,15 +6,15 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 19:12:25 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/02 19:14:28 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:08:23 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipe.h"
-#include "wrappers.h"
 #include "ast.h"
 #include "data.h"
 #include "exec.h"
+#include "pipe.h"
+#include "wrappers.h"
 #include <unistd.h>
 
 static void	assign_pipe_fds(t_ast *node, int fd_in, int fd_out)
@@ -61,11 +61,11 @@ static void	handle_pipe_with_redirout(t_pipe *pipe, t_data *data, int *fd)
 
 static bool	left_pipe_got_redirout(t_pipe *pipe)
 {
-	if ((pipe->left && pipe->left->type == CMD 
+	if ((pipe->left && pipe->left->type == CMD
 			&& has_redir_out(&pipe->left->command)))
 		return (true);
 	else if (pipe->left && pipe->left->type == PIPE
-			&& right_cmd_got_redirout(pipe->left))
+		&& right_cmd_got_redirout(pipe->left))
 		return (true);
 	return (false);
 }

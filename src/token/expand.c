@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:49:11 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/04 19:11:38 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:08:01 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static char	*concatenate_expand(char *first, char *inter, char *last,
 	free_expand_buffer(first, inter, last);
 	return (dst);
 }
+
 char	*handle_expand(char *token, int i, t_data *data)
 {
 	char	*first;
@@ -102,7 +103,8 @@ void	expand_var(t_token **token_lst, t_data *data)
 			if (!current->tmp)
 				malloc_fail(data);
 			current->content = handle_expand(current->content, -1, data);
-			if (!current->content[0] && is_a_target_redir(current) && current->type != QUOTE_D)
+			if (!current->content[0] && is_a_target_redir(current)
+				&& current->type != QUOTE_D)
 				current->type = REDIR_AMBIGUOUS;
 			else if (!current->content[0] && current->type != QUOTE_D)
 				remove_node(current, data);

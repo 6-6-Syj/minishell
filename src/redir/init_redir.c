@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 18:47:08 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/06 12:27:22 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:08:46 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@
 
 bool	is_ambiguous_redir(t_token *token)
 {
-	while (token && token->type != PIPE && token->type != REDIR_AMBIGUOUS && token->type != REDIR_TARGET)
+	while (token && token->type != PIPE && token->type != REDIR_AMBIGUOUS
+		&& token->type != REDIR_TARGET)
 	{
 		if (token->type == REDIR_AMBIGUOUS)
-		{
 			return (true);
-		}
 		token = token->next;
 	}
 	return (false);
@@ -43,7 +42,8 @@ static int	set_redir_node(t_redir *redir_node, t_token *token_node,
 			data->err = 2;
 			exit_error(data);
 		}
-		set_here_doc(&redir_node, data);
+		if (redir_node->delimiter[0])
+			set_here_doc(&redir_node, data);
 	}
 	else if (token_node->type & REDIR)
 	{
@@ -52,9 +52,7 @@ static int	set_redir_node(t_redir *redir_node, t_token *token_node,
 			return (-1);
 	}
 	if (is_ambiguous_redir(token_node))
-	{
 		redir_node->is_ambiguous = true;
-	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:42:06 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/04 16:41:21 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:07:41 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static bool	redir_is_valid(t_token *token)
 			tmp = token->next;
 			while (tmp && tmp->type == SPACE)
 				tmp = tmp->next;
-			if (!tmp || (tmp->type != REDIR_TARGET && tmp->type != REDIR_AMBIGUOUS))
+			if (!tmp || (tmp->type != REDIR_TARGET
+					&& tmp->type != REDIR_AMBIGUOUS))
 				return (false);
 		}
 		token = token->next;
@@ -77,14 +78,14 @@ static bool	type_is_unknow(t_token *token)
 	}
 	return (false);
 }
-#include <stdio.h>
+
 bool	syntax_is_valid(t_token *token)
 {
 	if (type_is_unknow(token))
-	return (false);
+		return (false);
 	if (!pipe_is_valid(token))
-	return (false);
+		return (false);
 	if (!redir_is_valid(token))
-	return (false);
+		return (false);
 	return (true);
 }

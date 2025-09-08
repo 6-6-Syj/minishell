@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:49:04 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/05 14:48:16 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 19:07:49 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ bool	is_expand(char *content)
 		return (true);
 	return (false);
 }
+
 bool	is_a_target_redir(t_token *token)
 {
 	if (token->prev)
