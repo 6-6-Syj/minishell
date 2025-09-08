@@ -103,6 +103,8 @@ int	main(int ac, char **av, char **env)
 			init_ast(&data.ast, &data.token, &data);
 		else
 			data.err = 2;
+		if (data.err)
+			data.exit_err = data.err;
 		if (g_sig == 0 && !data.err)
 			exec_ast(data.ast, &data);
 		free_tmp_data(&data);
