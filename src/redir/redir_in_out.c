@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 19:27:38 by jmagand           #+#    #+#             */
-/*   Updated: 2025/08/25 21:10:32 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/06 12:26:24 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "ast.h"
 
 static void	open_outfile(t_redir *file, int *fd, t_command *cmd, t_data *data)
 {
@@ -78,8 +79,19 @@ void	open_files(t_command *cmd, t_data *data)
 	file = cmd->redir;
 	while (file)
 	{
-		open_infile(file, &new_fd_in, cmd, data);
-		open_outfile(file, &new_fd_out, cmd, data);
+		if (file->is_ambiguous == true)
+		{
+			// ft_putstr_fd(" is ambiguous\n", 2);
+			
+		}
+		if (file->is_ambiguous == false)
+		{
+			// ft_putstr_fd(" is not ambiguous\n", 2);
+			open_infile(file, &new_fd_in, cmd, data);
+			open_outfile(file, &new_fd_out, cmd, data);
+		}
+		else
+			data->err = 1;
 		if (!data->err)
 			file = file->next;
 		else

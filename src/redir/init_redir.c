@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 18:47:08 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/02 18:51:51 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/06 12:27:22 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,26 @@
 #include "redir.h"
 #include "token.h"
 
+bool	is_ambiguous_redir(t_token *token)
+{
+	while (token && token->type != PIPE && token->type != REDIR_AMBIGUOUS && token->type != REDIR_TARGET)
+	{
+		if (token->type == REDIR_AMBIGUOUS)
+		{
+			return (true);
+		}
+		token = token->next;
+	}
+	return (false);
+}
+
 static int	set_redir_node(t_redir *redir_node, t_token *token_node,
 		t_data *data)
 {
 	if (!token_node || !token_node->next)
 		return (-1);
 	redir_node->type = token_node->type;
+	redir_node->is_ambiguous = false;
 	if (token_node->type == HERE_DOC)
 	{
 		redir_node->delimiter = get_redir_delimiter(token_node, data);
@@ -36,6 +50,10 @@ static int	set_redir_node(t_redir *redir_node, t_token *token_node,
 		redir_node->filename = get_redir_target(&token_node);
 		if (!redir_node->filename)
 			return (-1);
+	}
+	if (is_ambiguous_redir(token_node))
+	{
+		redir_node->is_ambiguous = true;	
 	}
 	return (0);
 }
@@ -71,11 +89,19 @@ void	init_redir(t_token *token_node, t_redir **redir_lst, t_data *data)
 	token_node = get_first_redir(&token_node);
 	while (token_node)
 	{
-		new_redir = add_redir_node(redir_lst);
-		if (!new_redir)
-			malloc_fail(data);
-		if (set_redir_node(new_redir, token_node, data) == -1)
-			return ;
-		token_node = get_next_redir(&token_node);
+		if (token_node->type & REDIR)
+		{
+			new_redir = add_redir_node(redir_lst);
+			if (!new_redir)
+				malloc_fail(data);
+			if (set_redir_node(new_redir, token_node, data) == -1)
+				return ;
+			// ft_putstr_fd(new_redir->filename, 2);
+			// if (new_redir->is_ambiguous == true)
+			// 	ft_putstr_fd(" is ambiguous\n", 2);
+			// if (new_redir->is_ambiguous == false)
+			// 	ft_putstr_fd(" is not ambiguous\n", 2);
+			token_node = get_next_redir(&token_node);	
+		}
 	}
 }
