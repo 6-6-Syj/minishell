@@ -1,6 +1,0 @@
-==692644== Memcheck, a memory error detector
-==692644== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==692644== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==692644== Command: ./minishell
-==692644== Parent PID: 662891
-==692644== 
