@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmagand <jmagand@student.42.fr>            #+#  +:+       +#+        */
+/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-08-20 16:15:44 by jmagand           #+#    #+#             */
-/*   Updated: 2025-08-20 16:15:44 by jmagand          ###   ########.fr       */
+/*   Created: 2025/08/20 16:15:44 by jmagand           #+#    #+#             */
+/*   Updated: 2025/09/08 21:06:04 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	ctrl_c_catched(char *line, int fd, char *filename, t_data *data)
 
 bool	eof_catched(char *line, int fd, t_redir *redir, t_data *data)
 {
-	if (!line || !ft_strcmp(handle_expand(line, 0, data), redir->delimiter))
+	if (!line || !ft_strcmp(handle_expand(line, 0, 0, data), redir->delimiter))
 	{
 		if (!line)
 		{

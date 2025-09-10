@@ -62,11 +62,11 @@ typedef struct s_token
 /****************************************************************************/
 /*expand_utils*/
 int						get_expand_key_len(char *token_content);
-char					*get_expand(char *token, t_data *data);
+char					*get_expand(char *token, t_type type, t_data *data);
 bool					is_expand(char *token);
 bool					is_a_target_redir(t_token *token);
 /*expand*/
-char					*handle_expand(char *token, int i, t_data *data);
+char					*handle_expand(char *token, int i, t_type type, t_data *data);
 void					expand_var(t_token **token_lst, t_data *data);
 
 /*free_token*/

@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:49:04 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/08 19:07:49 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 21:12:58 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,41 @@ int	get_expand_key_len(char *content)
 	return (i - 1);
 }
 
-char	*get_expand(char *token, t_data *data)
+char	*trime_expand(char *token, t_data *data)
+{
+	char *dst;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	dst = ft_strdup(token);
+	if (!dst)
+		malloc_fail(data);
+	while (token[i])
+	{
+		if (token[i] == ' ' || (token[i] >= 9 && token[i] <= 13))
+		{
+			while (token[i] == ' ')
+				i++;
+			if (j != 0)
+				dst[j++] = ' ';
+		}	
+		if (token[i])
+			dst[j++] = token[i++];
+	}
+	dst[j - 1] = '\0';
+	free(token);
+	return (dst);
+}
+
+char	*get_expand(char *token, t_type type, t_data *data)
 {
 	char	*expand_key;
 	char	*expand_value;
 	int		len;
 
+	(void)type;
 	if (ft_strncmp(token, "$?", 2) == 0)
 	{
 		expand_value = ft_itoa(data->err);
@@ -69,6 +98,9 @@ char	*get_expand(char *token, t_data *data)
 	if (!expand_key)
 		malloc_fail(data);
 	expand_value = get_env_var(data, expand_key);
+	if (expand_value && type != QUOTE_D && type != REDIR_AMBIGUOUS)
+		expand_value = trime_expand(expand_value, data);
 	free(expand_key);
 	return (expand_value);
 }
+

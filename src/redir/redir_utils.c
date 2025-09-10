@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 19:00:43 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/08 18:17:56 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/08 21:17:41 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ t_token	*get_next_redir(t_token **root_token)
 	token_node = (*root_token)->next;
 	while (token_node && token_node->type != PIPE)
 	{
+		
+		tmp = token_node;
 		if (token_node->type & REDIR)
 		{
 			while (tmp && tmp->type != REDIR_TARGET

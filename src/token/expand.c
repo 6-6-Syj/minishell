@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:49:11 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/08 19:08:01 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 15:41:41 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*concatenate_expand(char *first, char *inter, char *last,
 	return (dst);
 }
 
-char	*handle_expand(char *token, int i, t_data *data)
+char	*handle_expand(char *token, int i, t_type type, t_data *data)
 {
 	char	*first;
 	char	*expand;
@@ -71,7 +71,7 @@ char	*handle_expand(char *token, int i, t_data *data)
 			first = ft_substr(token, 0, i);
 			if (ft_strlen(first) != ((size_t)i))
 				malloc_fail(data);
-			expand = get_expand(&token[i], data);
+			expand = get_expand(&token[i], type, data);
 			i += (get_expand_key_len(&token[i]) + 1);
 			last = ft_strdup(&token[i]);
 			if (!last)
@@ -89,28 +89,28 @@ char	*handle_expand(char *token, int i, t_data *data)
 
 void	expand_var(t_token **token_lst, t_data *data)
 {
-	t_token	*current;
+	t_token	*node;
 	t_token	*next;
 
-	current = *token_lst;
-	while (current)
+	node = *token_lst;
+	while (node)
 	{
-		next = current->next;
-		current->tmp = NULL;
-		if (current->content && current->type != QUOTE_S)
+		next = node->next;
+		node->tmp = NULL;
+		if (node->content && node->type != QUOTE_S)
 		{
-			current->tmp = ft_strdup(current->content);
-			if (!current->tmp)
+			node->tmp = ft_strdup(node->content);
+			if (!node->tmp)
 				malloc_fail(data);
-			current->content = handle_expand(current->content, -1, data);
-			if (!current->content[0] && is_a_target_redir(current)
-				&& current->type != QUOTE_D)
-				current->type = REDIR_AMBIGUOUS;
-			else if (!current->content[0] && current->type != QUOTE_D)
-				remove_node(current, data);
-			else if (current->type == QUOTE_D)
-				current->type = WORD;
+			node->content = handle_expand(node->content, -1, node->type, data);
+			if (!node->content[0] && is_a_target_redir(node)
+				&& node->type != QUOTE_D)
+				node->type = REDIR_AMBIGUOUS;
+			else if (!node->content[0] && node->type != QUOTE_D)
+				remove_node(node, data);
+			else if (node->type == QUOTE_D)
+				split_expand(&node, data);
 		}
-		current = next;
+		node = next;
 	}
 }
