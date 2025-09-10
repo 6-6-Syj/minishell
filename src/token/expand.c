@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:49:11 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/10 15:41:41 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 16:01:39 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	expand_var(t_token **token_lst, t_data *data)
 			else if (!node->content[0] && node->type != QUOTE_D)
 				remove_node(node, data);
 			else if (node->type == QUOTE_D)
-				split_expand(&node, data);
+				node->type = WORD;
 		}
 		node = next;
 	}

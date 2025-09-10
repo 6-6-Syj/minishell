@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:49:04 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/10 15:52:11 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 16:09:36 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,10 @@ int	get_expand_key_len(char *content)
 	return (i - 1);
 }
 
-char	*trime_expand(char *token, t_data *data)
+char	*trime_expand(char *token, int i, int j, t_data *data)
 {
 	char	*dst;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
 	dst = ft_strdup(token);
 	if (!dst)
 		malloc_fail(data);
@@ -74,7 +70,9 @@ char	*trime_expand(char *token, t_data *data)
 		if (token[i])
 			dst[j++] = token[i++];
 	}
-	dst[j - 1] = '\0';
+	if (dst[j - 1] == ' ')
+		j--;
+	dst[j] = '\0';
 	free(token);
 	return (dst);
 }
@@ -99,7 +97,7 @@ char	*get_expand(char *token, t_type type, t_data *data)
 		malloc_fail(data);
 	expand_value = get_env_var(data, expand_key);
 	if (expand_value && type != QUOTE_D && type != REDIR_AMBIGUOUS)
-		expand_value = trime_expand(expand_value, data);
+		expand_value = trime_expand(expand_value, 0, 0, data);
 	free(expand_key);
 	return (expand_value);
 }
