@@ -66,7 +66,8 @@ char					*get_expand(char *token, t_type type, t_data *data);
 bool					is_expand(char *token);
 bool					is_a_target_redir(t_token *token);
 /*expand*/
-char					*handle_expand(char *token, int i, t_type type, t_data *data);
+char					*handle_expand(char *token, int i, t_type type,
+							t_data *data);
 void					expand_var(t_token **token_lst, t_data *data);
 
 /*free_token*/
@@ -104,4 +105,5 @@ int						get_token_len(char *token);
 int						remove_node(t_token *node, t_data *data);
 void					join_word(t_token **token_lst, t_data *data);
 void					set_token_priority(t_token **token_lst);
+
 #endif

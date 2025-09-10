@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 21:49:04 by dabuchhe          #+#    #+#             */
-/*   Updated: 2025/09/08 21:12:58 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 15:52:11 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	get_expand_key_len(char *content)
 
 char	*trime_expand(char *token, t_data *data)
 {
-	char *dst;
-	int	i;
-	int	j;
+	char	*dst;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -70,7 +70,7 @@ char	*trime_expand(char *token, t_data *data)
 				i++;
 			if (j != 0)
 				dst[j++] = ' ';
-		}	
+		}
 		if (token[i])
 			dst[j++] = token[i++];
 	}
@@ -103,4 +103,3 @@ char	*get_expand(char *token, t_type type, t_data *data)
 	free(expand_key);
 	return (expand_value);
 }
-

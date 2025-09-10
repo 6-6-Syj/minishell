@@ -6,7 +6,7 @@
 /*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/19 19:27:26 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/08 20:05:29 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2025/09/10 15:52:25 by dabuchhe         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	set_file_type(t_token **token_lst)
 		{
 			if (token_node->next->type == SPACE)
 				token_node = token_node->next;
-			if (token_node->next && token_node->next->type == WORD && token_node->next->type != REDIR_AMBIGUOUS)
+			if (token_node->next && token_node->next->type == WORD
+				&& token_node->next->type != REDIR_AMBIGUOUS)
 				token_node->next->type = REDIR_TARGET;
 		}
 		token_node = token_node->next;
