@@ -116,6 +116,7 @@ void	init_data(t_data *data, char **env)
 	if (init_sig_handler(data) == false)
 	{
 		ft_putendl_fd("minishell: Fail to init sig_handler", STDERR_FILENO);
+		data->err = 6;
 		exit_error(data);
 	}
 }
