@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dabuchhe <dabuchhe@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: jmagand <jmagand@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:14:12 by jmagand           #+#    #+#             */
-/*   Updated: 2025/09/08 19:02:13 by dabuchhe         ###   ########lyon.fr   */
+/*   Updated: 2026/08/31 23:32:15 by jmagand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	init_heredoc_sig_handler(t_data *data)
 	sa.sa_handler = sig_handler_heredoc;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL) != -1)
+	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
 		ft_putendl_fd("minishell: sigaction failed", STDERR_FILENO);
 		data->err = 6;
